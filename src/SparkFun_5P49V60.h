@@ -8,10 +8,12 @@
 #define DEF_ADDR 0xD4 
 #define ALT_ADDR 0xD0
 
-#define ALT  0x01
-#define DEF  0x00
-#define LOW  0x00
-#define HIGH 0x01
+#define ALT     0x01
+#define DEF     0x00
+#define LOW     0x00
+#define HIGH    0x01
+#define DISABLE 0x00
+#define ENABLE  0x01
 
 enum REGISTER_INDEX {
   
@@ -134,8 +136,8 @@ enum MASK_INDEX {
   OTP_ADDR_MASK  = 0xFE,
   GLOB_SHUT_MASK = 0xFE,
 
-  MASK_ONE       = 0xF1,
-  MASK_TWO       = 0xF2,
+  MASK_ONE       = 0xFE, // yes
+  MASK_TWO       = 0xFD, // yes
   MASK_THREE     = 0xF3,
   MASK_FOUR      = 0xF4,
   MASK_FIVE      = 0xF5,

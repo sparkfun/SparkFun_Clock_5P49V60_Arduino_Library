@@ -46,13 +46,19 @@ uint8_t SparkFun_Clock:readI2CAddress(){
 
 }
 
+
+//
+void SparkFun_Clock::enableShutDown(uint8_t sd_val){
+}
+
 //
 void SparkFun_Clock::sdActiveState(uint8_t state){
   
   if (state != HIGH || state != LOW)
     return;
 
-  _writeRegister(SHUTDOWN_REG, 
+  _writeRegister(SHUTDOWN_REG, MASK_ONE, state, POS_ONE) 
+
 }
 // This generic function handles I2C write commands for modifying individual
 // bits in an eight bit register. Paramaters include the register's address, a mask 
