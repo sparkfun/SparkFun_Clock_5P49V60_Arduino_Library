@@ -8,14 +8,19 @@
 #define DEF_ADDR 0xD4
 #define ALT_ADDR 0xD0
 
-#define  ALT     0x01
-#define  DEF     0x00
-#define  LOW     0x00
-#define  HIGH    0x01
-#define  DISABLE 0x00
-#define  ENABLE  0x01
-#define  XIN     0x01
-#define  XOUT    0x02
+#define  ALT            0x01
+#define  DEF            0x00
+#define  LOW            0x00
+#define  HIGH           0x01
+#define  DISABLE        0x00
+#define  ENABLE         0x01
+#define  XIN            0x01
+#define  XOUT           0x02
+#define  ERROR          0xFF
+#define  CLOCK_SOURCE   0x00
+#define  XTAL_SOURCE    0x01
+//                   1 , 2   , 4   , 8    , 16   , 32
+float cap_arr[] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92}
 
 enum REGISTER_INDEX {
 
@@ -23,7 +28,7 @@ enum REGISTER_INDEX {
   SHUTDOWN_REG               = 0x10,
   VCO_BAND_REG               = 0x11,
   LOAD_CAP_REG_ONE           = 0x12,
-  LOAD_CAP_REG_TWO           = 0x12,
+  LOAD_CAP_REG_TWO           = 0x13,
   REF_DIVIDER_REG            = 0x15,
   DIVIDER_VCO_REG            = 0x16,
 
@@ -153,10 +158,12 @@ enum MASK_INDEX {
   MASK_FOURT  = 0xF1,
   MASK_FIFT   = 0xF0,
 
+  MASK_FIFT_MSB  = 0x0F,
   MASK_EIGHT_MSB = 0x7F,
-  MASK_FOUR_MSB = 0xBF,
-  MASK_TWO_MSB = 0xDF,
-  MASK_ONE_MSB = 0xEF
+  MASK_FOUR_MSB  = 0xBF,
+  MASK_TWO_MSB   = 0xDF,
+  MASK_ONE_MSB   = 0xEF,
+  MASK_ALL  = 0xFF
 
 };
 
