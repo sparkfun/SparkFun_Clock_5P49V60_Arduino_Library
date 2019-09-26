@@ -39,8 +39,9 @@ enum REGISTER_INDEX {
   FDB_FRAC_DIV_REG_TWO       = 0x1A,
   FDB_FRAC_DIV_REG_THR       = 0x1B,
 
-  RC_CONTR_REG_ONE           = 0x1B,
-  RC_CONTR_REG_TWO           = 0x1C,
+  RC_CONTR_REG_ONE           = 0x1D,
+  RC_CONTR_REG_TWO           = 0x1E,
+  RC_CONTR_REG_THR           = 0x1F,
 
   OUT_IDIV_REG_ONE           = 0x2D,
   OUT_IDIV_REG_TWO           = 0x2E,
@@ -142,29 +143,35 @@ enum REGISTER_INDEX {
 enum MASK_INDEX {
 
   // LSB
-  MASK_ONE    = 0xFE, // yes
-  MASK_TWO    = 0xFD, // yes
-  MASK_THREE  = 0xFC,
-  MASK_FOUR   = 0xFB,
-  MASK_FIVE   = 0xFA,
-  MASK_SIX    = 0xF9,
-  MASK_SEVEN  = 0xF8,
-  MASK_EIGHT  = 0xF7,
-  MASK_NINE   = 0xF6,
-  MASK_TEN    = 0xF5,
-  MASK_ELEVEN = 0xF4,
-  MASK_TWELVE = 0xF3,
-  MASK_THIRT  = 0xF2,
-  MASK_FOURT  = 0xF1,
-  MASK_FIFT   = 0xF0,
+  MASK_ONE        = 0xFE, // yes
+  MASK_TWO        = 0xFD, // yes
+  MASK_THREE      = 0xFC,
+  MASK_FOUR       = 0xFB,
+  MASK_FIVE       = 0xFA,
+  MASK_SIX        = 0xF9,
+  MASK_SEVEN      = 0xF8,
+  MASK_EIGHT      = 0xF7,
+  MASK_NINE       = 0xF6,
+  MASK_TEN        = 0xF5,
+  MASK_ELEVEN     = 0xF4,
+  MASK_TWELVE     = 0xF3,
+  MASK_THIRT      = 0xF2,
+  MASK_FOURT      = 0xF1,
+  MASK_FIFT       = 0xF0,
 
-  MASK_FIFT_MSB  = 0x0F,
-  MASK_EIGHT_MSB = 0x7F,
-  MASK_FOUR_MSB  = 0xBF,
-  MASK_TWO_MSB   = 0xDF,
-  MASK_ONE_MSB   = 0xEF,
-  MASK_ALL  = 0xFF
+  MASK_FIFT_MSB   = 0x0F,
+  MASK_EIGHT_MSB  = 0x7F,
+  MASK_FOUR_MSB   = 0xBF,
+  MASK_THR_MSB    = 0x8F,
+  MASK_TWO_MSB    = 0xDF,
+  MASK_ONE_MSB    = 0xEF,
+  MASK_ALL        = 0x00,
 
+  MASK_ALL_8_BIT  = 0x0000FF,
+  MASK_ALL_16_BIT = 0x00FFFF,
+  MASK_ALL_24_BIT = 0xFF0000,
+
+  MASK_ENDS       = 81
 };
 
 enum BIT_POS_INDEX {
@@ -176,7 +183,10 @@ enum BIT_POS_INDEX {
   POS_FOUR,
   POS_FIVE,
   POS_SIX,
-  POS_SEVEN
+  POS_SEVEN,
+  POS_EIGHT,
+  POS_FIFT = 0xF,
+  POS_SIXT
 
 };
 
