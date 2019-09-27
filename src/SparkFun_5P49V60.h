@@ -19,6 +19,9 @@
 #define  ERROR          0xFF
 #define  CLOCK_SOURCE   0x00
 #define  XTAL_SOURCE    0x01
+
+#define UNKNOWN_ERROR   0xFF
+
 //                   1 , 2   , 4   , 8    , 16   , 32
 float cap_arr[] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92}
 

@@ -352,10 +352,16 @@ uint32_t SparkFun_Clock::readPllFeedBackFractDiv(){
 // REG 0x1E, bits[7:3]
 void SparkFun_Clock::setPllFilterResOne(uint16_t res_val){
   
-  if (res_val == 1500)
+  uint8_t _bits; 
+
+  if (res_val == 1500){
+    _bits = 0b11110;
     _writeRegister(RC_CONTR_REG_TWO, (~MASK_SEVEN), res_val, POS_THREE);
-  else if (res_val == 46500)
+  }
+  else if (res_val == 46500){
+    _bits = 0b0;
     _writeRegister(RC_CONTR_REG_TWO, (~MASK_SEVEN), res_val, POS_THREE);
+  }
   else return;
 
 }
@@ -363,16 +369,28 @@ void SparkFun_Clock::setPllFilterResOne(uint16_t res_val){
 // REG 0x1E, bits[3:0]
 void SparkFun_Clock::setPllFilterCapOne(uint8_t cap_val){
 
-  if (cap_val == 12)
-    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, cap_val, POS_ZERO);
-  else if (cap_val == 16)
-    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, cap_val, POS_ZERO);
-  else if (cap_val == 20)
-    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, cap_val, POS_ZERO);
-  else if (cap_val == 24)
-    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, cap_val, POS_ZERO);
-  else if (cap_val == 28)
-    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, cap_val, POS_ZERO);
+  uint8_t _bits;
+
+  if (cap_val == 12){
+    _bits = 0b000; 
+    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
+  }
+  else if (cap_val == 16){
+    _bits = 0b001; 
+    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
+  }
+  else if (cap_val == 20){
+    _bits = 0b010; 
+    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
+  }
+  else if (cap_val == 24){
+    _bits = 0b011; 
+    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
+  }
+  else if (cap_val == 28){
+    _bits = 0b100; 
+    _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
+  }
   else return;
 
 }
@@ -380,20 +398,36 @@ void SparkFun_Clock::setPllFilterCapOne(uint8_t cap_val){
 // REG 0x1F, bits[3:1]
 void SparkFun_Clock::setPllFilterResTwo(uint16_t res_val){
 
-  if (res_val == 1000)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
-  else if (res_val == 1450)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
-  else if (res_val == 1600)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
-  else if (res_val == 2000)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
-  else if (res_val == 5300)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
-  else if (res_val == 7000)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
-  else if (res_val == 8000)
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, res_val, POS_ONE); 
+  uint8_t _bits; 
+
+  if (res_val == 1000){
+    _bits = 0b100;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
+  else if (res_val == 1450){
+    _bits = 0b111;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
+  else if (res_val == 1600){
+    _bits = 0b011;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
+  else if (res_val == 2000){
+    _bits = 0b001;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
+  else if (res_val == 5300){
+    _bits = 0b110;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
+  else if (res_val == 7000){
+    _bits = 0b101;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
+  else if (res_val == 8000){
+    _bits = 0b010;
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+  }
   else return;
   
 }
@@ -411,39 +445,86 @@ void SparkFun_Clock::bypassPllFilterThree(bool bypass){
 // REG 0x1F, bits[6:4]
 void SparkFun_Clock::setPllFilterCapTwo(float cap_val){
 
-  if (res_val == 1.8)
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, res_val, POS_FOUR); 
-  else if (res_val == 3.6)
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, res_val, POS_FOUR); 
-  else if (res_val == 5.4)
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, res_val, POS_FOUR); 
+  uint8_t _bits; 
+
+  if (res_val == 1.8){
+    _bits = 0b001; 
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR); 
+  }
+  else if (res_val == 3.6){
+    _bits = 0b011; 
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR); 
+  }
+  else if (res_val == 5.4){
+    _bits = 0b111; 
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR); 
+  }
   else return;
 }
 
-// REG 0x1D, bits[:]
+// REG 0x1D, bits[:] - SKIPPED
 void SparkFun_Clock::setPllFilterChargePump(uint8_t pump_val){
 }
 
-// REG 0x1E, bits[:]
+// REG 0x1E, bits[7:3]
 uint8_t SparkFun_Clock::readPllFilterResOne(){
+  
+  uint8_t res_val = _readRegister(RC_CONTR_REG_TWO); 
+  res_val &= MASK_SEVEN;
+  res_val >>= POS_THREE; 
+
+  if (res_val == 0b11110) return 1500; 
+  else if (res_val == 0)  return 46500;
+  else return UNKNOWN_ERROR; 
+
 }
 
-// REG 0x1E, bits[:]
+// REG 0x1E, bits[2:0]
 uint8_t SparkFun_Clock::readPllFilterCapOne(){
+  
+  uint8_t cap_val = _readRegister(RC_CONTR_REG_TWO); 
+  cap_val &= (~MASK_SEVEN);
+
+  if (cap_val == 0b000)      return 12; 
+  else if (cap_val == 0b001) return 16;
+  else if (cap_val == 0b010) return 20;
+  else if (cap_val == 0b011) return 24;
+  else if (cap_val == 0b100) return 28;
+  else return UNKNOWN_ERROR;
 
 }
 
-// REG 0x1F, bits[:]
+// REG 0x1F, bits[3:1]
 uint8_t SparkFun_Clock::readPllFilterResTwo(){
+
+  if (res_val == 0b100)       return 1000;
+  else if (res_val == 0b111)  return 1450;
+  else if (res_val == 0b011)  return 1600;
+  else if (res_val == 0b001)  return 2000;
+  else if (res_val == 0b110)  return 5300;
+  else if (res_val == 0b101)  return 7000;
+  else if (res_val == 0b010)  return 8000;
+  else return UNKNOWN_ERROR;
+
 }
 
-// REG 0x1F, bits[:]
-uint8_t SparkFun_Clock::readPllFilterCapTwo(){
+// REG 0x1F, bits[6:4]
+float SparkFun_Clock::readPllFilterCapTwo(){
+
+  uint8_t cap_val = _readRegister(RC_CONTR_REG_THR); 
+  cap_val &= (~MASK_THR_MSB);
+  cap_val >>= POS_FOUR;
+
+  if (res_val == 0b001)      return 1.8;
+  else if (res_val== 0b011)  return 3.6;
+  else if (res_val == 0b111) return 5.4;
+  else return static_cast<float>(UNKNOWN_ERROR);
 }
 
 // REG 0x1D, bits[:]
 uint8_t SparkFun_Clock::readPllFilterChargePump(){
 }
+
 // This generic function handles I2C write commands for modifying individual
 // bits in an eight bit register. Paramaters include the register's address, a mask
 // for bits that are ignored, the bits to write, and the bits' starting
