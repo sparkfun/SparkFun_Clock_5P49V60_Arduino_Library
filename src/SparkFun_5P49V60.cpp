@@ -8,11 +8,11 @@
   Feel like supporting our work? Buy a board from SparkFun!
  */
 
-#include "SparkFun_Clock.h"
+#include "SparkFun_5P49V60"
 
-SparkFun_Clock::Class_Name(uint8_t address){  _address = address; } //Constructor for I2C
+SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address){  _address = address; } //Constructor for I2C
 
-bool SparkFun_Clock::begin( TwoWire &wirePort )
+bool SparkFun_5P49V60::begin( TwoWire &wirePort )
 {
 
   _i2cPort = &wirePort;
@@ -28,7 +28,7 @@ bool SparkFun_Clock::begin( TwoWire &wirePort )
 }
 
 //
-void SparkFun_Clock:changeI2CAddress(uint8_t addr_selec){
+void SparkFun_5P49V60::changeI2CAddress(uint8_t addr_selec){
 
   if (addr_selec != 0 || addr_selec != 1)
     return;
@@ -38,7 +38,7 @@ void SparkFun_Clock:changeI2CAddress(uint8_t addr_selec){
 }
 
 //
-uint8_t SparkFun_Clock:readI2CAddress(){
+uint8_t SparkFun_5P49V60::readI2CAddress(){
 
   uint8_t reg_val = _readRegister(OTP_CONTROL_REG);
   reg_val &= ~MASK_ONE;
@@ -47,7 +47,7 @@ uint8_t SparkFun_Clock:readI2CAddress(){
 }
 
 //
-void SparkFun_Clock::sdActiveState(uint8_t state){
+void SparkFun_5P49V60::sdActiveState(uint8_t state){
 
   if (state != HIGH || state != LOW)
     return;
@@ -58,7 +58,7 @@ void SparkFun_Clock::sdActiveState(uint8_t state){
 
 // This function allows the given clock line to remain on when the SparkFun
 // Clock Generator is put into shutdown mode.
-void SparkFun_Clock::persEnableClock(uint8_t clock){
+void SparkFun_5P49V60::persEnableClock(uint8_t clock){
 
   uint8_t _bit_pos;
   uint8_t _mask;
@@ -94,7 +94,7 @@ void SparkFun_Clock::persEnableClock(uint8_t clock){
 // This function adds the available internal capacitors to the given pin on the
 // crystal. The two available pins can be taken directly from the datasheet, or
 // schematic: XIN and XOUT.
-void SparkFun_Clock::addCrystalLoadCap(uint8_t pin, float capVal){
+void SparkFun_5P49V60::addCrystalLoadCap(uint8_t pin, float capVal){
 
   uint8_t _register;
   uint8_t _bit_pos;
@@ -138,7 +138,7 @@ void SparkFun_Clock::addCrystalLoadCap(uint8_t pin, float capVal){
 
 // INCOMPLETE, This function returns the total load capacitance on the given
 // pin of the onboard crystal.
-float SparkFun_Clock::readCrystalCapVal(uint8_t pin){
+float SparkFun_5P49V60::readCrystalCapVal(uint8_t pin){
 
   uint8_t _register;
 
@@ -176,7 +176,7 @@ float SparkFun_Clock::readCrystalCapVal(uint8_t pin){
 
 // This function changes the primary source of the clock: either crystal
 // or CLKIN. The product is set by default in hardware to use the crystal.
-void SparkFun_Clock::changeSource(uint8_t source){
+void SparkFun_5P49V60::changeSource(uint8_t source){
 
   if (source == CLOCK_SOURCE || source == XTAL_SOURCE) {}
   else return;
@@ -187,7 +187,7 @@ void SparkFun_Clock::changeSource(uint8_t source){
 
 // This function returns the currently selected source of the clock: either crystal
 // or CLKIN. The product is set by default in hardware to use the crystal.
-uint8_t SparkFun_Clock::readSource(){
+uint8_t SparkFun_5P49V60::readSource(){
 
   uint8_t reg_val = _readRegister(LOAD_CAP_REG_TWO);
   reg_val &= (~MASK_TWO);
@@ -201,7 +201,7 @@ uint8_t SparkFun_Clock::readSource(){
 // and values of 3-127 are written to bits[6:0]. If the two divider is enabled
 // then the other divider is disabled - this bit can not be set and then the
 // others as well. 
-void SparkFun_Clock::selectRefDivider(uint8_t div_val){
+void SparkFun_5P49V60::selectRefDivider(uint8_t div_val){
 
   if (div_val < 2 || div_val > 127) 
     return;
@@ -215,7 +215,7 @@ void SparkFun_Clock::selectRefDivider(uint8_t div_val){
 
 // REG 0x15, bits[7:0] This selects which divider value is used for the clock
 // output. 
-uint8_t SparkFun_Clock::readRefDivider(){
+uint8_t SparkFun_5P49V60::readRefDivider(){
 
   uint8_t reg_val = _readRegister(REF_DIVIDER_REG);
 
@@ -229,7 +229,7 @@ uint8_t SparkFun_Clock::readRefDivider(){
 
 // REG 0x16, bit[7] This function enables the function to  bypass the clock pre-divider, 
 // which is essentially a divide by 1.  
-void SparkFun_Clock::bypassRefDivider(uint8_t div){
+void SparkFun_5P49V60::bypassRefDivider(uint8_t div){
 
   if( div == DISABLE || div == ENABLE) {}
   else return; 
@@ -240,7 +240,7 @@ void SparkFun_Clock::bypassRefDivider(uint8_t div){
 
 // REG 0x16, bit[7] This function reads whether the clock pre-divider is being
 // bypassed. 
-uint8_t SparkFun_Clock::readBypassDivider(){
+uint8_t SparkFun_5P49V60::readBypassDivider(){
 
   uint8_t reg_val = _readRegister(DIVIDER_VCO_REG);
   reg_val &= (~MASK_EIGHT_MSB);
@@ -251,7 +251,7 @@ uint8_t SparkFun_Clock::readBypassDivider(){
 }
 
 // REG 0x11, bit[5] This function turns on the VCO test mode.
-void SparkFun_Clock::vcoTestControl(uint8_t cont){
+void SparkFun_5P49V60::vcoTestControl(uint8_t cont){
   
   if (cont == ENABLE || cont == DISABLE){}
   else return; 
@@ -261,7 +261,7 @@ void SparkFun_Clock::vcoTestControl(uint8_t cont){
 }
 
 // REG 0x11, bit[5] This function checks to see if the VCO test mode is running. 
-uint8_t SparkFun_Clock::readTestControl(){
+uint8_t SparkFun_5P49V60::readTestControl(){
   
   uint8_t reg_val = _readRegister(VCO_BAND_REG); 
   reg_val &= (~MASK_TWO);
@@ -272,7 +272,7 @@ uint8_t SparkFun_Clock::readTestControl(){
 
 // Reg 0x17 and 0x16, bits[7:0] and bits[7:4] respectively - largest value that
 // can be set: 4095. 
-void SparkFun_Clock::setPllFeedbackIntDiv(uint16_t divider_val){
+void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
@@ -291,7 +291,7 @@ void SparkFun_Clock::setPllFeedbackIntDiv(uint16_t divider_val){
 }
 
 // REG 0x19, 0x1A, and 0x1B, bits[8:0] for all three registers.
-void SparkFun_Clock::setPllFeedBackFractDiv(uint32_t divider_val){
+void SparkFun_5P49V60::setPllFeedBackFractDiv(uint32_t divider_val){
 
   uint32_t lsb_div_val; // Least significant BYTE
   uint32_t msb_div_val;
@@ -330,7 +330,7 @@ void SparkFun_Clock::setPllFeedBackFractDiv(uint32_t divider_val){
 }
 
 // REG 0x19, 0x1A, and 0x1B, bits[8:0] for all three registers.
-uint32_t SparkFun_Clock::readPllFeedBackFractDiv(){
+uint32_t SparkFun_5P49V60::readPllFeedBackFractDiv(){
 
   uint32_t lsb_div_val;
   uint32_t msb_div_val;
@@ -350,7 +350,7 @@ uint32_t SparkFun_Clock::readPllFeedBackFractDiv(){
 }
 
 // REG 0x1E, bits[7:3]
-void SparkFun_Clock::setPllFilterResOne(uint16_t res_val){
+void SparkFun_5P49V60::setPllFilterResOne(uint16_t res_val){
   
   uint8_t _bits; 
 
@@ -367,7 +367,7 @@ void SparkFun_Clock::setPllFilterResOne(uint16_t res_val){
 }
 
 // REG 0x1E, bits[3:0]
-void SparkFun_Clock::setPllFilterCapOne(uint8_t cap_val){
+void SparkFun_5P49V60::setPllFilterCapOne(uint8_t cap_val){
 
   uint8_t _bits;
 
@@ -396,7 +396,7 @@ void SparkFun_Clock::setPllFilterCapOne(uint8_t cap_val){
 }
 
 // REG 0x1F, bits[3:1]
-void SparkFun_Clock::setPllFilterResTwo(uint16_t res_val){
+void SparkFun_5P49V60::setPllFilterResTwo(uint16_t res_val){
 
   uint8_t _bits; 
 
@@ -433,7 +433,7 @@ void SparkFun_Clock::setPllFilterResTwo(uint16_t res_val){
 }
 
 //REG 0x1F, bit[7]
-void SparkFun_Clock::bypassPllFilterThree(bool bypass){
+void SparkFun_5P49V60::bypassPllFilterThree(bool bypass){
   
   if (bypass)
     _writeRegister(RC_CONTR_REG_THR, MASK_EIGHT_MSB, bypass, POS_SEVEN);
@@ -443,7 +443,7 @@ void SparkFun_Clock::bypassPllFilterThree(bool bypass){
 }
 
 // REG 0x1F, bits[6:4]
-void SparkFun_Clock::setPllFilterCapTwo(float cap_val){
+void SparkFun_5P49V60::setPllFilterCapTwo(float cap_val){
 
   uint8_t _bits; 
 
@@ -463,11 +463,11 @@ void SparkFun_Clock::setPllFilterCapTwo(float cap_val){
 }
 
 // REG 0x1D, bits[:] - SKIPPED
-void SparkFun_Clock::setPllFilterChargePump(uint8_t pump_val){
+void SparkFun_5P49V60::setPllFilterChargePump(uint8_t pump_val){
 }
 
 // REG 0x1E, bits[7:3]
-uint8_t SparkFun_Clock::readPllFilterResOne(){
+uint8_t SparkFun_5P49V60::readPllFilterResOne(){
   
   uint8_t res_val = _readRegister(RC_CONTR_REG_TWO); 
   res_val &= MASK_SEVEN;
@@ -480,7 +480,7 @@ uint8_t SparkFun_Clock::readPllFilterResOne(){
 }
 
 // REG 0x1E, bits[2:0]
-uint8_t SparkFun_Clock::readPllFilterCapOne(){
+uint8_t SparkFun_5P49V60::readPllFilterCapOne(){
   
   uint8_t cap_val = _readRegister(RC_CONTR_REG_TWO); 
   cap_val &= (~MASK_SEVEN);
@@ -495,7 +495,7 @@ uint8_t SparkFun_Clock::readPllFilterCapOne(){
 }
 
 // REG 0x1F, bits[3:1]
-uint8_t SparkFun_Clock::readPllFilterResTwo(){
+uint8_t SparkFun_5P49V60::readPllFilterResTwo(){
 
   if (res_val == 0b100)       return 1000;
   else if (res_val == 0b111)  return 1450;
@@ -509,7 +509,7 @@ uint8_t SparkFun_Clock::readPllFilterResTwo(){
 }
 
 // REG 0x1F, bits[6:4]
-float SparkFun_Clock::readPllFilterCapTwo(){
+float SparkFun_5P49V60::readPllFilterCapTwo(){
 
   uint8_t cap_val = _readRegister(RC_CONTR_REG_THR); 
   cap_val &= (~MASK_THR_MSB);
@@ -522,14 +522,14 @@ float SparkFun_Clock::readPllFilterCapTwo(){
 }
 
 // REG 0x1D, bits[:]
-uint8_t SparkFun_Clock::readPllFilterChargePump(){
+uint8_t SparkFun_5P49V60::readPllFilterChargePump(){
 }
 
 // This generic function handles I2C write commands for modifying individual
 // bits in an eight bit register. Paramaters include the register's address, a mask
 // for bits that are ignored, the bits to write, and the bits' starting
 // position.
-void SparkFun_Clock::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition)
+void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition)
 {
   _i2cWrite = readRegister(_wReg); // Get the current value of the register
   _i2cWrite &= (_mask); // Mask the position we want to write to.
@@ -542,7 +542,7 @@ void SparkFun_Clock::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits,
 
 // This generic function reads an eight bit register. It takes the register's
 // address as its' parameter.
-uint8_t SparkFun_Clock::_readRegister(uint8_t _reg)
+uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg)
 {
 
   _i2cPort->write(_reg); // Moves pointer to register.

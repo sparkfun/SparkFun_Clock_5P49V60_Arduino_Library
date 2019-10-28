@@ -193,16 +193,71 @@ enum BIT_POS_INDEX {
 
 };
 
-class SparkFun_Clock
+class SparkFun_5P49V60
 {
   public:
 
     // Public Variables
 
     //Function declarations
-    SparkFun_Clock(uint8_t address); // I2C Constructor
+    SparkFun_5P49V60(uint8_t address = DEF_ADDR); // I2C Constructor
 
     bool begin(TwoWire &wirePort = Wire); // begin function
+
+    void changeI2CAddress(uint8_t);
+
+    uint8_t readI2CAddress();
+
+    void sdActiveState(uint8_t);
+    
+    void addCrystalLoadCap(uint8_t, float);
+
+    float readCrystalCapVal(uint8_t);
+
+    void changeSource(uint8_t);
+
+    uint8_t readSource();
+
+    void selectRefDivider(uint8_t);
+
+    uint8_t readRefDivider();
+
+    void bypassRefDivider(uint8_t);
+
+    uint8_t readBypassDivider();
+
+    void vcoTestControl(uint8_t);
+
+    uint8_t readTestControl();
+    
+    void setPllFeedbackIntDiv(uint16_t);
+    
+    void setPllFeedBackFractDiv(uint32_t);
+
+    uint32_t readPllFeedBackFractDiv();
+
+    void setPllFilterResOne(uint16_t);
+    
+    void setPllFilterCapOne(uint8_t);
+
+    void setPllFilterResTwo(uint16_t);
+
+    void bypassPllFilterThree(bool);
+
+    void setPllFilterCapTwo(float);
+
+    void setPllFilterChargePump(uint8_t);
+
+    uint8_t readPllFilterResOne();
+
+    uint8_t readPllFilterCapOne();
+
+    uint8_t readPllFilterResTwo();
+
+    float readPllFilterCapTwo();
+
+    uint8_t readPllFilterChargePump();
+
 
   private:
 
@@ -213,11 +268,11 @@ class SparkFun_Clock
     // bits in an eight bit register. Paramaters include the register's address, a mask
     // for bits that are ignored, the bits to write, and the bits' starting
     // position.
-    void writeRegister(uint8_t, uint8_t, uint8_t, uint8_t);
+    void _writeRegister(uint8_t, uint8_t, uint8_t, uint8_t);
 
     // This generic function reads an eight bit register. It takes the register's
     // address as its' parameter.
-    uint8_t readRegister(uint8_t);
+    uint8_t _readRegister(uint8_t);
 
     TwoWire *_i2cPort;
 };
