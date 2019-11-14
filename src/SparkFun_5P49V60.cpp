@@ -529,8 +529,23 @@ void SparkFun_5P49V60::bypassThirdFilter(uint8_t control){
   
 }
 // REG 0x21, bits[7]
-SparkFun_5P49V60::resetFOD(){
-  _writeRegister(CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+SparkFun_5P49V60::resetFodOne(){
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+}
+
+// REG 0x31, bits[7]
+SparkFun_5P49V60::resetFodTwo(){
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+}
+
+// REG 0x41, bits[7]
+SparkFun_5P49V60::resetFodThree(){
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+}
+
+// REG 0x51, bits[7]
+SparkFun_5P49V60::resetFodFour(){
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
 }
 
 // This generic function handles I2C write commands for modifying individual

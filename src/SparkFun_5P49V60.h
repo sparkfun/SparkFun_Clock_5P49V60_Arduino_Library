@@ -46,7 +46,7 @@ enum REGISTER_INDEX {
   RC_CONTR_REG_TWO           = 0x1E,
   RC_CONTR_REG_THR           = 0x1F,
 
-  CONTROL_REG                = 0x21,
+  DIV_ONE_CONTROL_REG        = 0x21,
 
   OUT_FDIV_REG_ONE           = 0x22,
   OUT_FDIV_REG_TWO           = 0x23,
@@ -68,6 +68,8 @@ enum REGISTER_INDEX {
 
   OUT_FSKEW_REG              = 0x2F,
 
+  DIV_TWO_CONTROL_REG        = 0x31,
+
   OUT_FDIV_TWO_REG_ONE       = 0x32,
   OUT_FDIV_TWO_REG_TWO       = 0x33,
   OUT_FDIV_TWO_REG_THR       = 0x34,
@@ -88,6 +90,8 @@ enum REGISTER_INDEX {
 
   OUT_FSKEW_TWO_REG          = 0x3F,
 
+  DIV_THR_CONTROL_REG        = 0x41,
+
   OUT_FDIV_FOUR_REG_ONE      = 0x42,
   OUT_FDIV_FOUR_REG_TWO      = 0x43,
   OUT_FDIV_FOUR_REG_THR      = 0x44,
@@ -107,6 +111,8 @@ enum REGISTER_INDEX {
   OUT_IDIV_THR_REG_TWO       = 0x4E,
 
   OUT_FSKEW_THR_REG          = 0x4F,
+
+  DIV_FOR_CONTROL_REG        = 0x51,
 
   OUT_IDIV_FOUR_REG_ONE      = 0x5D,
   OUT_IDIV_FOUR_REG_TWO      = 0x5E,
