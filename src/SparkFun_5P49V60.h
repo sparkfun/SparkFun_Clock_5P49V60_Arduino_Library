@@ -46,17 +46,7 @@ enum REGISTER_INDEX {
   RC_CONTR_REG_TWO           = 0x1E,
   RC_CONTR_REG_THR           = 0x1F,
 
-  OUT_IDIV_REG_ONE           = 0x2D,
-  OUT_IDIV_REG_TWO           = 0x2E,
-
-  OUT_IDIV_TWO_REG_ONE       = 0x3D,
-  OUT_IDIV_TWO_REG_TWO       = 0x3E,
-
-  OUT_IDIV_THR_REG_ONE       = 0x4D,
-  OUT_IDIV_THR_REG_TWO       = 0x4E,
-
-  OUT_IDIV_FOUR_REG_ONE      = 0x5D,
-  OUT_IDIV_FOUR_REG_TWO      = 0x5E,
+  CONTROL_REG                = 0x21,
 
   OUT_FDIV_REG_ONE           = 0x22,
   OUT_FDIV_REG_TWO           = 0x23,
@@ -70,6 +60,14 @@ enum REGISTER_INDEX {
   OUT_SPRD_RATE_REG_ONE      = 0x29,
   OUT_SPRD_RATE_REG_TWO      = 0x2A,
 
+  OUT_ISKEW_REG_ONE          = 0x2B,
+  OUT_ISKEW_REG_TWO          = 0x2C,
+
+  OUT_IDIV_REG_ONE           = 0x2D,
+  OUT_IDIV_REG_TWO           = 0x2E,
+
+  OUT_FSKEW_REG              = 0x2F,
+
   OUT_FDIV_TWO_REG_ONE       = 0x32,
   OUT_FDIV_TWO_REG_TWO       = 0x33,
   OUT_FDIV_TWO_REG_THR       = 0x34,
@@ -82,17 +80,13 @@ enum REGISTER_INDEX {
   OUT_SPRD_RATE_TWO_REG_ONE  = 0x39,
   OUT_SPRD_RATE_TWO_REG_TWO  = 0x3A,
 
-  OUT_FDIV_THR_REG_ONE       = 0x42,
-  OUT_FDIV_THR_REG_TWO       = 0x43,
-  OUT_FDIV_THR_REG_THR       = 0x44,
-  OUT_FDIV_THR_REG_FOUR      = 0x45,
+  OUT_ISKEW_TWO_REG_ONE      = 0x3B,
+  OUT_ISKEW_TWO_REG_TWO      = 0x3C,
 
-  OUT_STEP_SPRD_THR_REG_ONE  = 0x46,
-  OUT_STEP_SPRD_THR_REG_TWO  = 0x47,
-  OUT_STEP_SPRD_THR_REG_THR  = 0x48,
+  OUT_IDIV_TWO_REG_ONE       = 0x3D,
+  OUT_IDIV_TWO_REG_TWO       = 0x3E,
 
-  OUT_SPRD_RATE_THR_REG_ONE  = 0x49,
-  OUT_SPRD_RATE_THR_REG_TWO  = 0x4A,
+  OUT_FSKEW_TWO_REG          = 0x3F,
 
   OUT_FDIV_FOUR_REG_ONE      = 0x42,
   OUT_FDIV_FOUR_REG_TWO      = 0x43,
@@ -106,20 +100,16 @@ enum REGISTER_INDEX {
   OUT_SPRD_RATE_FOUR_REG_ONE = 0x49,
   OUT_SPRD_RATE_FOUR_REG_TWO = 0x4A,
 
-  OUT_ISKEW_REG_ONE          = 0x2B,
-  OUT_ISKEW_REG_TWO          = 0x2C,
-
-  OUT_FSKEW_REG              = 0x2F,
-
-  OUT_ISKEW_TWO_REG_ONE      = 0x3B,
-  OUT_ISKEW_TWO_REG_TWO      = 0x3C,
-
-  OUT_FSKEW_TWO_REG          = 0x3F,
-
   OUT_ISKEW_THR_REG_ONE      = 0x4B,
   OUT_ISKEW_THR_REG_TWO      = 0x4C,
 
+  OUT_IDIV_THR_REG_ONE       = 0x4D,
+  OUT_IDIV_THR_REG_TWO       = 0x4E,
+
   OUT_FSKEW_THR_REG          = 0x4F,
+
+  OUT_IDIV_FOUR_REG_ONE      = 0x5D,
+  OUT_IDIV_FOUR_REG_TWO      = 0x5E,
 
   OUT_ISKEW_FOUR_REG_ONE     = 0x5B,
   OUT_ISKEW_FOUR_REG_TWO     = 0x5C,

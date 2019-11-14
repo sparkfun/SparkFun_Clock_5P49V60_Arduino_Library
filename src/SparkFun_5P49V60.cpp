@@ -497,6 +497,7 @@ uint8_t SparkFun_5P49V60::readPllFilterCapOne(){
 // REG 0x1F, bits[3:1]
 uint8_t SparkFun_5P49V60::readPllFilterResTwo(){
 
+  // Values in Ohms
   if (res_val == 0b100)       return 1000;
   else if (res_val == 0b111)  return 1450;
   else if (res_val == 0b011)  return 1600;
@@ -520,9 +521,16 @@ float SparkFun_5P49V60::readPllFilterCapTwo(){
   else if (res_val == 0b111) return 5.4;
   else return static_cast<float>(UNKNOWN_ERROR);
 }
+// REG 0x1F, bits[7]
+void SparkFun_5P49V60::bypassThirdFilter(uint8_t control){
 
-// REG 0x1D, bits[:]
-uint8_t SparkFun_5P49V60::readPllFilterChargePump(){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOUR_MSB, control, POS_SEVEN);
+  
+}
+// REG 0x21, bits[7]
+SparkFun_5P49V60::resetFOD(){
+  _writeRegister(CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
 }
 
 // This generic function handles I2C write commands for modifying individual
