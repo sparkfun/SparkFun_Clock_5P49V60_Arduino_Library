@@ -56,6 +56,54 @@ void SparkFun_5P49V60::sdActiveState(uint8_t state){
 
 }
 
+// Reg 0x10, bit[7]
+void SparkFun_5P49V60::xtalControl(uint8_t control){
+
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(SHUTDOWN_REG, MASK_EIGHT_MSB, control, POS_SEVEN)
+
+}
+
+// Reg 0x10, bit[6]
+void SparkFun_5P49V60::clockInControl(uint8_t control){
+
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX)
+
+}
+
+// Reg 0x10, bit[6]
+void SparkFun_5P49V60::doubleRefFreqControl(uint8_t control){
+
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(SHUTDOWN_REG, MASK_EIGHT, control, POS_THREE)
+
+}
+
+// Reg 0x10, bit[2]
+void SparkFun_5P49V60::refModeControl(uint8_t control){
+
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(SHUTDOWN_REG, MASK_FOUR, control, POS_TWO)
+
+}
+
+// Reg 0x10, bit[2]
+void SparkFun_5P49V60::sdInputPinControl(uint8_t control){
+
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(SHUTDOWN_REG, MASK_TWO, control, POS_ONE)
+
+}
+
+// Reg 0x10, bit[2]
+void SparkFun_5P49V60::globalSdControl(uint8_t control){
+
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(SHUTDOWN_REG, MASK_ONE, control, POS_ZERO)
+
+}
+
 // This function allows the given clock line to remain on when the SparkFun
 // Clock Generator is put into shutdown mode.
 void SparkFun_5P49V60::persEnableClock(uint8_t clock){
@@ -529,23 +577,125 @@ void SparkFun_5P49V60::bypassThirdFilter(uint8_t control){
   
 }
 // REG 0x21, bits[7]
-SparkFun_5P49V60::resetFodOne(){
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+void SparkFun_5P49V60::resetFodOne(){
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+}
+
+// REG 0x21, bits[3:0], 0b0000
+void SparkFun_5P49V60::disableFodOutOne(){
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+}
+// REG 0x21, bits[3:0], 0b00x1
+void SparkFun_5P49V60::fodPllOutFodOne(){
+  // To preserve the bit in position (integer mode) two there's two writes to
+  // the register. 
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0x00, POS_TWO)     
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0x01, POS_ZERO)     
+}
+
+// REG 0x21, bits[3:0], 0b1100
+void SparkFun_5P49V60::fodDisOutOutOne(){ 
+
+  refModeControl(DISABLE);
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0xF0, POS_ZERO)     
+
+}
+
+
+// REG 0x21, bits[3:0], 0b1111
+void SparkFun_5P49V60::fodOutOutFodOne(){
+  refModeControl(DISABLE);
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0xFF, POS_ZERO)     
+}
+
+//REG 0x2C, bit[0]
+void SparkFun_5P49V60::auxControlOne(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(OUT_ISKEW_REG_TWO, MASK_ONE, control, POS_ZERO)
 }
 
 // REG 0x31, bits[7]
-SparkFun_5P49V60::resetFodTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+void SparkFun_5P49V60::resetFodTwo(){
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+}
+
+// REG 0x31, bits[3:0]
+void SparkFun_5P49V60::disableFodOutTwo(){
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, DISABLE, POS_ZERO)
+}
+
+// REG 0x31, bits[3:0] 0b00x1
+void SparkFun_5P49V60::fodPllOutFodTwo(){
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, 0x00, POS_TWO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, 0x01, POS_ZERO)
+}
+
+// REG 0x31, bits[3:0] 0b1100
+void SparkFun_5P49V60::fodOutOutTwo(){
+  auxControlOne(ENABLE);
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
+}
+
+// REG 0x31, bits[3:0] 0b1111
+void SparkFun_5P49V60::fodOutOutFodTwo(){
+  auxControlOne(ENABLE);
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
+}
+
+//REG 0x3C, bit[0]
+void SparkFun_5P49V60::auxControlTwo(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_ONE, control, POS_ZERO)
 }
 
 // REG 0x41, bits[7]
-SparkFun_5P49V60::resetFodThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+void SparkFun_5P49V60::resetFodThree(){
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+}
+
+// REG 0x41, bits[3:0]
+void SparkFun_5P49V60::disableFodOutOne(){
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+}
+
+// REG 0x41, bits[3:0] 0b00x1
+void SparkFun_5P49V60::fodPllOutFodThree(){
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, 0x00, POS_TWO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, 0x01, POS_ZERO)
+}
+
+// REG 0x41, bits[3:0] 0b1100
+void SparkFun_5P49V60::fodOutOutTwo(){
+  auxControlOne(ENABLE);
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
+}
+
+// REG 0x41, bits[3:0] 0b1111
+void SparkFun_5P49V60::fodOutOutFodTwo(){
+  auxControlOne(ENABLE);
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
+}
+//REG 0x4C, bit[0]
+void SparkFun_5P49V60::auxControlThree(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(OUT_ISKEW_THR_REG_TWO, MASK_ONE, control, POS_ZERO)
 }
 
 // REG 0x51, bits[7]
-SparkFun_5P49V60::resetFodFour(){
-  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN)
+void SparkFun_5P49V60::resetFodFour(){
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+}
+
+
+// REG 0x51, bits[3:0]
+void SparkFun_5P49V60::disableFodOutOne(){
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+}
+
+//REG 0x5C, bit[0]
+void SparkFun_5P49V60::auxControlFour(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(OUT_ISKEW_FOUR_REG_TWO, MASK_ONE, control, POS_ZERO)
 }
 
 // This generic function handles I2C write commands for modifying individual
@@ -554,7 +704,7 @@ SparkFun_5P49V60::resetFodFour(){
 // position.
 void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition)
 {
-  _i2cWrite = readRegister(_wReg); // Get the current value of the register
+  _i2cWrite = _readRegister(_wReg); // Get the current value of the register
   _i2cWrite &= (_mask); // Mask the position we want to write to.
   _i2cWrite |= (_bits << _startPosition);  // Write the given bits to the variable
   _i2cPort->beginTransmission(_address); // Start communication.

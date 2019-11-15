@@ -73,6 +73,7 @@ enum REGISTER_INDEX {
   OUT_FDIV_TWO_REG_ONE       = 0x32,
   OUT_FDIV_TWO_REG_TWO       = 0x33,
   OUT_FDIV_TWO_REG_THR       = 0x34,
+
   OUT_FDIV_TWO_REG_FOUR      = 0x35,
 
   OUT_STEP_SPRD_TWO_REG_ONE  = 0x36,
@@ -114,11 +115,11 @@ enum REGISTER_INDEX {
 
   DIV_FOR_CONTROL_REG        = 0x51,
 
-  OUT_IDIV_FOUR_REG_ONE      = 0x5D,
-  OUT_IDIV_FOUR_REG_TWO      = 0x5E,
-
   OUT_ISKEW_FOUR_REG_ONE     = 0x5B,
   OUT_ISKEW_FOUR_REG_TWO     = 0x5C,
+
+  OUT_IDIV_FOUR_REG_ONE      = 0x5D,
+  OUT_IDIV_FOUR_REG_TWO      = 0x5E,
 
   OUT_FSKEW_FOUR_REG         = 0x5F,
 
@@ -140,10 +141,10 @@ enum REGISTER_INDEX {
 };
 
 enum MASK_INDEX {
-
-  // LSB
-  MASK_ONE        = 0xFE, // yes
-  MASK_TWO        = 0xFD, // yes
+  // The names reference the number position that will be changed
+  // MASK_FOUR = 1111 1011, or MASK_FOUR_MSB = 1011 111, or MASK_TWO = 1111 1101
+  MASK_ONE        = 0xFE, 
+  MASK_TWO        = 0xFD,
   MASK_THREE      = 0xFC,
   MASK_FOUR       = 0xFB,
   MASK_FIVE       = 0xFA,
