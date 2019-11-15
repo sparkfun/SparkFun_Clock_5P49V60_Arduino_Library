@@ -589,25 +589,28 @@ void SparkFun_5P49V60::disableFodOutOne(){
 void SparkFun_5P49V60::fodPllOutFodOne(){
   // To preserve the bit in position (integer mode) two there's two writes to
   // the register. 
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0x00, POS_TWO)     
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0x01, POS_ZERO)     
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)     
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)     
 }
 
 // REG 0x21, bits[3:0], 0b1100
 void SparkFun_5P49V60::fodDisOutOutOne(){ 
-
   refModeControl(DISABLE);
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0xF0, POS_ZERO)     
-
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, 0xF0, POS_ZERO)     
 }
-
 
 // REG 0x21, bits[3:0], 0b1111
 void SparkFun_5P49V60::fodOutOutFodOne(){
   refModeControl(DISABLE);
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO. 0xFF, POS_ZERO)     
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)     
 }
 
+// REG 0x21, bit[1] 
+void SparkFun_5P49V60::integModeContOne(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+}
+  
 //REG 0x2C, bit[0]
 void SparkFun_5P49V60::auxControlOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -626,8 +629,8 @@ void SparkFun_5P49V60::disableFodOutTwo(){
 
 // REG 0x31, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, 0x00, POS_TWO)
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, 0x01, POS_ZERO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)
 }
 
 // REG 0x31, bits[3:0] 0b1100
@@ -642,6 +645,12 @@ void SparkFun_5P49V60::fodOutOutFodTwo(){
   _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
 }
 
+// REG 0x31, bit[1] 
+void SparkFun_5P49V60::integModeContTwo(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+}
+  
 //REG 0x3C, bit[0]
 void SparkFun_5P49V60::auxControlTwo(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -660,21 +669,28 @@ void SparkFun_5P49V60::disableFodOutOne(){
 
 // REG 0x41, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, 0x00, POS_TWO)
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, 0x01, POS_ZERO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)
 }
 
 // REG 0x41, bits[3:0] 0b1100
 void SparkFun_5P49V60::fodOutOutTwo(){
-  auxControlOne(ENABLE);
+  auxControlTwo(ENABLE);
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
 }
 
 // REG 0x41, bits[3:0] 0b1111
 void SparkFun_5P49V60::fodOutOutFodTwo(){
-  auxControlOne(ENABLE);
+  auxControlTwo(ENABLE);
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
 }
+
+// REG 0x41, bit[1] 
+void SparkFun_5P49V60::integModeContThree(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+}
+  
 //REG 0x4C, bit[0]
 void SparkFun_5P49V60::auxControlThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -690,6 +706,31 @@ void SparkFun_5P49V60::resetFodFour(){
 // REG 0x51, bits[3:0]
 void SparkFun_5P49V60::disableFodOutOne(){
   _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+}
+
+
+// REG 0x51, bits[3:0] 0b00x1
+void SparkFun_5P49V60::fodPllOutFodThree(){
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)
+}
+
+// REG 0x51, bits[3:0] 0b1100
+void SparkFun_5P49V60::fodOutOutTwo(){
+  auxControlThree(ENABLE);
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
+}
+
+// REG 0x51, bits[3:0] 0b1111
+void SparkFun_5P49V60::fodOutOutFodTwo(){
+  auxControlThree(ENABLE);
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
+}
+
+// REG 0x51, bit[1] 
+void SparkFun_5P49V60::integModeContFour(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_FOUR_CONTROL_REG, MASK_TWO, control, POS_ONE)     
 }
 
 //REG 0x5C, bit[0]
