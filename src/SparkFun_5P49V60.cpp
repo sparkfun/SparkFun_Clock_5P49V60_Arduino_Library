@@ -8,7 +8,7 @@
   Feel like supporting our work? Buy a board from SparkFun!
  */
 
-#include "SparkFun_5P49V60"
+#include "SparkFun_5P49V60.h"
 
 SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address){  _address = address; } //Constructor for I2C
 
@@ -43,14 +43,14 @@ uint8_t SparkFun_5P49V60::readI2CAddress(){
 // Reg 0x10, bit[7]
 void SparkFun_5P49V60::xtalControl(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(SHUTDOWN_REG, MASK_EIGHT_MSB, control, POS_SEVEN)
+    _writeRegister(SHUTDOWN_REG, MASK_EIGHT_MSB, control, POS_SEVEN);
 }
 
 // Reg 0x10, bit[6]
 void SparkFun_5P49V60::clockInControl(uint8_t control){
 
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX)
+    _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX);
 
 }
 
@@ -58,7 +58,7 @@ void SparkFun_5P49V60::clockInControl(uint8_t control){
 void SparkFun_5P49V60::doubleRefFreqControl(uint8_t control){
 
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(SHUTDOWN_REG, MASK_EIGHT, control, POS_THREE)
+    _writeRegister(SHUTDOWN_REG, MASK_EIGHT, control, POS_THREE);
 
 }
 
@@ -66,7 +66,7 @@ void SparkFun_5P49V60::doubleRefFreqControl(uint8_t control){
 void SparkFun_5P49V60::refModeControl(uint8_t control){
 
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(SHUTDOWN_REG, MASK_FOUR, control, POS_TWO)
+    _writeRegister(SHUTDOWN_REG, MASK_FOUR, control, POS_TWO);
 
 }
 
@@ -74,7 +74,7 @@ void SparkFun_5P49V60::refModeControl(uint8_t control){
 void SparkFun_5P49V60::sdInputPinControl(uint8_t control){
 
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(SHUTDOWN_REG, MASK_TWO, control, POS_ONE)
+    _writeRegister(SHUTDOWN_REG, MASK_TWO, control, POS_ONE);
 
 }
 
@@ -82,7 +82,7 @@ void SparkFun_5P49V60::sdInputPinControl(uint8_t control){
 void SparkFun_5P49V60::globalSdControl(uint8_t control){
 
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(SHUTDOWN_REG, MASK_ONE, control, POS_ZERO)
+    _writeRegister(SHUTDOWN_REG, MASK_ONE, control, POS_ZERO);
 
 }
 
@@ -125,26 +125,26 @@ void SparkFun_5P49V60::persEnableClock(uint8_t clock){
 void SparkFun_5P49V60::clockZeroSlewRate(uint8_t rate)
 {
   if (rate == HIGH || rate == LOW){
-    _writeRegister(CLK_OE_FUNC_REG, MASK_FOUR, rate, POS_TWO)
+    _writeRegister(CLK_OE_FUNC_REG, MASK_FOUR, rate, POS_TWO);
   }
 }
 
-// Reg 0x68, bit[2]. Possible parameters 18 (1.8V), 25 (2.5V), or 33 (3.3V). 
+// Reg 0x68, bit[2]. Possible parameters 18 (1.8V), 25 (2.5V), or 33 (3.3V).
 // Why not just have float as paramater, we're saving just a wee bit of space
-// this way. 
+// this way.
 void SparkFun_5P49V60::clockZeroPwrSel(uint8_t voltage)
 {
   if (voltage == 18){
-    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, ONE_EIGHT_V, POS_ZERO)
+    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, ONE_EIGHT_V, POS_ZERO);
   }
   else if (voltage == 25){
-    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, TWO_FIVE_V, POS_ZERO)
+    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, TWO_FIVE_V, POS_ZERO);
   }
   else if (voltage == 33){
-    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, THREE_THREE_V, POS_ZERO)
+    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, THREE_THREE_V, POS_ZERO);
   }
   else
-    return
+    return;
 }
 
 // This function adds the available internal capacitors to the given pin on the
@@ -256,78 +256,70 @@ uint8_t SparkFun_5P49V60::readSource(){
 // output. This is strange, but the two divider is in the eighth bit position,
 // and values of 3-127 are written to bits[6:0]. If the two divider is enabled
 // then the other divider is disabled - this bit can not be set and then the
-// others as well. 
+// others as well.
 void SparkFun_5P49V60::selectRefDivider(uint8_t div_val){
 
-  if (div_val < 2 || div_val > 127) 
+  if (div_val < 2 || div_val > 127)
     return;
 
   if (div_val == 2)
     _writeRegister(REF_DIVIDER_REG, MASK_EIGHT_MSB, state, POS_SEVEN);
-  else 
-    _writeRegister(REF_DIVIDER_REG, (~MASK_EIGHT_MSB), div_val, POS_ZERO); 
+  else
+    _writeRegister(REF_DIVIDER_REG, (~MASK_EIGHT_MSB), div_val, POS_ZERO);
 
 }
 
 // REG 0x15, bits[7:0] This selects which divider value is used for the clock
-// output. 
+// output.
 uint8_t SparkFun_5P49V60::readRefDivider(){
 
   uint8_t reg_val = _readRegister(REF_DIVIDER_REG);
 
-  // Divider 2 disables other divider. 
+  // Divider 2 disables other divider.
   if ((reg_val & (~MASK_EIGHT_MSB)) >> POS_SEVEN == 1)
-    return 2; 
-  else 
+    return 2;
+  else
     return reg_val &= MASK_EIGHT_MSB;
 
 }
 
-// REG 0x16, bit[7] This function enables the function to  bypass the clock pre-divider, 
-// which is essentially a divide by 1.  
+// REG 0x16, bit[7] This function enables the function to  bypass the clock pre-divider,
+// which is essentially a divide by 1.
 void SparkFun_5P49V60::bypassRefDivider(uint8_t div){
-
-  if( div == DISABLE || div == ENABLE) {}
-  else return; 
-
-  _writeRegister(DIVIDER_VCO_REG, MASK_EIGHT_MSB, div, POS_SEVEN);
-
+  if( div == DISABLE || div == ENABLE)
+    _writeRegister(DIVIDER_VCO_REG, MASK_EIGHT_MSB, div, POS_SEVEN);
 }
 
 // REG 0x16, bit[7] This function reads whether the clock pre-divider is being
-// bypassed. 
+// bypassed.
 uint8_t SparkFun_5P49V60::readBypassDivider(){
 
   uint8_t reg_val = _readRegister(DIVIDER_VCO_REG);
   reg_val &= (~MASK_EIGHT_MSB);
-  reg_val >>= POS_SEVEN; 
+  reg_val >>= POS_SEVEN;
 
-  return reg_val; 
+  return reg_val;
 
 }
 
 // REG 0x11, bit[5] This function turns on the VCO test mode.
 void SparkFun_5P49V60::vcoTestControl(uint8_t cont){
-  
-  if (cont == ENABLE || cont == DISABLE){}
-  else return; 
-
-  _writeRegister(VCO_BAND_REG, MASK_TWO_MSB, cont, POS_FIVE);
-
+  if (cont == ENABLE || cont == DISABLE)
+    _writeRegister(VCO_BAND_REG, MASK_TWO_MSB, cont, POS_FIVE);
 }
 
-// REG 0x11, bit[5] This function checks to see if the VCO test mode is running. 
+// REG 0x11, bit[5] This function checks to see if the VCO test mode is running.
 uint8_t SparkFun_5P49V60::readTestControl(){
-  
-  uint8_t reg_val = _readRegister(VCO_BAND_REG); 
+
+  uint8_t reg_val = _readRegister(VCO_BAND_REG);
   reg_val &= (~MASK_TWO);
-  reg_val >>= POS_FIVE; 
-  return reg_val; 
+  reg_val >>= POS_FIVE;
+  return reg_val;
 
 }
 
 // Reg 0x17 and 0x16, bits[7:0] and bits[7:4] respectively - largest value that
-// can be set: 4095. 
+// can be set: 4095.
 void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
 
   if (divider_val < 0 || divider_val > 4095)
@@ -335,13 +327,13 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
 
   if (divider_val < 15){
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_ALL, 0, POS_ZERO); 
+    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
   }
   else {
     uint16_t lsb_div_val = divider_val & MASK_FIFT;
-    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR); 
-    uint16_t = (divider_val & MASK_FIFT_MSB) >> POS_FOUR; 
-    _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO); 
+    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
+    uint16_t = (divider_val & MASK_FIFT_MSB) >> POS_FOUR;
+    _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
 }
@@ -362,20 +354,20 @@ void SparkFun_5P49V60::setPllFeedBackFractDiv(uint32_t divider_val){
     _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
   }
   else if (divider_val <= 65535){
-    lsb_div_val = divider_val & MASK_ALL_8_BIT; 
+    lsb_div_val = divider_val & MASK_ALL_8_BIT;
     _writeRegister(FDB_FRAC_DIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
 
-    msb_div_val = divider_val & MASK_ALL_16_BIT; 
+    msb_div_val = divider_val & MASK_ALL_16_BIT;
     msb_div_val >>= POS_EIGHT;
     _writeRegister(FDB_FRAC_DIV_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
 
     _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
   }
   else {
-    lsb_div_val = divider_val & MASK_ALL_8_BIT; 
+    lsb_div_val = divider_val & MASK_ALL_8_BIT;
     _writeRegister(FDB_FRAC_DIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
 
-    msb_div_val = divider_val & MASK_ALL_16_BIT; 
+    msb_div_val = divider_val & MASK_ALL_16_BIT;
     msb_div_val >>= POS_EIGHT;
     _writeRegister(FDB_FRAC_DIV_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
 
@@ -394,21 +386,21 @@ uint32_t SparkFun_5P49V60::readPllFeedBackFractDiv(){
 
   lsb_div_val  = _readRegister(FDB_FRAC_DIV_REG_THR);
   msb_div_val  = _readRegister(FDB_FRAC_DIV_REG_TWO);
-  msb_div_val <<= POS_EIGHT; 
+  msb_div_val <<= POS_EIGHT;
   mmsb_div_val = _readRegister(FDB_FRAC_DIV_REG_ONE);
-  mmsb_div_val <<= POS_SIXT; 
+  mmsb_div_val <<= POS_SIXT;
 
   mmsb_div_val |= msb_div_val;
   mmsb_div_val |= lsb_div_val;
 
-  return mmsb_div_val; 
+  return mmsb_div_val;
 
 }
 
 // REG 0x1E, bits[7:3]
 void SparkFun_5P49V60::setPllFilterResOne(uint16_t res_val){
-  
-  uint8_t _bits; 
+
+  uint8_t _bits;
 
   if (res_val == 1500){
     _bits = 0b11110;
@@ -428,23 +420,23 @@ void SparkFun_5P49V60::setPllFilterCapOne(uint8_t cap_val){
   uint8_t _bits;
 
   if (cap_val == 12){
-    _bits = 0b000; 
+    _bits = 0b000;
     _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
   }
   else if (cap_val == 16){
-    _bits = 0b001; 
+    _bits = 0b001;
     _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
   }
   else if (cap_val == 20){
-    _bits = 0b010; 
+    _bits = 0b010;
     _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
   }
   else if (cap_val == 24){
-    _bits = 0b011; 
+    _bits = 0b011;
     _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
   }
   else if (cap_val == 28){
-    _bits = 0b100; 
+    _bits = 0b100;
     _writeRegister(RC_CONTR_REG_TWO, MASK_SEVEN, _bits, POS_ZERO);
   }
   else return;
@@ -454,43 +446,43 @@ void SparkFun_5P49V60::setPllFilterCapOne(uint8_t cap_val){
 // REG 0x1F, bits[3:1]
 void SparkFun_5P49V60::setPllFilterResTwo(uint16_t res_val){
 
-  uint8_t _bits; 
+  uint8_t _bits;
 
   if (res_val == 1000){
     _bits = 0b100;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else if (res_val == 1450){
     _bits = 0b111;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else if (res_val == 1600){
     _bits = 0b011;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else if (res_val == 2000){
     _bits = 0b001;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else if (res_val == 5300){
     _bits = 0b110;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else if (res_val == 7000){
     _bits = 0b101;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else if (res_val == 8000){
     _bits = 0b010;
-    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE); 
+    _writeRegister(RC_CONTR_REG_THR, MASK_FOURT, _bits, POS_ONE);
   }
   else return;
-  
+
 }
 
 //REG 0x1F, bit[7]
 void SparkFun_5P49V60::bypassPllFilterThree(bool bypass){
-  
+
   if (bypass)
     _writeRegister(RC_CONTR_REG_THR, MASK_EIGHT_MSB, bypass, POS_SEVEN);
   else
@@ -501,19 +493,19 @@ void SparkFun_5P49V60::bypassPllFilterThree(bool bypass){
 // REG 0x1F, bits[6:4]
 void SparkFun_5P49V60::setPllFilterCapTwo(float cap_val){
 
-  uint8_t _bits; 
+  uint8_t _bits;
 
   if (res_val == 1.8){
-    _bits = 0b001; 
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR); 
+    _bits = 0b001;
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR);
   }
   else if (res_val == 3.6){
-    _bits = 0b011; 
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR); 
+    _bits = 0b011;
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR);
   }
   else if (res_val == 5.4){
-    _bits = 0b111; 
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR); 
+    _bits = 0b111;
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR);
   }
   else return;
 }
@@ -524,24 +516,24 @@ void SparkFun_5P49V60::setPllFilterChargePump(uint8_t pump_val){
 
 // REG 0x1E, bits[7:3]
 uint8_t SparkFun_5P49V60::readPllFilterResOne(){
-  
-  uint8_t res_val = _readRegister(RC_CONTR_REG_TWO); 
-  res_val &= MASK_SEVEN;
-  res_val >>= POS_THREE; 
 
-  if (res_val == 0b11110) return 1500; 
+  uint8_t res_val = _readRegister(RC_CONTR_REG_TWO);
+  res_val &= MASK_SEVEN;
+  res_val >>= POS_THREE;
+
+  if (res_val == 0b11110) return 1500;
   else if (res_val == 0)  return 46500;
-  else return UNKNOWN_ERROR; 
+  else return UNKNOWN_ERROR;
 
 }
 
 // REG 0x1E, bits[2:0]
 uint8_t SparkFun_5P49V60::readPllFilterCapOne(){
-  
-  uint8_t cap_val = _readRegister(RC_CONTR_REG_TWO); 
+
+  uint8_t cap_val = _readRegister(RC_CONTR_REG_TWO);
   cap_val &= (~MASK_SEVEN);
 
-  if (cap_val == 0b000)      return 12; 
+  if (cap_val == 0b000)      return 12;
   else if (cap_val == 0b001) return 16;
   else if (cap_val == 0b010) return 20;
   else if (cap_val == 0b011) return 24;
@@ -568,7 +560,7 @@ uint8_t SparkFun_5P49V60::readPllFilterResTwo(){
 // REG 0x1F, bits[6:4]
 float SparkFun_5P49V60::readPllFilterCapTwo(){
 
-  uint8_t cap_val = _readRegister(RC_CONTR_REG_THR); 
+  uint8_t cap_val = _readRegister(RC_CONTR_REG_THR);
   cap_val &= (~MASK_THR_MSB);
   cap_val >>= POS_FOUR;
 
@@ -582,169 +574,170 @@ void SparkFun_5P49V60::bypassThirdFilter(uint8_t control){
 
   if (control == ENABLE || control == DISABLE)
     _writeRegister(RC_CONTR_REG_THR, MASK_FOUR_MSB, control, POS_SEVEN);
-  
+
 }
 // REG 0x21, bits[7]
 void SparkFun_5P49V60::resetFodOne(){
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
 }
 
 // REG 0x21, bits[3:0], 0b0000
 void SparkFun_5P49V60::disableFodOutOne(){
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
 }
+
 // REG 0x21, bits[3:0], 0b00x1
 void SparkFun_5P49V60::fodPllOutFodOne(){
   // To preserve the bit in position (integer mode) two there's two writes to
-  // the register. 
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)     
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)     
+  // the register.
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO);
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO);
 }
 
 // REG 0x21, bits[3:0], 0b1100
-void SparkFun_5P49V60::fodDisOutOutOne(){ 
+void SparkFun_5P49V60::fodDisOutOutOne(){
   refModeControl(DISABLE);
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, 0xF0, POS_ZERO)     
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, 0xF0, POS_ZERO);
 }
 
 // REG 0x21, bits[3:0], 0b1111
 void SparkFun_5P49V60::fodOutOutFodOne(){
   refModeControl(DISABLE);
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)     
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
 }
 
-// REG 0x21, bit[1] 
+// REG 0x21, bit[1]
 void SparkFun_5P49V60::integModeContOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+    _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
-  
+
 //REG 0x2C, bit[0]
 void SparkFun_5P49V60::auxControlOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(OUT_ISKEW_REG_TWO, MASK_ONE, control, POS_ZERO)
+    _writeRegister(OUT_ISKEW_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
 // REG 0x31, bits[7]
 void SparkFun_5P49V60::resetFodTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
 }
 
 // REG 0x31, bits[3:0]
 void SparkFun_5P49V60::disableFodOutTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, DISABLE, POS_ZERO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, DISABLE, POS_ZERO);
 }
 
 // REG 0x31, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO);
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO);
 }
 
 // REG 0x31, bits[3:0] 0b1100
 void SparkFun_5P49V60::fodOutOutTwo(){
   auxControlOne(ENABLE);
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO);
 }
 
 // REG 0x31, bits[3:0] 0b1111
 void SparkFun_5P49V60::fodOutOutFodTwo(){
   auxControlOne(ENABLE);
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
 }
 
-// REG 0x31, bit[1] 
+// REG 0x31, bit[1]
 void SparkFun_5P49V60::integModeContTwo(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+    _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
-  
+
 //REG 0x3C, bit[0]
 void SparkFun_5P49V60::auxControlTwo(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_ONE, control, POS_ZERO)
+    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
 // REG 0x41, bits[7]
 void SparkFun_5P49V60::resetFodThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
 }
 
 // REG 0x41, bits[3:0]
 void SparkFun_5P49V60::disableFodOutOne(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
 }
 
 // REG 0x41, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO);
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO);
 }
 
 // REG 0x41, bits[3:0] 0b1100
 void SparkFun_5P49V60::fodOutOutTwo(){
   auxControlTwo(ENABLE);
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO);
 }
 
 // REG 0x41, bits[3:0] 0b1111
 void SparkFun_5P49V60::fodOutOutFodTwo(){
   auxControlTwo(ENABLE);
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
 }
 
-// REG 0x41, bit[1] 
+// REG 0x41, bit[1]
 void SparkFun_5P49V60::integModeContThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+    _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
-  
+
 //REG 0x4C, bit[0]
 void SparkFun_5P49V60::auxControlThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(OUT_ISKEW_THR_REG_TWO, MASK_ONE, control, POS_ZERO)
+    _writeRegister(OUT_ISKEW_THR_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
 // REG 0x51, bits[7]
 void SparkFun_5P49V60::resetFodFour(){
-  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN)
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
 }
 
 
 // REG 0x51, bits[3:0]
 void SparkFun_5P49V60::disableFodOutOne(){
-  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO)
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
 }
 
 
 // REG 0x51, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodThree(){
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO)
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO)
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO);
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO);
 }
 
 // REG 0x51, bits[3:0] 0b1100
 void SparkFun_5P49V60::fodOutOutTwo(){
   auxControlThree(ENABLE);
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO)
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO);
 }
 
 // REG 0x51, bits[3:0] 0b1111
 void SparkFun_5P49V60::fodOutOutFodTwo(){
   auxControlThree(ENABLE);
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO)
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
 }
 
-// REG 0x51, bit[1] 
+// REG 0x51, bit[1]
 void SparkFun_5P49V60::integModeContFour(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(DIV_FOUR_CONTROL_REG, MASK_TWO, control, POS_ONE)     
+    _writeRegister(DIV_FOUR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
 
 //REG 0x5C, bit[0]
 void SparkFun_5P49V60::auxControlFour(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(OUT_ISKEW_FOUR_REG_TWO, MASK_ONE, control, POS_ZERO)
+    _writeRegister(OUT_ISKEW_FOUR_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
 // This generic function handles I2C write commands for modifying individual

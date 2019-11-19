@@ -26,7 +26,7 @@
 #define UNKNOWN_ERROR   0xFF
 
 //                   1 , 2   , 4   , 8    , 16   , 32
-float cap_arr[] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92}
+float cap_arr[] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92};
 
 enum REGISTER_INDEX {
 
