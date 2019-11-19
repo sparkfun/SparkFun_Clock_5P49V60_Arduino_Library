@@ -19,6 +19,9 @@
 #define  ERROR          0xFF
 #define  CLOCK_SOURCE   0x00
 #define  XTAL_SOURCE    0x01
+#define  ONE_EIGHT_V    0x00
+#define  TWO_FIVE_V     0x02
+#define  THREE_THREE_V  0x03
 
 #define UNKNOWN_ERROR   0xFF
 

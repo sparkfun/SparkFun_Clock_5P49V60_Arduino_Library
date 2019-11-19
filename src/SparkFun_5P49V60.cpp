@@ -14,7 +14,6 @@ SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address){  _address = address; } //Co
 
 bool SparkFun_5P49V60::begin( TwoWire &wirePort )
 {
-
   _i2cPort = &wirePort;
 
   _i2cPort->beginTransmission(_address);
@@ -24,20 +23,15 @@ bool SparkFun_5P49V60::begin( TwoWire &wirePort )
     return true;
   else
     return false;
-
 }
 
-//
+// Reg 0x00, bit[0]
 void SparkFun_5P49V60::changeI2CAddress(uint8_t addr_selec){
-
-  if (addr_selec != 0 || addr_selec != 1)
-    return;
-
-  _writeRegister(OTP_CONTROL_REG, MASK_ONE, addr_selec, POS_ZERO);
-
+  if (addr_selec == 0 || addr_selec == 1)
+    _writeRegister(OTP_CONTROL_REG, MASK_ONE, addr_selec, POS_ZERO);
 }
 
-//
+// Reg 0x00, bit[0]
 uint8_t SparkFun_5P49V60::readI2CAddress(){
 
   uint8_t reg_val = _readRegister(OTP_CONTROL_REG);
@@ -46,22 +40,10 @@ uint8_t SparkFun_5P49V60::readI2CAddress(){
 
 }
 
-//
-void SparkFun_5P49V60::sdActiveState(uint8_t state){
-
-  if (state != HIGH || state != LOW)
-    return;
-
-  _writeRegister(SHUTDOWN_REG, MASK_ONE, state, POS_ONE)
-
-}
-
 // Reg 0x10, bit[7]
 void SparkFun_5P49V60::xtalControl(uint8_t control){
-
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_EIGHT_MSB, control, POS_SEVEN)
-
 }
 
 // Reg 0x10, bit[6]
@@ -104,6 +86,7 @@ void SparkFun_5P49V60::globalSdControl(uint8_t control){
 
 }
 
+// Reg 0x68, bits[7:3]
 // This function allows the given clock line to remain on when the SparkFun
 // Clock Generator is put into shutdown mode.
 void SparkFun_5P49V60::persEnableClock(uint8_t clock){
@@ -138,6 +121,31 @@ void SparkFun_5P49V60::persEnableClock(uint8_t clock){
   _writeRegister(CLK_OE_FUNC_REG, _mask, clock, _bit_pos);
 }
 
+// Reg 0x68, bit[2]
+void SparkFun_5P49V60::clockZeroSlewRate(uint8_t rate)
+{
+  if (rate == HIGH || rate == LOW){
+    _writeRegister(CLK_OE_FUNC_REG, MASK_FOUR, rate, POS_TWO)
+  }
+}
+
+// Reg 0x68, bit[2]. Possible parameters 18 (1.8V), 25 (2.5V), or 33 (3.3V). 
+// Why not just have float as paramater, we're saving just a wee bit of space
+// this way. 
+void SparkFun_5P49V60::clockZeroPwrSel(uint8_t voltage)
+{
+  if (voltage == 18){
+    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, ONE_EIGHT_V, POS_ZERO)
+  }
+  else if (voltage == 25){
+    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, TWO_FIVE_V, POS_ZERO)
+  }
+  else if (voltage == 33){
+    _writeRegister(CLK_OE_FUNC_REG, MASK_THREE, THREE_THREE_V, POS_ZERO)
+  }
+  else
+    return
+}
 
 // This function adds the available internal capacitors to the given pin on the
 // crystal. The two available pins can be taken directly from the datasheet, or
