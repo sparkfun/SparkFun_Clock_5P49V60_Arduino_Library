@@ -10,7 +10,9 @@
 
 #include "SparkFun_5P49V60.h"
 
-SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address){  _address = address; } //Constructor for I2C
+SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address){
+  _address = address; 
+}
 
 bool SparkFun_5P49V60::begin( TwoWire &wirePort )
 {
@@ -19,7 +21,7 @@ bool SparkFun_5P49V60::begin( TwoWire &wirePort )
   _i2cPort->beginTransmission(_address);
   delay(100); // 100ms Startup time
   uint8_t _ret = _i2cPort->endTransmission();
-  if( !_ret )
+  if (!_ret)
     return true;
   else
     return false;
@@ -48,42 +50,32 @@ void SparkFun_5P49V60::xtalControl(uint8_t control){
 
 // Reg 0x10, bit[6]
 void SparkFun_5P49V60::clockInControl(uint8_t control){
-
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX);
-
 }
 
 // Reg 0x10, bit[6]
 void SparkFun_5P49V60::doubleRefFreqControl(uint8_t control){
-
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_EIGHT, control, POS_THREE);
-
 }
 
 // Reg 0x10, bit[2]
 void SparkFun_5P49V60::refModeControl(uint8_t control){
-
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_FOUR, control, POS_TWO);
-
 }
 
 // Reg 0x10, bit[2]
 void SparkFun_5P49V60::sdInputPinControl(uint8_t control){
-
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_TWO, control, POS_ONE);
-
 }
 
 // Reg 0x10, bit[2]
 void SparkFun_5P49V60::globalSdControl(uint8_t control){
-
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_ONE, control, POS_ZERO);
-
 }
 
 // Reg 0x68, bits[7:3]

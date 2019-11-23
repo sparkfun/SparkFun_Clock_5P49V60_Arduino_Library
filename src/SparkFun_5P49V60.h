@@ -1,5 +1,5 @@
-#ifndef _SPARKFUN_CLOCK_GEN_5P49V60_
-#define _SPARKFUN_CLOCK_GEN_5P49V60_
+#ifndef _SPARKFUN_CLOCK_5P49V60_
+#define _SPARKFUN_CLOCK_5P49V60_
 
 #include <Wire.h>
 #include <Arduino.h>
