@@ -736,8 +736,8 @@ void SparkFun_5P49V60::auxControlFour(uint8_t control){
 // bits in an eight bit register. Paramaters include the register's address, a mask
 // for bits that are ignored, the bits to write, and the bits' starting
 // position.
-void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition)
-{
+void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition) {
+
   _i2cWrite = _readRegister(_wReg); // Get the current value of the register
   _i2cWrite &= (_mask); // Mask the position we want to write to.
   _i2cWrite |= (_bits << _startPosition);  // Write the given bits to the variable
@@ -745,12 +745,12 @@ void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bit
   _i2cPort->write(_wReg); // at register....
   _i2cPort->write(_i2cWrite); // Write register...
   _i2cPort->endTransmission(); // End communcation.
+
 }
 
 // This generic function reads an eight bit register. It takes the register's
 // address as its' parameter.
-uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg)
-{
+uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg) {
 
   _i2cPort->write(_reg); // Moves pointer to register.
   _i2cPort->endTransmission(false); // 'False' here sends a restart message so that bus is not released
