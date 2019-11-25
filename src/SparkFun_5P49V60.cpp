@@ -35,11 +35,17 @@ void SparkFun_5P49V60::changeI2CAddress(uint8_t addr_selec){
 
 // Reg 0x00, bit[0]
 uint8_t SparkFun_5P49V60::readI2CAddress(){
-
   uint8_t reg_val = _readRegister(OTP_CONTROL_REG);
   reg_val &= ~MASK_ONE;
   return reg_val;
+}
 
+// Reg 0x00, bit[7]
+uint8_t SparkFun_5P49V60::readBurnedBit(){
+  uint8_t reg_val = _readRegister(OTP_CONTROL_REG);
+  reg_val &= ~MASK_EIGHT_MSB;
+  reg_val >>= POS_SEVEN;
+  return reg_val;
 }
 
 // Reg 0x10, bit[7]

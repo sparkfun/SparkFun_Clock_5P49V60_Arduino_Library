@@ -16,6 +16,9 @@ void setup(){
     Serial.println("Could not communicate with the SparkFun Clock Generator.");
     while(1);
   }
+  uint8_t value = clockGen.readBurnedBit();
+  Serial.print("Burned bit: ");
+  Serial.println(value, BIN);
 
 }
 

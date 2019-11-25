@@ -209,6 +209,8 @@ class SparkFun_5P49V60
 
     uint8_t readI2CAddress();
 
+    uint8_t readBurnedBit();
+
     void xtalControl(uint8_t control);
 
     void clockInControl(uint8_t control);
