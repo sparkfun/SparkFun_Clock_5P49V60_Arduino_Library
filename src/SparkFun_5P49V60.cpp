@@ -105,7 +105,7 @@ void SparkFun_5P49V60::persEnableClock(uint8_t clock){
     _bit_pos = POS_FOUR;
     _mask = MASK_ONE_MSB;
   }
-  else (clock == 4){
+  else if (clock == 4){
     _bit_pos = POS_THREE;
     _mask = MASK_FOUR;
   }
@@ -116,7 +116,7 @@ void SparkFun_5P49V60::persEnableClock(uint8_t clock){
 // Reg 0x68, bit[2]
 void SparkFun_5P49V60::clockZeroSlewRate(uint8_t rate)
 {
-  if (rate == HIGH || rate == LOW){
+  if (rate == FAST || rate == SLOW){
     _writeRegister(CLK_OE_FUNC_REG, MASK_FOUR, rate, POS_TWO);
   }
 }
@@ -194,30 +194,31 @@ float SparkFun_5P49V60::readCrystalCapVal(uint8_t pin){
     _register = LOAD_CAP_REG_ONE;
   else if (pin == XOUT)
     _register = LOAD_CAP_REG_TWO;
-  else return;
+  else return 0.0;
 
   uint8_t reg_val = _readRegister(_register);
   reg_val &= MASK_THREE;
 
   if (reg_val == 1){
-    return cap_arr[0];
+    return _cap_arr[0];
   }
   else if (reg_val == 2){
-    return cap_arr[1];
+    return _cap_arr[1];
   }
   else if (reg_val == 3){
-    return cap_arr[0] + cap_arr[1];
+    return _cap_arr[0] + _cap_arr[1];
   }
   else if (reg_val == 4){
-    return cap_arr[2];
+    return _cap_arr[2];
   }
   else if (reg_val == 5){
-    return cap_arr[0] + capArray[2];
+    return _cap_arr[0] + _cap_arr[2];
   }
   else if (reg_val == 6){
-    return cap_arr[1] + cap_arr[2];
+    return _cap_arr[1] + _cap_arr[2];
   }
-  else return ERROR;
+  else 
+    return 0.0; 
 
 }
 
@@ -255,7 +256,7 @@ void SparkFun_5P49V60::selectRefDivider(uint8_t div_val){
     return;
 
   if (div_val == 2)
-    _writeRegister(REF_DIVIDER_REG, MASK_EIGHT_MSB, state, POS_SEVEN);
+    _writeRegister(REF_DIVIDER_REG, MASK_EIGHT_MSB, div_val, POS_SEVEN);
   else
     _writeRegister(REF_DIVIDER_REG, (~MASK_EIGHT_MSB), div_val, POS_ZERO);
 
@@ -324,7 +325,7 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
   else {
     uint16_t lsb_div_val = divider_val & MASK_FIFT;
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t = (divider_val & MASK_FIFT_MSB) >> POS_FOUR;
+    uint16_t msb_div_val = (divider_val & MASK_FIFT_MSB) >> POS_FOUR;
     _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
@@ -396,11 +397,11 @@ void SparkFun_5P49V60::setPllFilterResOne(uint16_t res_val){
 
   if (res_val == 1500){
     _bits = 0b11110;
-    _writeRegister(RC_CONTR_REG_TWO, (~MASK_SEVEN), res_val, POS_THREE);
+    _writeRegister(RC_CONTR_REG_TWO, 0x07, res_val, POS_THREE);
   }
   else if (res_val == 46500){
     _bits = 0b0;
-    _writeRegister(RC_CONTR_REG_TWO, (~MASK_SEVEN), res_val, POS_THREE);
+    _writeRegister(RC_CONTR_REG_TWO, 0x07, res_val, POS_THREE);
   }
   else return;
 
@@ -487,17 +488,17 @@ void SparkFun_5P49V60::setPllFilterCapTwo(float cap_val){
 
   uint8_t _bits;
 
-  if (res_val == 1.8){
+  if (cap_val == 1.8){
     _bits = 0b001;
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR);
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, _bits, POS_FOUR);
   }
-  else if (res_val == 3.6){
+  else if (cap_val == 3.6){
     _bits = 0b011;
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR);
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, _bits, POS_FOUR);
   }
-  else if (res_val == 5.4){
+  else if (cap_val == 5.4){
     _bits = 0b111;
-    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, bits, POS_FOUR);
+    _writeRegister(RC_CONTR_REG_THR, MASK_THR_MSB, _bits, POS_FOUR);
   }
   else return;
 }
@@ -507,7 +508,7 @@ void SparkFun_5P49V60::setPllFilterChargePump(uint8_t pump_val){
 }
 
 // REG 0x1E, bits[7:3]
-uint8_t SparkFun_5P49V60::readPllFilterResOne(){
+uint16_t SparkFun_5P49V60::readPllFilterResOne(){
 
   uint8_t res_val = _readRegister(RC_CONTR_REG_TWO);
   res_val &= MASK_SEVEN;
@@ -535,7 +536,10 @@ uint8_t SparkFun_5P49V60::readPllFilterCapOne(){
 }
 
 // REG 0x1F, bits[3:1]
-uint8_t SparkFun_5P49V60::readPllFilterResTwo(){
+uint16_t SparkFun_5P49V60::readPllFilterResTwo(){
+
+  uint8_t res_val = _readRegister(RC_CONTR_REG_THR);
+  res_val &= (~MASK_FOURT);
 
   // Values in Ohms
   if (res_val == 0b100)       return 1000;
@@ -556,10 +560,10 @@ float SparkFun_5P49V60::readPllFilterCapTwo(){
   cap_val &= (~MASK_THR_MSB);
   cap_val >>= POS_FOUR;
 
-  if (res_val == 0b001)      return 1.8;
-  else if (res_val== 0b011)  return 3.6;
-  else if (res_val == 0b111) return 5.4;
-  else return static_cast<float>(UNKNOWN_ERROR);
+  if (cap_val == 0b001)      return 1.8;
+  else if (cap_val== 0b011)  return 3.6;
+  else if (cap_val == 0b111) return 5.4;
+  else return UNKNOWN_ERROR_F;
 }
 // REG 0x1F, bits[7]
 void SparkFun_5P49V60::bypassThirdFilter(uint8_t control){
@@ -656,7 +660,7 @@ void SparkFun_5P49V60::resetFodThree(){
 }
 
 // REG 0x41, bits[3:0]
-void SparkFun_5P49V60::disableFodOutOne(){
+void SparkFun_5P49V60::disableFodOutThree(){
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
 }
 
@@ -667,13 +671,13 @@ void SparkFun_5P49V60::fodPllOutFodThree(){
 }
 
 // REG 0x41, bits[3:0] 0b1100
-void SparkFun_5P49V60::fodOutOutTwo(){
+void SparkFun_5P49V60::fodOutOutThree(){
   auxControlTwo(ENABLE);
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO);
 }
 
 // REG 0x41, bits[3:0] 0b1111
-void SparkFun_5P49V60::fodOutOutFodTwo(){
+void SparkFun_5P49V60::fodOutOutFodThree(){
   auxControlTwo(ENABLE);
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
 }
@@ -697,33 +701,33 @@ void SparkFun_5P49V60::resetFodFour(){
 
 
 // REG 0x51, bits[3:0]
-void SparkFun_5P49V60::disableFodOutOne(){
+void SparkFun_5P49V60::disableFodOutFour(){
   _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
 }
 
 
 // REG 0x51, bits[3:0] 0b00x1
-void SparkFun_5P49V60::fodPllOutFodThree(){
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO);
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO);
+void SparkFun_5P49V60::fodPllOutFodFour(){
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_SEVEN, 0x00, POS_TWO);
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_ONE, 0x01, POS_ZERO);
 }
 
 // REG 0x51, bits[3:0] 0b1100
-void SparkFun_5P49V60::fodOutOutTwo(){
+void SparkFun_5P49V60::fodOutOutFour(){
   auxControlThree(ENABLE);
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO);
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT, 0xF0, POS_ZERO);
 }
 
 // REG 0x51, bits[3:0] 0b1111
-void SparkFun_5P49V60::fodOutOutFodTwo(){
+void SparkFun_5P49V60::fodOutOutFodFour(){
   auxControlThree(ENABLE);
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT, 0xFF, POS_ZERO);
 }
 
 // REG 0x51, bit[1]
 void SparkFun_5P49V60::integModeContFour(uint8_t control){
   if (control == ENABLE || control == DISABLE)
-    _writeRegister(DIV_FOUR_CONTROL_REG, MASK_TWO, control, POS_ONE);
+    _writeRegister(DIV_FOR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
 
 //REG 0x5C, bit[0]
@@ -738,9 +742,11 @@ void SparkFun_5P49V60::auxControlFour(uint8_t control){
 // position.
 void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition) {
 
+  uint8_t _i2cWrite;
   _i2cWrite = _readRegister(_wReg); // Get the current value of the register
   _i2cWrite &= (_mask); // Mask the position we want to write to.
   _i2cWrite |= (_bits << _startPosition);  // Write the given bits to the variable
+
   _i2cPort->beginTransmission(_address); // Start communication.
   _i2cPort->write(_wReg); // at register....
   _i2cPort->write(_i2cWrite); // Write register...
@@ -754,7 +760,8 @@ uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg) {
 
   _i2cPort->write(_reg); // Moves pointer to register.
   _i2cPort->endTransmission(false); // 'False' here sends a restart message so that bus is not released
-  _i2cPort->requestFrom(_address, 1); // Read the register, only ever once.
+  _i2cPort->requestFrom(_address, static_cast<uint8_t>(1)); // Read the register, only ever once.
+  uint8_t _reg_value;
   _reg_value = _i2cPort->read();
   return(_reg_value);
 

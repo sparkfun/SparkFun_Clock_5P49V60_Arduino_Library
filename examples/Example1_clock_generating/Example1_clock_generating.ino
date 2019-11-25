@@ -1,14 +1,15 @@
 #include <Wire.h>
 #include "SparkFun_5P49V60.h"
+#define DEF_ADDR 0xD4 
 
-SparkFun_5P49V60 clock();
+SparkFun_5P49V60 clockGen(DEF_ADDR);
 
 void setup(){
 
   Wire.begin();
   Serial.begin(115200);
 
-  if (clock.begin() == false){
+  if (clockGen.begin() == false){
     Serial.println("Clock Generator Ready.");
   }
   else{

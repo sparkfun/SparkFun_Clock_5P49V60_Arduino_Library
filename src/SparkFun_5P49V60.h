@@ -10,8 +10,8 @@
 
 #define  ALT            0x01
 #define  DEF            0x00
-#define  LOW            0x00
-#define  HIGH           0x01
+#define  SLOW           0x00
+#define  FAST           0x01
 #define  DISABLE        0x00
 #define  ENABLE         0x01
 #define  XIN            0x01
@@ -24,9 +24,10 @@
 #define  THREE_THREE_V  0x03
 
 #define UNKNOWN_ERROR   0xFF
+#define UNKNOWN_ERROR_F 255.0
 
-//                   1 , 2   , 4   , 8    , 16   , 32
-float cap_arr[] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92};
+//                            1 , 2   , 4   , 8    , 16   , 32
+static float _cap_arr[6] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92};
 
 enum REGISTER_INDEX {
 
@@ -174,7 +175,7 @@ enum MASK_INDEX {
   MASK_ALL_16_BIT = 0x00FFFF,
   MASK_ALL_24_BIT = 0xFF0000,
 
-  MASK_ENDS       = 81
+  MASK_ENDS       = 0x81
 };
 
 enum BIT_POS_INDEX {
@@ -208,8 +209,24 @@ class SparkFun_5P49V60
 
     uint8_t readI2CAddress();
 
-    void sdActiveState(uint8_t);
-    
+    void xtalControl(uint8_t control);
+
+    void clockInControl(uint8_t control);
+
+    void doubleRefFreqControl(uint8_t control);
+
+    void refModeControl(uint8_t control);
+
+    void sdInputPinControl(uint8_t control);
+
+    void globalSdControl(uint8_t control);
+
+    void persEnableClock(uint8_t clock);
+
+    void clockZeroSlewRate(uint8_t rate);
+
+    void clockZeroPwrSel(uint8_t voltage);
+
     void addCrystalLoadCap(uint8_t, float);
 
     float readCrystalCapVal(uint8_t);
@@ -248,18 +265,74 @@ class SparkFun_5P49V60
 
     void setPllFilterChargePump(uint8_t);
 
-    uint8_t readPllFilterResOne();
+    uint16_t readPllFilterResOne();
 
     uint8_t readPllFilterCapOne();
 
-    uint8_t readPllFilterResTwo();
+    uint16_t readPllFilterResTwo();
 
     float readPllFilterCapTwo();
 
-    uint8_t readPllFilterChargePump();
+    void bypassThirdFilter(uint8_t control);
 
+    void resetFodOne();
 
+    void disableFodOutOne();
+
+    void fodPllOutFodOne();
+
+    void fodDisOutOutOne();
+
+    void fodOutOutFodOne();
+
+    void integModeContOne(uint8_t control);
+
+    void auxControlOne(uint8_t control);
+
+    void resetFodTwo();
+
+    void disableFodOutTwo();
+
+    void fodPllOutFodTwo();
+
+    void fodOutOutTwo();
+
+    void fodOutOutFodTwo();
+
+    void integModeContTwo(uint8_t control);
+    
+    void auxControlTwo(uint8_t control);
+
+    void resetFodThree();
+
+    void disableFodOutThree();
+
+    void fodPllOutFodThree();
+
+    void fodOutOutThree();
+
+    void fodOutOutFodThree();
+
+    void integModeContThree(uint8_t control);
+
+    void auxControlThree(uint8_t control);
+
+    void resetFodFour();
+
+    void disableFodOutFour();
+
+    void fodPllOutFodFour();
+
+    void fodOutOutFour();
+
+    void fodOutOutFodFour();
+
+    void integModeContFour(uint8_t control);
+
+    void auxControlFour(uint8_t control);
+    
   private:
+
 
     // Private Variables
     uint8_t _address;
