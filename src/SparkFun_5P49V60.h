@@ -5,8 +5,8 @@
 #include <Arduino.h>
 
 // 7 bit unshifted addresses:
-#define DEF_ADDR 0xD4
-#define ALT_ADDR 0xD0
+#define DEF_ADDR 0x6A
+#define ALT_ADDR 0x68
 
 #define  ALT            0x01
 #define  DEF            0x00
@@ -203,7 +203,7 @@ class SparkFun_5P49V60
     //Function declarations
     SparkFun_5P49V60(uint8_t address = DEF_ADDR); // I2C Constructor
 
-    bool begin(TwoWire &wirePort = Wire); // begin function
+    bool begin(TwoWire &wirePort = Wire); 
 
     void changeI2CAddress(uint8_t);
 
@@ -332,6 +332,8 @@ class SparkFun_5P49V60
     void integModeContFour(uint8_t control);
 
     void auxControlFour(uint8_t control);
+
+    uint8_t _readRegister(uint8_t);
     
   private:
 
@@ -347,7 +349,6 @@ class SparkFun_5P49V60
 
     // This generic function reads an eight bit register. It takes the register's
     // address as its' parameter.
-    uint8_t _readRegister(uint8_t);
 
     TwoWire *_i2cPort;
 };

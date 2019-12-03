@@ -10,14 +10,12 @@
 
 #include "SparkFun_5P49V60.h"
 
-SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address){
-  _address = address; 
-}
+SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address) : _address(address) 
+{ }
 
-bool SparkFun_5P49V60::begin( TwoWire &wirePort )
+bool SparkFun_5P49V60::begin(TwoWire &wirePort)
 {
   _i2cPort = &wirePort;
-
   _i2cPort->beginTransmission(_address);
   delay(100); // 100ms Startup time
   uint8_t _ret = _i2cPort->endTransmission();
@@ -60,7 +58,7 @@ void SparkFun_5P49V60::clockInControl(uint8_t control){
     _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX);
 }
 
-// Reg 0x10, bit[6]
+// Reg 0x10, bit[3]
 void SparkFun_5P49V60::doubleRefFreqControl(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_EIGHT, control, POS_THREE);
@@ -72,13 +70,13 @@ void SparkFun_5P49V60::refModeControl(uint8_t control){
     _writeRegister(SHUTDOWN_REG, MASK_FOUR, control, POS_TWO);
 }
 
-// Reg 0x10, bit[2]
+// Reg 0x10, bit[1]
 void SparkFun_5P49V60::sdInputPinControl(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_TWO, control, POS_ONE);
 }
 
-// Reg 0x10, bit[2]
+// Reg 0x10, bit[0]
 void SparkFun_5P49V60::globalSdControl(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(SHUTDOWN_REG, MASK_ONE, control, POS_ZERO);
@@ -749,14 +747,14 @@ void SparkFun_5P49V60::auxControlFour(uint8_t control){
 void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition) {
 
   uint8_t _i2cWrite;
-  _i2cWrite = _readRegister(_wReg); // Get the current value of the register
-  _i2cWrite &= (_mask); // Mask the position we want to write to.
-  _i2cWrite |= (_bits << _startPosition);  // Write the given bits to the variable
+  _i2cWrite = _readRegister(_wReg); 
+  _i2cWrite &= (_mask); 
+  _i2cWrite |= (_bits << _startPosition);  
 
-  _i2cPort->beginTransmission(_address); // Start communication.
-  _i2cPort->write(_wReg); // at register....
-  _i2cPort->write(_i2cWrite); // Write register...
-  _i2cPort->endTransmission(); // End communcation.
+  _i2cPort->beginTransmission(_address); 
+  _i2cPort->write(_wReg); 
+  _i2cPort->write(_i2cWrite); 
+  _i2cPort->endTransmission();
 
 }
 
@@ -764,11 +762,12 @@ void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bit
 // address as its' parameter.
 uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg) {
 
+  _i2cPort->beginTransmission(_address);
   _i2cPort->write(_reg); // Moves pointer to register.
-  _i2cPort->endTransmission(false); // 'False' here sends a restart message so that bus is not released
-  _i2cPort->requestFrom(_address, static_cast<uint8_t>(1)); // Read the register, only ever once.
-  uint8_t _reg_value;
-  _reg_value = _i2cPort->read();
+  _i2cPort->endTransmission(false);
+  _i2cPort->requestFrom(_address, static_cast<uint8_t>(1));
+  uint8_t _reg_value = _i2cPort->read();
   return(_reg_value);
 
 }
+
