@@ -250,6 +250,8 @@ class SparkFun_5P49V60
     uint8_t readTestControl();
     
     void setPllFeedbackIntDiv(uint16_t);
+
+    void setSigmaDeltaMod(uint8_t);
     
     void setPllFeedBackFractDiv(uint32_t);
 

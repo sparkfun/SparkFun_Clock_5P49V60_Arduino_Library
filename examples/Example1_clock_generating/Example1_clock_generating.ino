@@ -18,6 +18,9 @@ void setup(){
 
   uint8_t address = clockGen._readRegister(0x10);
   Serial.println(address, BIN);
+  
+  clockGen.bypassRefDivider(ENABLE);
+  clockGen._readRegister(DIVIDER_VCO_REG);
 
 }
 

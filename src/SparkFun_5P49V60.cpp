@@ -315,24 +315,37 @@ uint8_t SparkFun_5P49V60::readTestControl(){
 
 }
 
-// Reg 0x17 and 0x16, bits[7:0] and bits[7:4] respectively - largest value that
-// can be set: 4095.
+// Reg 0x17 and 0x18, bits[7:0] and bits[7:4] respectively - largest value that
+// can be set: 4,095. To determine this value you'll divide your desired output
+// by the value of the clock source, 16MHz by default. 
+// e.g. 1600 MHz VCO/16MHz Clock = 100 DEC => 0x64 => 0b00001100100
 void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
 
   if (divider_val < 15){
+    // LSB in 0x18
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
   }
   else {
+    // MSB in 0x17, LSB in 0x18
     uint16_t lsb_div_val = divider_val & MASK_FIFT;
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
     uint16_t msb_div_val = (divider_val & MASK_FIFT_MSB) >> POS_FOUR;
     _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
+}
+
+// REG 0x18, bits[3:2], Sigma Delta Modulator Setting: bypass, order one through
+// three.
+void SparkFun_Clock::setSigmaDeltaMod(uint8_t order){
+  if (order >= 0 && order <= 3)
+    _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_TEN, order, POS_TWO);
+  else
+    return;
 }
 
 // REG 0x19, 0x1A, and 0x1B, bits[8:0] for all three registers.
