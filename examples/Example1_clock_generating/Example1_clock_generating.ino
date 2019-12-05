@@ -19,8 +19,17 @@ void setup(){
   uint8_t address = clockGen._readRegister(0x10);
   Serial.println(address, BIN);
   
-  clockGen.bypassRefDivider(ENABLE);
-  clockGen._readRegister(DIVIDER_VCO_REG);
+  Serial.print("Divider: ");
+  Serial.println(clockGen._readRegister(DIVIDER_VCO_REG));
+
+  Serial.print("Integer Divider: ")
+  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_ONE));
+  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_TWO));
+
+  Serial.print("Fractional Divider: ")
+  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_ONE));
+  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_TWO));
+  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_THR));
 
 }
 
