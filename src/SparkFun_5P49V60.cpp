@@ -341,7 +341,7 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
 
 // REG 0x18, bits[3:2], Sigma Delta Modulator Setting: bypass, order one through
 // three.
-void SparkFun_Clock::setSigmaDeltaMod(uint8_t order){
+void SparkFun_5P49V60::setSigmaDeltaMod(uint8_t order){
   if (order >= 0 && order <= 3)
     _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_TEN, order, POS_TWO);
   else
@@ -595,8 +595,9 @@ void SparkFun_5P49V60::resetFodOne(){
 }
 
 // REG 0x21, bits[3:0], 0b0000
-void SparkFun_5P49V60::disableFodOutOne(){
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
+void SparkFun_5P49V60::fodOutOneCont(uint8_t control){
+  if (control == DISABLE || control == ENABLE)
+    _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT_MSB, control, POS_ZERO);
 }
 
 // REG 0x21, bits[3:0], 0b00x1
@@ -637,8 +638,9 @@ void SparkFun_5P49V60::resetFodTwo(){
 }
 
 // REG 0x31, bits[3:0]
-void SparkFun_5P49V60::disableFodOutTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, DISABLE, POS_ZERO);
+void SparkFun_5P49V60::fodOutTwoCont(uint8_t control){
+  if (control == DISABLE || control == ENABLE)
+    _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, control, POS_ZERO);
 }
 
 // REG 0x31, bits[3:0] 0b00x1
@@ -677,8 +679,9 @@ void SparkFun_5P49V60::resetFodThree(){
 }
 
 // REG 0x41, bits[3:0]
-void SparkFun_5P49V60::disableFodOutThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
+void SparkFun_5P49V60::fodOutThreeCont(uint8_t control){
+  if (control == DISABLE || control == ENABLE)
+    _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, control, POS_ZERO);
 }
 
 // REG 0x41, bits[3:0] 0b00x1
@@ -718,8 +721,9 @@ void SparkFun_5P49V60::resetFodFour(){
 
 
 // REG 0x51, bits[3:0]
-void SparkFun_5P49V60::disableFodOutFour(){
-  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, DISABLE, POS_ZERO);
+void SparkFun_5P49V60::fodOutFourCont(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_FOR_CONTROL_REG, MASK_FIFT_MSB, control, POS_ZERO);
 }
 
 

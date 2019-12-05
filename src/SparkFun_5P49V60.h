@@ -281,7 +281,7 @@ class SparkFun_5P49V60
 
     void resetFodOne();
 
-    void disableFodOutOne();
+    void fodOutOneCont(uint8_t);
 
     void fodPllOutFodOne();
 
@@ -289,13 +289,13 @@ class SparkFun_5P49V60
 
     void fodOutOutFodOne();
 
-    void integModeContOne(uint8_t control);
+    void integModeContOne(uint8_t);
 
-    void auxControlOne(uint8_t control);
+    void auxControlOne(uint8_t);
 
     void resetFodTwo();
 
-    void disableFodOutTwo();
+    void fodOutTwoCont(uint8_t);
 
     void fodPllOutFodTwo();
 
@@ -303,13 +303,13 @@ class SparkFun_5P49V60
 
     void fodOutOutFodTwo();
 
-    void integModeContTwo(uint8_t control);
+    void integModeContTwo(uint8_t);
     
-    void auxControlTwo(uint8_t control);
+    void auxControlTwo(uint8_t);
 
     void resetFodThree();
 
-    void disableFodOutThree();
+    void fodOutThreeCont(uint8_t);
 
     void fodPllOutFodThree();
 
@@ -323,7 +323,7 @@ class SparkFun_5P49V60
 
     void resetFodFour();
 
-    void disableFodOutFour();
+    void fodOutFourCont(uint8_t);
 
     void fodPllOutFodFour();
 

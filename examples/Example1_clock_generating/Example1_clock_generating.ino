@@ -16,20 +16,18 @@ void setup(){
     while(1);
   }
 
-  uint8_t address = clockGen._readRegister(0x10);
-  Serial.println(address, BIN);
-  
-  Serial.print("Divider: ");
-  Serial.println(clockGen._readRegister(DIVIDER_VCO_REG));
+  Serial.println("Integer Divider: ");
+  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_ONE), BIN);
+  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_TWO), BIN);
 
-  Serial.print("Integer Divider: ")
-  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_ONE));
-  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_TWO));
+  Serial.println("Fractional Divider: ");
+  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_ONE), BIN);
+  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_TWO), BIN);
+  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_THR), BIN);
 
-  Serial.print("Fractional Divider: ")
-  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_ONE));
-  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_TWO));
-  Serial.println(clockGen._readRegister(FDB_FRAC_DIV_REG_THR));
+  Serial.println("Shudown Register:");
+  clockGen.refModeControl(ENABLE);
+  Serial.println(clockGen._readRegister(SHUTDOWN_REG), BIN);
 
 }
 
