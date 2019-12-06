@@ -16,7 +16,7 @@ void setup(){
     while(1);
   }
 
-  Serial.println("Integer Divider: ");
+  Serial.println("Feedback Integer Divider: ");
   Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_ONE), BIN);
   Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_TWO), BIN);
 
@@ -29,6 +29,19 @@ void setup(){
   clockGen.refModeControl(ENABLE);
   Serial.println(clockGen._readRegister(SHUTDOWN_REG), BIN);
 
+  clockGen.fodOutFourCont(ENABLE);
+  //clockGen.fodOutThreeCont(ENABLE);
+  clockGen.integModeContFour(ENABLE);
+  clockGen.fodOutOutFodFour();
+  Serial.println("Clock Out Four: ");
+  Serial.println(clockGen._readRegister(DIV_FOR_CONTROL_REG), BIN);
+
+  clockGen.setPllFeedbackIntDiv(100);
+  Serial.println("Feedback Integer Divider: ");
+  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_ONE), BIN);
+  Serial.println(clockGen._readRegister(FDB_INT_DIV_REG_TWO), BIN);
+  clockGen.resetFodOne();
+  clockGen.calibrateVco();
 }
 
 void loop(){

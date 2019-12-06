@@ -46,6 +46,8 @@ enum REGISTER_INDEX {
   FDB_FRAC_DIV_REG_TWO       = 0x1A,
   FDB_FRAC_DIV_REG_THR       = 0x1B,
 
+  VC_CONTROL_REG             = 0x1C,
+
   RC_CONTR_REG_ONE           = 0x1D,
   RC_CONTR_REG_TWO           = 0x1E,
   RC_CONTR_REG_THR           = 0x1F,
@@ -169,9 +171,10 @@ enum MASK_INDEX {
   MASK_THR_MSB    = 0x8F,
   MASK_TWO_MSB    = 0xDF,
   MASK_ONE_MSB    = 0xEF,
-  MASK_ALL        = 0x00,
 
+  MASK_ALL        = 0x00,
   MASK_ALL_8_BIT  = 0x0000FF,
+  MASK_ALL_12_BIT = 0xFF0,
   MASK_ALL_16_BIT = 0x00FFFF,
   MASK_ALL_24_BIT = 0xFF0000,
 
@@ -256,6 +259,8 @@ class SparkFun_5P49V60
     void setPllFeedBackFractDiv(uint32_t);
 
     uint32_t readPllFeedBackFractDiv();
+
+    void calibrateVco();
 
     void setPllFilterResOne(uint16_t);
     

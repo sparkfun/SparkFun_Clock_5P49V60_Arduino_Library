@@ -331,9 +331,10 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
   }
   else {
     // MSB in 0x17, LSB in 0x18
-    uint16_t lsb_div_val = divider_val & MASK_FIFT;
+    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_FIFT_MSB) >> POS_FOUR;
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_FOUR;
+    Serial.println(msb_div_val, BIN);
     _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
@@ -405,6 +406,13 @@ uint32_t SparkFun_5P49V60::readPllFeedBackFractDiv(){
 
   return mmsb_div_val;
 
+}
+
+// REG 0x1C, bit[7] This forces the VCO band to manually calibrate. 
+void SparkFun_5P49V60::calibrateVco(){
+  _writeRegister(VC_CONTROL_REG, MASK_EIGHT_MSB, DISABLE, POS_SEVEN);
+  delay(1);
+  _writeRegister(VC_CONTROL_REG, MASK_EIGHT_MSB, ENABLE, POS_SEVEN);
 }
 
 // REG 0x1E, bits[7:3]
@@ -592,6 +600,8 @@ void SparkFun_5P49V60::bypassThirdFilter(uint8_t control){
 // REG 0x21, bits[7]
 void SparkFun_5P49V60::resetFodOne(){
   _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
+  delay(5);
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
 // REG 0x21, bits[3:0], 0b0000
@@ -635,6 +645,8 @@ void SparkFun_5P49V60::auxControlOne(uint8_t control){
 // REG 0x31, bits[7]
 void SparkFun_5P49V60::resetFodTwo(){
   _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
+  delay(5);
+  _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
 // REG 0x31, bits[3:0]
@@ -676,6 +688,8 @@ void SparkFun_5P49V60::auxControlTwo(uint8_t control){
 // REG 0x41, bits[7]
 void SparkFun_5P49V60::resetFodThree(){
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
+  delay(5);
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
 // REG 0x41, bits[3:0]
@@ -717,6 +731,8 @@ void SparkFun_5P49V60::auxControlThree(uint8_t control){
 // REG 0x51, bits[7]
 void SparkFun_5P49V60::resetFodFour(){
   _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
+  delay(5);
+  _writeRegister(DIV_FOR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
 
@@ -756,6 +772,10 @@ void SparkFun_5P49V60::auxControlFour(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(OUT_ISKEW_FOUR_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
+
+//uint16_t SparkFun_5P49V60::calculateFracDivider(uint16_t clock_hertz){
+  //if (clock_hertz > k
+//}
 
 // This generic function handles I2C write commands for modifying individual
 // bits in an eight bit register. Paramaters include the register's address, a mask
