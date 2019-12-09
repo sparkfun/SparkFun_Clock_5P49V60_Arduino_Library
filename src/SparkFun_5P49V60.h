@@ -119,7 +119,7 @@ enum REGISTER_INDEX {
 
   OUT_FSKEW_THR_REG          = 0x4F,
 
-  DIV_FOR_CONTROL_REG        = 0x51,
+  DIV_FOUR_CONTROL_REG        = 0x51,
 
   OUT_ISKEW_FOUR_REG_ONE     = 0x5B,
   OUT_ISKEW_FOUR_REG_TWO     = 0x5C,
@@ -298,6 +298,8 @@ class SparkFun_5P49V60
 
     void auxControlOne(uint8_t);
 
+    void setIntDivOutOne(uint8_t);
+
     void resetFodTwo();
 
     void fodOutTwoCont(uint8_t);
@@ -311,6 +313,8 @@ class SparkFun_5P49V60
     void integModeContTwo(uint8_t);
     
     void auxControlTwo(uint8_t);
+
+    void setIntDivOutTwo(uint8_t);
 
     void resetFodThree();
 
@@ -326,6 +330,8 @@ class SparkFun_5P49V60
 
     void auxControlThree(uint8_t control);
 
+    void setIntDivOutThree(uint8_t);
+
     void resetFodFour();
 
     void fodOutFourCont(uint8_t);
@@ -339,6 +345,8 @@ class SparkFun_5P49V60
     void integModeContFour(uint8_t control);
 
     void auxControlFour(uint8_t control);
+
+    void setIntDivOutFour(uint8_t);
 
     uint8_t _readRegister(uint8_t);
     
