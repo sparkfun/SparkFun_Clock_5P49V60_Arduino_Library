@@ -305,7 +305,7 @@ class SparkFun_5P49V60
 
     void muxRefClockToFodOne();
 
-    void integModeContOne(uint8_t);
+    void integerModeOne(uint8_t);
 
     void auxControlOne(uint8_t);
 
@@ -321,7 +321,7 @@ class SparkFun_5P49V60
 
     void muxFodOneToFodTwo();
 
-    void integModeContTwo(uint8_t);
+    void integerModeTwo(uint8_t);
 
     void setFodTwoFractDiv(uint32_t);
     
@@ -331,13 +331,13 @@ class SparkFun_5P49V60
 
     void resetFodThree();
 
-    void muxPlltoFodThree(uint8_t);
+    void muxPlltoFodThree(uint8_t control = ENABLE);
 
     void muxOutTwoToOutThree();
 
     void muxOutTwoToFodThree();
 
-    void integModeContThree(uint8_t control);
+    void integerModeThree(uint8_t control);
 
     void setFodThrFractDiv(uint32_t);
 
@@ -347,13 +347,13 @@ class SparkFun_5P49V60
 
     void resetFodFour();
 
-    void muxPllToFodFour(uint8_t);
+    void muxPllToFodFour(uint8_t control = ENABLE);
 
     void muxOutThreeToOutFour();
 
     void muxOutThreeToFodFour();
 
-    void integModeContFour(uint8_t control);
+    void integerModeFour(uint8_t control);
 
     void setFodFourFractDiv(uint32_t);
 

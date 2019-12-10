@@ -629,7 +629,7 @@ void SparkFun_5P49V60::muxRefClockToFodOne(){
 }
 
 // REG 0x21, bit[1]
-void SparkFun_5P49V60::integModeFodOne(uint8_t control){
+void SparkFun_5P49V60::integerModeOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
@@ -751,7 +751,7 @@ void SparkFun_5P49V60::muxFodOneToFodTwo(){
 }
 
 // REG 0x31, bit[1]
-void SparkFun_5P49V60::integModeContTwo(uint8_t control){
+void SparkFun_5P49V60::integerModeTwo(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
@@ -873,7 +873,7 @@ void SparkFun_5P49V60::muxOutTwoToFodThree(){
 }
 
 // REG 0x41, bit[1]
-void SparkFun_5P49V60::integModeContThree(uint8_t control){
+void SparkFun_5P49V60::integerModeThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
@@ -994,7 +994,7 @@ void SparkFun_5P49V60::muxOutThreeToFodFour(){
 }
 
 // REG 0x51, bit[1]
-void SparkFun_5P49V60::integModeContFour(uint8_t control){
+void SparkFun_5P49V60::integerModeFour(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(DIV_FOUR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
