@@ -170,6 +170,7 @@ enum MASK_INDEX {
   MASK_FIFT       = 0xF0,
 
   MASK_FIFT_MSB   = 0x0F,
+  MASK_THIRT_MSB  = 0x1F,
   MASK_EIGHT_MSB  = 0x7F,
   MASK_FOUR_MSB   = 0xBF,
   MASK_THR_MSB    = 0x8F,
