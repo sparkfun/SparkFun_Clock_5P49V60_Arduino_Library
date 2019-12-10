@@ -10,7 +10,7 @@
 
 #include "SparkFun_5P49V60.h"
 
-SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address) : _address(address) 
+SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address) : _address(address)
 { }
 
 bool SparkFun_5P49V60::begin(TwoWire &wirePort)
@@ -221,8 +221,8 @@ float SparkFun_5P49V60::readCrystalCapVal(uint8_t pin){
   else if (reg_val == 6){
     return _cap_arr[1] + _cap_arr[2];
   }
-  else 
-    return 0.0; 
+  else
+    return 0.0;
 
 }
 
@@ -317,7 +317,7 @@ uint8_t SparkFun_5P49V60::readTestControl(){
 
 // Reg 0x17 and 0x18, bits[7:0] and bits[7:4] respectively - largest value that
 // can be set: 4,095. To determine this value you'll divide your desired output
-// by the value of the clock source, 16MHz by default. 
+// by the value of the clock source, 16MHz by default.
 // e.g. 1600 MHz VCO/16MHz Clock = 100 DEC => 0x64 => 0b00001100100
 void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
 
@@ -408,7 +408,7 @@ uint32_t SparkFun_5P49V60::readPllFeedBackFractDiv(){
 
 }
 
-// REG 0x1C, bit[7] This forces the VCO band to manually calibrate. 
+// REG 0x1C, bit[7] This forces the VCO band to manually calibrate.
 void SparkFun_5P49V60::calibrateVco(){
   _writeRegister(VC_CONTROL_REG, MASK_EIGHT_MSB, DISABLE, POS_SEVEN);
   delay(1);
@@ -647,7 +647,7 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
     return;
 
   if (divider_val <= 31){
-    // 0x25 
+    // 0x25
     _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, divider_val, POS_ZERO);
     _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, 0, POS_ZERO);
     _writeRegister(OUT_FDIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
@@ -669,7 +669,7 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
     llsb_div_val = divider_val & 0x1F;
     llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
-   
+
     // 0x25, 0x24, 0x23
     _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
     _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
@@ -682,7 +682,7 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
     llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
     mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
-   
+
     // 0x25, 0x24, 0x23, 0x22
     _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
     _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
@@ -698,9 +698,9 @@ void SparkFun_5P49V60::auxControlOne(uint8_t control){
 }
 
 //REG 0x2D and 0x2E, bits[7:0] and bits[7:4] respectively. Maximum value that
-// that can be set: 4,095. 
+// that can be set: 4,095.
 void SparkFun_5P49V60::setIntDivOutOne(uint8_t divider_val ){
-      
+
   if (divider_val < 0 || divider_val > 4095)
     return;
 
@@ -755,6 +755,63 @@ void SparkFun_5P49V60::integModeContTwo(uint8_t control){
     _writeRegister(DIV_TWO_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
 
+// REG 0x32, 0x33, 0x34, 0x35 bits[7:0] in the first three registers and
+// bits[7:2] in 0x35.
+void SparkFun_5P49V60::setFodTwoFractDiv(uint32_t divider_val){
+
+  uint32_t llsb_div_val; //  Least least significant BYTE: 0x35
+  uint32_t lsb_div_val; // Least significant BYTE: 0x34
+  uint32_t msb_div_val; // 0x33
+  uint32_t mmsb_div_val; // 0x32
+
+  if (divider_val < 0 || divider_val > 536,870,911)
+    return;
+
+  if (divider_val <= 31){
+    // 0x35
+    _writeRegister(OUT_FDIV_TWO_REG_FOUR, MASK_ALL, divider_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_THR , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_TWO , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 8191){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+
+    // 0x35, 0x34
+    _writeRegister(OUT_FDIV_TWO_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_TWO_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_TWO, MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_ONE, MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 2,097,151){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+
+    // 0x35, 0x34, 0x33
+    _writeRegister(OUT_FDIV_TWO_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_TWO_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_ONE, MASK_ALL, 0, POS_ZERO);
+  }
+  else {
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+    mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
+
+    // 0x35, 0x34, 0x33, 0x32
+    _writeRegister(OUT_FDIV_TWO_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_TWO_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_TWO_REG_ONE, MASK_ALL, mmsb_div_val, POS_ZERO);
+  }
+}
+
 //REG 0x3C, bit[0]
 void SparkFun_5P49V60::auxControlTwo(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -762,9 +819,9 @@ void SparkFun_5P49V60::auxControlTwo(uint8_t control){
 }
 
 //REG 0x3D and 0x3E, bits[7:0] and bits[7:4] respectively. Maximum value that
-// that can be set: 4,095. 
+// that can be set: 4,095.
 void SparkFun_5P49V60::setIntDivOutTwo(uint8_t divider_val ){
-      
+
   if (divider_val < 0 || divider_val > 4095)
     return;
 
@@ -819,6 +876,63 @@ void SparkFun_5P49V60::integModeContThree(uint8_t control){
     _writeRegister(DIV_THR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
 
+// REG 0x42, 0x43, 0x44, 0x45 bits[7:0] in the first three registers and
+// bits[7:2] in 0x45.
+void SparkFun_5P49V60::setFodThrFractDiv(uint32_t divider_val){
+
+  uint32_t llsb_div_val; //  Least least significant BYTE: 0x45
+  uint32_t lsb_div_val; // Least significant BYTE: 0x44
+  uint32_t msb_div_val; // 0x43
+  uint32_t mmsb_div_val; // 0x42
+
+  if (divider_val < 0 || divider_val > 536,870,911)
+    return;
+
+  if (divider_val <= 31){
+    // 0x45
+    _writeRegister(OUT_FDIV_THR_REG_FOUR, MASK_ALL, divider_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_THR , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_TWO , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 8191){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+
+    // 0x45, 0x44
+    _writeRegister(OUT_FDIV_THR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_THR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_TWO , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 2,097,151){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+
+    // 0x45, 0x44, 0x43
+    _writeRegister(OUT_FDIV_THR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_THR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_TWO , MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else {
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+    mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
+
+    // 0x45, 0x44, 0x43, 0x42
+    _writeRegister(OUT_FDIV_THR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_THR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_TWO , MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_THR_REG_ONE , MASK_ALL, mmsb_div_val, POS_ZERO);
+  }
+}
+
 //REG 0x4C, bit[0]
 void SparkFun_5P49V60::auxControlThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -826,9 +940,9 @@ void SparkFun_5P49V60::auxControlThree(uint8_t control){
 }
 
 //REG 0x4D and 0x4E, bits[7:0] and bits[7:4] respectively. Maximum value that
-// that can be set: 4,095. 
+// that can be set: 4,095.
 void SparkFun_5P49V60::setIntDivOutThree(uint8_t divider_val ){
-      
+
   if (divider_val < 0 || divider_val > 4095)
     return;
 
@@ -886,6 +1000,63 @@ void SparkFun_5P49V60::integModeContFour(uint8_t control){
     _writeRegister(DIV_FOUR_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
 
+// REG 0x52, 0x53, 0x54, 0x55 bits[7:0] in the first three registers and
+// bits[7:2] in 0x55.
+void SparkFun_5P49V60::setFodFourFractDiv(uint32_t divider_val){
+
+  uint32_t llsb_div_val; //  Least least significant BYTE: 0x55
+  uint32_t lsb_div_val; // Least significant BYTE: 0x54
+  uint32_t msb_div_val; // 0x53
+  uint32_t mmsb_div_val; // 0x52
+
+  if (divider_val < 0 || divider_val > 536,870,911)
+    return;
+
+  if (divider_val <= 31){
+    // 0x55
+    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, divider_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 8191){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+
+    // 0x55, 0x54
+    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 2,097,151){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+
+    // 0x55, 0x54, 0x53
+    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
+  }
+  else {
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+    mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
+
+    // 0x55, 0x54, 0x53, 0x52
+    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, mmsb_div_val, POS_ZERO);
+  }
+}
+
 //REG 0x5C, bit[0]
 void SparkFun_5P49V60::auxControlFour(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -893,9 +1064,9 @@ void SparkFun_5P49V60::auxControlFour(uint8_t control){
 }
 
 //REG 0x5D and 0x5E, bits[7:0] and bits[7:4] respectively. Maximum value that
-// that can be set: 4,095. 
+// that can be set: 4,095.
 void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
-      
+
   if (divider_val < 0 || divider_val > 4095)
     return;
 
@@ -924,13 +1095,13 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
 void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition) {
 
   uint8_t _i2cWrite;
-  _i2cWrite = _readRegister(_wReg); 
-  _i2cWrite &= (_mask); 
-  _i2cWrite |= (_bits << _startPosition);  
+  _i2cWrite = _readRegister(_wReg);
+  _i2cWrite &= (_mask);
+  _i2cWrite |= (_bits << _startPosition);
 
-  _i2cPort->beginTransmission(_address); 
-  _i2cPort->write(_wReg); 
-  _i2cPort->write(_i2cWrite); 
+  _i2cPort->beginTransmission(_address);
+  _i2cPort->write(_wReg);
+  _i2cPort->write(_i2cWrite);
   _i2cPort->endTransmission();
 
 }
