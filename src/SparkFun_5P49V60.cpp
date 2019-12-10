@@ -1084,6 +1084,31 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
   }
 
 }
+
+// Reg 0x61, bits[1]. This function enable clock output on clock one.
+void SparkFun_5P49V60::clockOneControl(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(CLK_ONE_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
+}
+
+// Reg 0x63, bits[1]. This function enable clock output on clock two.
+void SparkFun_5P49V60::clockTwoControl(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(CLK_TWO_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
+}
+
+// Reg 0x65, bits[1]. This function enable clock output on clock three.
+void SparkFun_5P49V60::clockThrControl(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(CLK_THR_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
+}
+
+// Reg 0x67, bits[1]. This function enable clock output on clock four.
+void SparkFun_5P49V60::clockFourControl(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(CLK_FOUR_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
+}
+
 //uint16_t SparkFun_5P49V60::calculateFracDivider(uint16_t clock_hertz){
   //if (clock_hertz > k
 //}
@@ -1098,7 +1123,7 @@ void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bit
   _i2cWrite = _readRegister(_wReg);
   _i2cWrite &= (_mask);
   _i2cWrite |= (_bits << _startPosition);
-
+ 
   _i2cPort->beginTransmission(_address);
   _i2cPort->write(_wReg);
   _i2cPort->write(_i2cWrite);

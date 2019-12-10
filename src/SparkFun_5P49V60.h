@@ -361,9 +361,16 @@ class SparkFun_5P49V60
     void setIntDivOutFour(uint8_t);
 
     uint8_t _readRegister(uint8_t);
-    
-  private:
 
+    void clockOneControl(uint8_t);
+
+    void clockTwoControl(uint8_t);
+
+    void clockThrControl(uint8_t);
+
+    void clockFourControl(uint8_t);
+
+  private:
 
     // Private Variables
     uint8_t _address;
