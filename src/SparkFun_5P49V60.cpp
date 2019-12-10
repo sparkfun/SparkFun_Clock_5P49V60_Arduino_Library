@@ -356,7 +356,7 @@ void SparkFun_5P49V60::setPllFeedBackFractDiv(uint32_t divider_val){
   uint32_t msb_div_val;
   uint32_t mmsb_div_val;
 
-  if (divider_val < 0 || divider_val > 16,777,215)
+  if (divider_val < 0 || divider_val > 16777215)
     return;
 
   if (divider_val <= 255){
@@ -643,7 +643,7 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
   uint32_t msb_div_val; // 0x23
   uint32_t mmsb_div_val; // 0x22
 
-  if (divider_val < 0 || divider_val > 536,870,911)
+  if (divider_val < 0 || divider_val > 536870911)
     return;
 
   if (divider_val <= 31){
@@ -656,7 +656,7 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
   else if (divider_val <= 8191){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
 
     // 0x25, 0x24
     _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
@@ -664,10 +664,10 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
     _writeRegister(OUT_FDIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
     _writeRegister(OUT_FDIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
   }
-  else if (divider_val <= 2,097,151){
+  else if (divider_val <= 2097151){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
 
     // 0x25, 0x24, 0x23
@@ -679,7 +679,7 @@ void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
   else {
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
     mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
 
@@ -764,7 +764,7 @@ void SparkFun_5P49V60::setFodTwoFractDiv(uint32_t divider_val){
   uint32_t msb_div_val; // 0x33
   uint32_t mmsb_div_val; // 0x32
 
-  if (divider_val < 0 || divider_val > 536,870,911)
+  if (divider_val < 0 || divider_val > 536870911)
     return;
 
   if (divider_val <= 31){
@@ -777,7 +777,7 @@ void SparkFun_5P49V60::setFodTwoFractDiv(uint32_t divider_val){
   else if (divider_val <= 8191){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
 
     // 0x35, 0x34
     _writeRegister(OUT_FDIV_TWO_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
@@ -785,10 +785,10 @@ void SparkFun_5P49V60::setFodTwoFractDiv(uint32_t divider_val){
     _writeRegister(OUT_FDIV_TWO_REG_TWO, MASK_ALL, 0, POS_ZERO);
     _writeRegister(OUT_FDIV_TWO_REG_ONE, MASK_ALL, 0, POS_ZERO);
   }
-  else if (divider_val <= 2,097,151){
+  else if (divider_val <= 2097151){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
 
     // 0x35, 0x34, 0x33
@@ -800,7 +800,7 @@ void SparkFun_5P49V60::setFodTwoFractDiv(uint32_t divider_val){
   else {
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
     mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
 
@@ -885,7 +885,7 @@ void SparkFun_5P49V60::setFodThrFractDiv(uint32_t divider_val){
   uint32_t msb_div_val; // 0x43
   uint32_t mmsb_div_val; // 0x42
 
-  if (divider_val < 0 || divider_val > 536,870,911)
+  if (divider_val < 0 || divider_val > 536870911)
     return;
 
   if (divider_val <= 31){
@@ -898,7 +898,7 @@ void SparkFun_5P49V60::setFodThrFractDiv(uint32_t divider_val){
   else if (divider_val <= 8191){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
 
     // 0x45, 0x44
     _writeRegister(OUT_FDIV_THR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
@@ -906,10 +906,10 @@ void SparkFun_5P49V60::setFodThrFractDiv(uint32_t divider_val){
     _writeRegister(OUT_FDIV_THR_REG_TWO , MASK_ALL, 0, POS_ZERO);
     _writeRegister(OUT_FDIV_THR_REG_ONE , MASK_ALL, 0, POS_ZERO);
   }
-  else if (divider_val <= 2,097,151){
+  else if (divider_val <= 2097151){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
 
     // 0x45, 0x44, 0x43
@@ -921,7 +921,7 @@ void SparkFun_5P49V60::setFodThrFractDiv(uint32_t divider_val){
   else {
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
     mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
 
@@ -1009,7 +1009,7 @@ void SparkFun_5P49V60::setFodFourFractDiv(uint32_t divider_val){
   uint32_t msb_div_val; // 0x53
   uint32_t mmsb_div_val; // 0x52
 
-  if (divider_val < 0 || divider_val > 536,870,911)
+  if (divider_val < 0 || divider_val > 536870911)
     return;
 
   if (divider_val <= 31){
@@ -1022,7 +1022,7 @@ void SparkFun_5P49V60::setFodFourFractDiv(uint32_t divider_val){
   else if (divider_val <= 8191){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
 
     // 0x55, 0x54
     _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
@@ -1030,10 +1030,10 @@ void SparkFun_5P49V60::setFodFourFractDiv(uint32_t divider_val){
     _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, 0, POS_ZERO);
     _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
   }
-  else if (divider_val <= 2,097,151){
+  else if (divider_val <= 2097151){
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
 
     // 0x55, 0x54, 0x53
@@ -1045,7 +1045,7 @@ void SparkFun_5P49V60::setFodFourFractDiv(uint32_t divider_val){
   else {
 
     llsb_div_val = divider_val & 0x1F;
-    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
     msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
     mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
 
