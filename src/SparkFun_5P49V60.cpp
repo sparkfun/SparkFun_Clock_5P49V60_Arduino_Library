@@ -612,7 +612,7 @@ void SparkFun_5P49V60::fodOutOneCont(uint8_t control){
 
 // REG 0x21, bits[3:0], 0b00x1
 void SparkFun_5P49V60::fodPllOutFodOne(){
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_THIRT, 0x01, POS_TWO);
+  _writeRegister(DIV_ONE_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
 }
 
 // REG 0x21, bits[3:0], 0b1100
@@ -855,7 +855,7 @@ void SparkFun_5P49V60::fodOutThreeCont(uint8_t control){
 
 // REG 0x41, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_THIRT, 0x01, POS_TWO);
+  _writeRegister(DIV_THR_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
 }
 
 // REG 0x41, bits[3:0] 0b1100
@@ -977,7 +977,7 @@ void SparkFun_5P49V60::fodOutFourCont(uint8_t control){
 
 // REG 0x51, bits[3:0] 0b00x1
 void SparkFun_5P49V60::fodPllOutFodFour(){
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_THIRT, 0x01, POS_TWO);
+  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
 }
 
 // REG 0x51, bits[3:0] 0b1100
@@ -1088,7 +1088,7 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
 // Reg 0x60, bits[7:5], Default setting is CMOSD mode.
 void SparkFun_5P49V60::clockOneConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
-    _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
+    _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE);
 }
 
 // Reg 0x61, bits[1]. This function enable clock output on clock one.
@@ -1101,7 +1101,7 @@ void SparkFun_5P49V60::clockOneControl(uint8_t control){
 // Reg 0x62, bits[7:5], Default setting is HCSL33 mode.
 void SparkFun_5P49V60::clockTwoConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
-    _writeRegister(CLK_TWO_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
+    _writeRegister(CLK_TWO_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE);
 }
 
 // Reg 0x63, bits[1]. This function enable clock output on clock two.
@@ -1114,7 +1114,7 @@ void SparkFun_5P49V60::clockTwoControl(uint8_t control){
 // Mode.
 void SparkFun_5P49V60::clockThrConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
-    _writeRegister(CLK_THR_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
+    _writeRegister(CLK_THR_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE);
 }
 
 // Reg 0x65, bits[1]. This function enable clock output on clock three.
@@ -1127,7 +1127,7 @@ void SparkFun_5P49V60::clockThrControl(uint8_t control){
 // Emitter-Coupled Logic (LVPECL) mode.
 void SparkFun_5P49V60::clockFourConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
-    _writeRegister(CLK_FOUR_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
+    _writeRegister(CLK_FOUR_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE);
 }
 
 // Reg 0x67, bits[1]. This function enable clock output on clock four.

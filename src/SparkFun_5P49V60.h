@@ -23,6 +23,14 @@
 #define  TWO_FIVE_V     0x02
 #define  THREE_THREE_V  0x03
 
+#define  LVPECL_MODE    0x00
+#define  CMOS_MODE      0x01
+#define  HCSL33_MODE    0x02
+#define  LVDS_MODE      0x03
+#define  CMOS2_MODE     0x04
+#define  CMOSD_MODE     0x05
+#define  HCSL25_MODE    0x06
+
 #define UNKNOWN_ERROR   0xFF
 #define UNKNOWN_ERROR_F 255.0
 
