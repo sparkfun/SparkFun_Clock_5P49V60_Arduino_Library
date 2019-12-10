@@ -604,35 +604,35 @@ void SparkFun_5P49V60::resetFodOne(){
   _writeRegister(DIV_ONE_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
-// REG 0x21, bits[3:0], 0b0000
-void SparkFun_5P49V60::fodOutOneCont(uint8_t control){
-  if (control == DISABLE || control == ENABLE)
-    _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT_MSB, control, POS_ZERO);
-}
-
 // REG 0x21, bits[3:0], 0b00x1
-void SparkFun_5P49V60::fodPllOutFodOne(){
-  _writeRegister(DIV_ONE_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
+void SparkFun_5P49V60::muxPllToFodOne(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_ONE_CONTROL_REG, MASK_THIRT, control, POS_ZERO);
+
+  resetFodOne();
 }
 
 // REG 0x21, bits[3:0], 0b1100
-void SparkFun_5P49V60::fodDisOutOutOne(){
-  refModeControl(DISABLE);
+void SparkFun_5P49V60::muxRefClockToOutOne(){
+  refModeControl(ENABLE);
   _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, 0xF0, POS_ZERO);
+
+  resetFodOne();
 }
 
 // REG 0x21, bits[3:0], 0b1111
-void SparkFun_5P49V60::fodOutOutFodOne(){
-  refModeControl(DISABLE);
+void SparkFun_5P49V60::muxRefClockToFodOne(){
+  refModeControl(ENABLE);
   _writeRegister(DIV_ONE_CONTROL_REG, MASK_FIFT, 0x0F, POS_ZERO);
+
+  resetFodOne();
 }
 
 // REG 0x21, bit[1]
-void SparkFun_5P49V60::integModeContOne(uint8_t control){
+void SparkFun_5P49V60::integModeFodOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
-
 
 // REG 0x22, 0x23, 0x24, 0x25 bits[7:0] in the first three registers and
 // bits[7:2] in 0x25.
@@ -726,27 +726,28 @@ void SparkFun_5P49V60::resetFodTwo(){
   _writeRegister(DIV_TWO_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
-// REG 0x31, bits[3:0]
-void SparkFun_5P49V60::fodOutTwoCont(uint8_t control){
-  if (control == DISABLE || control == ENABLE)
-    _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, control, POS_ZERO);
-}
-
 // REG 0x31, bits[3:0] 0b00x1
-void SparkFun_5P49V60::fodPllOutFodTwo(){
-  _writeRegister(DIV_TWO_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
+void SparkFun_5P49V60::muxPllToFodTwo(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_TWO_CONTROL_REG, MASK_THIRT, control, POS_ZERO);
+
+  resetFodTwo();
 }
 
 // REG 0x31, bits[3:0] 0b1100
-void SparkFun_5P49V60::fodOutOutTwo(){
+void SparkFun_5P49V60::muxOutOneToOutTwo(){
   auxControlOne(ENABLE);
   _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0x03, POS_TWO);
+
+  resetFodTwo();
 }
 
 // REG 0x31, bits[3:0] 0b1111
-void SparkFun_5P49V60::fodOutOutFodTwo(){
+void SparkFun_5P49V60::muxFodOneToFodTwo(){
   auxControlOne(ENABLE);
   _writeRegister(DIV_TWO_CONTROL_REG, MASK_FIFT, 0x0F, POS_ZERO);
+
+  resetFodTwo();
 }
 
 // REG 0x31, bit[1]
@@ -847,27 +848,28 @@ void SparkFun_5P49V60::resetFodThree(){
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
-// REG 0x41, bits[3:0]
-void SparkFun_5P49V60::fodOutThreeCont(uint8_t control){
-  if (control == DISABLE || control == ENABLE)
-    _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT_MSB, control, POS_ZERO);
-}
-
 // REG 0x41, bits[3:0] 0b00x1
-void SparkFun_5P49V60::fodPllOutFodThree(){
-  _writeRegister(DIV_THR_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
+void SparkFun_5P49V60::muxPlltoFodThree(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_THR_CONTROL_REG, MASK_THIRT, control, POS_ZERO);
+
+  resetFodThree();
 }
 
 // REG 0x41, bits[3:0] 0b1100
-void SparkFun_5P49V60::fodOutOutThree(){
+void SparkFun_5P49V60::muxOutTwoToOutThree(){
   auxControlTwo(ENABLE);
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0x03, POS_TWO);
+
+  resetFodThree();
 }
 
 // REG 0x41, bits[3:0] 0b1111
-void SparkFun_5P49V60::fodOutOutFodThree(){
+void SparkFun_5P49V60::muxOutTwoToFodThree(){
   auxControlTwo(ENABLE);
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FIFT, 0x0F, POS_ZERO);
+
+  resetFodThree();
 }
 
 // REG 0x41, bit[1]
@@ -967,31 +969,28 @@ void SparkFun_5P49V60::resetFodFour(){
   _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FOUR_MSB, ENABLE, POS_SEVEN);
 }
 
-
-// REG 0x51, bits[3:0]
-void SparkFun_5P49V60::fodOutFourCont(uint8_t control){
-  if (control == ENABLE || control == DISABLE)
-    _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT_MSB, control, POS_ZERO);
-}
-
-
 // REG 0x51, bits[3:0] 0b00x1
-void SparkFun_5P49V60::fodPllOutFodFour(){
-  _writeRegister(DIV_FOUR_CONTROL_REG, MASK_THIRT, 0x01, POS_ZERO);
+void SparkFun_5P49V60::muxPllToFodFour(uint8_t control){
+  if (control == ENABLE || control == DISABLE)
+    _writeRegister(DIV_FOUR_CONTROL_REG, MASK_THIRT, control, POS_ZERO);
+
+  resetFodFour();
 }
 
 // REG 0x51, bits[3:0] 0b1100
-void SparkFun_5P49V60::fodOutOutFour(){
-  auxControlOne(ENABLE);
-  auxControlTwo(ENABLE);
+void SparkFun_5P49V60::muxOutThreeToOutFour(){
   auxControlThree(ENABLE);
   _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT, 0x03, POS_TWO);
+
+  resetFodFour();
 }
 
 // REG 0x51, bits[3:0] 0b1111
-void SparkFun_5P49V60::fodOutOutFodFour(){
+void SparkFun_5P49V60::muxOutThreeToFodFour(){
   auxControlThree(ENABLE);
   _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FIFT, 0x0F, POS_ZERO);
+
+  resetFodFour();
 }
 
 // REG 0x51, bit[1]

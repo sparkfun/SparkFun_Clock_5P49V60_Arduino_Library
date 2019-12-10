@@ -299,13 +299,11 @@ class SparkFun_5P49V60
 
     void resetFodOne();
 
-    void fodOutOneCont(uint8_t);
+    void muxPllToFodOne(uint8_t control = ENABLE);
 
-    void fodPllOutFodOne();
+    void muxRefClockToOutOne();
 
-    void fodDisOutOutOne();
-
-    void fodOutOutFodOne();
+    void muxRefClockToFodOne();
 
     void integModeContOne(uint8_t);
 
@@ -317,13 +315,11 @@ class SparkFun_5P49V60
 
     void resetFodTwo();
 
-    void fodOutTwoCont(uint8_t);
+    void muxPllToFodTwo(uint8_t control = ENABLE);
 
-    void fodPllOutFodTwo();
+    void muxOutOneToOutTwo();
 
-    void fodOutOutTwo();
-
-    void fodOutOutFodTwo();
+    void muxFodOneToFodTwo();
 
     void integModeContTwo(uint8_t);
 
@@ -335,13 +331,11 @@ class SparkFun_5P49V60
 
     void resetFodThree();
 
-    void fodOutThreeCont(uint8_t);
+    void muxPlltoFodThree(uint8_t);
 
-    void fodPllOutFodThree();
+    void muxOutTwoToOutThree();
 
-    void fodOutOutThree();
-
-    void fodOutOutFodThree();
+    void muxOutTwoToFodThree();
 
     void integModeContThree(uint8_t control);
 
@@ -353,13 +347,11 @@ class SparkFun_5P49V60
 
     void resetFodFour();
 
-    void fodOutFourCont(uint8_t);
+    void muxPllToFodFour(uint8_t);
 
-    void fodPllOutFodFour();
+    void muxOutThreeToOutFour();
 
-    void fodOutOutFour();
-
-    void fodOutOutFodFour();
+    void muxOutThreeToFodFour();
 
     void integModeContFour(uint8_t control);
 
