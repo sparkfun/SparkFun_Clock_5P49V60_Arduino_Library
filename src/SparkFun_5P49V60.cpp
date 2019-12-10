@@ -633,6 +633,64 @@ void SparkFun_5P49V60::integModeContOne(uint8_t control){
     _writeRegister(DIV_ONE_CONTROL_REG, MASK_TWO, control, POS_ONE);
 }
 
+
+// REG 0x22, 0x23, 0x24, 0x25 bits[7:0] in the first three registers and
+// bits[7:2] in 0x25.
+void SparkFun_5P49V60::setFodOneFractDiv(uint32_t divider_val){
+
+  uint32_t llsb_div_val; //  Least least significant BYTE: 0x25
+  uint32_t lsb_div_val; // Least significant BYTE: 0x24
+  uint32_t msb_div_val; // 0x23
+  uint32_t mmsb_div_val; // 0x22
+
+  if (divider_val < 0 || divider_val > 536,870,911)
+    return;
+
+  if (divider_val <= 31){
+    // 0x25 
+    _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, divider_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 8191){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+
+    // 0x25, 0x24
+    _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
+  }
+  else if (divider_val <= 2,097,151){
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+   
+    // 0x25, 0x24, 0x23
+    _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
+  }
+  else {
+
+    llsb_div_val = divider_val & 0x1F;
+    llsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+    mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
+   
+    // 0x25, 0x24, 0x23, 0x22
+    _writeRegister(OUT_FDIV_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
+    _writeRegister(OUT_FDIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
+    _writeRegister(OUT_FDIV_REG_ONE, MASK_ALL, mmsb_div_val, POS_ZERO);
+  }
+}
+
 //REG 0x2C, bit[0]
 void SparkFun_5P49V60::auxControlOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
