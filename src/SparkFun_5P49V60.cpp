@@ -1086,7 +1086,7 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
 }
 
 // Reg 0x60, bits[7:5], Default setting is CMOSD mode.
-void SparkFun_5P49V60::outOneConfigMode(uint8_t mode){
+void SparkFun_5P49V60::clockOneConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
     _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
 }
@@ -1099,7 +1099,7 @@ void SparkFun_5P49V60::clockOneControl(uint8_t control){
 }
 
 // Reg 0x62, bits[7:5], Default setting is HCSL33 mode.
-void SparkFun_5P49V60::outTwoConfigMode(uint8_t mode){
+void SparkFun_5P49V60::clockTwoConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
     _writeRegister(CLK_TWO_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
 }
@@ -1112,7 +1112,7 @@ void SparkFun_5P49V60::clockTwoControl(uint8_t control){
 
 // Reg 0x64, bits[7:5], Default setting is Low Voltage Differential Signal
 // Mode.
-void SparkFun_5P49V60::outThrConfigMode(uint8_t mode){
+void SparkFun_5P49V60::clockThrConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
     _writeRegister(CLK_THR_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
 }
@@ -1125,7 +1125,7 @@ void SparkFun_5P49V60::clockThrControl(uint8_t control){
 
 // Reg 0x66, bits[7:5], Default setting is Low Voltage Positive/Pseudo
 // Emitter-Coupled Logic (LVPECL) mode.
-void SparkFun_5P49V60::outFourConfigMode(uint8_t mode){
+void SparkFun_5P49V60::clockFourConfigMode(uint8_t mode){
   if (mode >= 0 && mode <= 6)
     _writeRegister(CLK_FOUR_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE)
 }

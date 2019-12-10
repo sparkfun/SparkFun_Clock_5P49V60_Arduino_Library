@@ -363,13 +363,21 @@ class SparkFun_5P49V60
 
     uint8_t _readRegister(uint8_t);
 
+    void clockOneConfigMode(uint8_t);
+
     void clockOneControl(uint8_t);
 
     void clockTwoControl(uint8_t);
 
+    void clockTwoConfigMode(uint8_t);
+
     void clockThrControl(uint8_t);
 
+    void clockThrConfigMode(uint8_t);
+
     void clockFourControl(uint8_t);
+
+    void clockFourConfigMode(uint8_t);
 
   private:
 
