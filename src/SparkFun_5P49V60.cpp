@@ -83,8 +83,10 @@ void SparkFun_5P49V60::globalSdControl(uint8_t control){
 }
 
 // Reg 0x68, bits[7:3]
-// This function allows the given clock line to remain on when the SparkFun
-// Clock Generator is put into shutdown mode.
+// This function sets the Output Enable Bit that controls the behavior of the
+// Clock Output lines (1-4) when the SD/OE line is set to OUTPUT ENABLE.
+// Example, Clock Out One and Two are set to 1 and three and four are set to 0.
+// When SD/OE is LOW (ON) then One and Two are ON and Three and Four are OFF.  
 void SparkFun_5P49V60::persEnableClock(uint8_t clock){
 
   uint8_t _bit_pos;
@@ -260,7 +262,7 @@ void SparkFun_5P49V60::selectRefDivider(uint8_t div_val){
     return;
 
   if (div_val == 2)
-    _writeRegister(REF_DIVIDER_REG, MASK_EIGHT_MSB, div_val, POS_SEVEN);
+    _writeRegister(REF_DIVIDER_REG, MASK_EIGHT_MSB, ENABLE, POS_SEVEN);
   else
     _writeRegister(REF_DIVIDER_REG, (~MASK_EIGHT_MSB), div_val, POS_ZERO);
 
@@ -273,7 +275,7 @@ uint8_t SparkFun_5P49V60::readRefDivider(){
   uint8_t reg_val = _readRegister(REF_DIVIDER_REG);
 
   // Divider 2 disables other divider.
-  if ((reg_val & (~MASK_EIGHT_MSB)) >> POS_SEVEN == 1)
+  if (((reg_val & (~MASK_EIGHT_MSB)) >> POS_SEVEN) == 1)
     return 2;
   else
     return reg_val &= MASK_EIGHT_MSB;
@@ -281,7 +283,7 @@ uint8_t SparkFun_5P49V60::readRefDivider(){
 }
 
 // REG 0x16, bit[7] This function enables the function to  bypass the clock pre-divider,
-// which is essentially a divide by 1.
+// which allows for greater division of the reference clock. 
 void SparkFun_5P49V60::bypassRefDivider(uint8_t div){
   if( div == DISABLE || div == ENABLE)
     _writeRegister(DIVIDER_VCO_REG, MASK_EIGHT_MSB, div, POS_SEVEN);
@@ -327,17 +329,32 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
   if (divider_val <= 15){
     // LSB in 0x18
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
+    _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
   }
   else {
     // MSB in 0x17, LSB in 0x18
     uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
     _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_FOUR;
-    Serial.println(msb_div_val, BIN);
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
     _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
+}
+
+// Reg 0x17 and 0x18, bits[7:0] and bits[7:4] respectively.
+// Reads the Feedback Integer Divider Value.
+uint16_t SparkFun_5P49V60::readPllFeedBackIntDiv(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(FDB_INT_DIV_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(FDB_FRAC_DIV_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
 }
 
 // REG 0x18, bits[3:2], Sigma Delta Modulator Setting: bypass, order one through
