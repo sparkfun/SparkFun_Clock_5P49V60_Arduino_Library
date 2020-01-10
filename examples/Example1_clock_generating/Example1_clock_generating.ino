@@ -27,6 +27,15 @@ void setup(){
   feedBack = uint16_t(clockGen._readRegister(0x17)) << 3;
   feedBack |= clockGen._readRegister(0x18) >> 4;
   Serial.println(feedBack, BIN);
+  clockGen.setIntDivOutOne(25);
+  Serial.print("0x18 (LSB): ");
+  Serial.println(clockGen._readRegister(0x2E), BIN);
+  Serial.print("0x17 (MSB): ");
+  Serial.println(clockGen._readRegister(0x2D), BIN);
+  Serial.print("Combined: ");
+  feedBack = uint16_t(clockGen._readRegister(0x2D)) << 3;
+  feedBack |= clockGen._readRegister(0x2E) >> 4;
+  Serial.println(feedBack, BIN);
   //clockGen.muxPlltoFodThree();
   //clockGen.clockThrConfigMode(CMOS_MODE);
   //clockGen.clockThrControl(ENABLE);

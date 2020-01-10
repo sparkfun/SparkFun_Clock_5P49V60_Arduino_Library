@@ -730,7 +730,7 @@ void SparkFun_5P49V60::setIntDivOutOne(uint8_t divider_val ){
     // MSB in 0x2D, LSB in 0x2E
     uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
     _writeRegister(OUT_IDIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_FOUR;
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
     _writeRegister(OUT_IDIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
@@ -852,7 +852,7 @@ void SparkFun_5P49V60::setIntDivOutTwo(uint8_t divider_val ){
     // MSB in 0x3D, LSB in 0x3E
     uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
     _writeRegister(OUT_IDIV_TWO_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_FOUR;
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
     _writeRegister(OUT_IDIV_TWO_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
@@ -974,7 +974,7 @@ void SparkFun_5P49V60::setIntDivOutThree(uint8_t divider_val ){
     // MSB in 0x4D, LSB in 0x4E
     uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
     _writeRegister(OUT_IDIV_THR_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_FOUR;
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
     _writeRegister(OUT_IDIV_THR_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
@@ -1095,7 +1095,7 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
     // MSB in 0x5D, LSB in 0x5E
     uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
     _writeRegister(OUT_IDIV_FOUR_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_FOUR;
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
     _writeRegister(OUT_IDIV_FOUR_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
