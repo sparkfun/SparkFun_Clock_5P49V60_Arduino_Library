@@ -21,17 +21,36 @@ void setup(){
   clockGen.setPllFeedbackIntDiv(100);
   Serial.print("Feedback Integer Divider for PLL: ");
   Serial.println(clockGen.readPllFeedBackIntDiv());
+  
   clockGen.calibrateVco();
   clockGen.setIntDivOutOne(100);
   Serial.print("FOD One Divider: ");
   Serial.println(clockGen.readIntDivOutOne());
-  clockGen.muxOutOneToOutTwo();
-  clockGen.clockTwoConfigMode(CMOS_MODE);
-  clockGen.muxOutTwoToOutThree();
-  clockGen.clockThrConfigMode(CMOS_MODE);
-  clockGen.muxOutThreeToFodFour();
-  clockGen.clockFourConfigMode(CMOS_MODE);
 
+  // -----------------------------------------------------------
+  clockGen.setIntDivOutTwo(100);
+  Serial.print("FOD One Divider: ");
+  Serial.println(clockGen.readIntDivOutTwo());
+  clockGen.muxPllToFodTwo();
+  clockGen.clockTwoConfigMode(CMOS_MODE);
+  clockGen.clockTwoControl(ENABLE);
+  // -----------------------------------------------------------
+  // -----------------------------------------------------------
+  clockGen.setIntDivOutThree(100);
+  Serial.print("FOD One Divider: ");
+  Serial.println(clockGen.readIntDivOutThree());
+  clockGen.muxPllToFodThree();
+  clockGen.clockThrConfigMode(CMOS_MODE);
+  clockGen.clockThrControl(ENABLE);
+  // -----------------------------------------------------------
+  // -----------------------------------------------------------
+  clockGen.setIntDivOutFour(100);
+  Serial.print("FOD One Divider: ");
+  Serial.println(clockGen.readIntDivOutFour());
+  clockGen.muxPllToFodFour();
+  clockGen.clockFourConfigMode(CMOS_MODE);
+  clockGen.clockFourControl(ENABLE);
+  // -----------------------------------------------------------
 
 }
 

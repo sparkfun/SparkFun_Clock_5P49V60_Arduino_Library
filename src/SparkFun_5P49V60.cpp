@@ -876,6 +876,22 @@ void SparkFun_5P49V60::setIntDivOutTwo(uint8_t divider_val ){
 
 }
 
+//REG 0x3D and 0x3E, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivOutTwo(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_IDIV_TWO_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_IDIV_TWO_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
 // REG 0x41, bits[7]
 void SparkFun_5P49V60::resetFodThree(){
   _writeRegister(DIV_THR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
@@ -884,7 +900,7 @@ void SparkFun_5P49V60::resetFodThree(){
 }
 
 // REG 0x41, bits[3:0] 0b00x1
-void SparkFun_5P49V60::muxPlltoFodThree(uint8_t control){
+void SparkFun_5P49V60::muxPllToFodThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(DIV_THR_CONTROL_REG, MASK_THIRT, control, POS_ZERO);
 
@@ -997,6 +1013,23 @@ void SparkFun_5P49V60::setIntDivOutThree(uint8_t divider_val ){
   }
 
 }
+
+//REG 0x4D and 0x4E, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivOutThree(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_IDIV_THR_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_IDIV_THR_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
 // REG 0x51, bits[7]
 void SparkFun_5P49V60::resetFodFour(){
   _writeRegister(DIV_FOUR_CONTROL_REG, MASK_FOUR_MSB, DISABLE, POS_SEVEN);
@@ -1117,6 +1150,22 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
     _writeRegister(OUT_IDIV_FOUR_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
+}
+
+//REG 0x5D and 0x5E, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivOutFour(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_IDIV_FOUR_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_IDIV_FOUR_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
 }
 
 // Reg 0x60, bits[7:5], Default setting is CMOSD mode.

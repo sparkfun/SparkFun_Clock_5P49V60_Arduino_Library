@@ -333,9 +333,11 @@ class SparkFun_5P49V60
 
     void setIntDivOutTwo(uint8_t);
 
+    uint16_t readIntDivOutTwo();
+
     void resetFodThree();
 
-    void muxPlltoFodThree(uint8_t control = ENABLE);
+    void muxPllToFodThree(uint8_t control = ENABLE);
 
     void muxOutTwoToOutThree();
 
@@ -348,6 +350,8 @@ class SparkFun_5P49V60
     void auxControlThree(uint8_t control);
 
     void setIntDivOutThree(uint8_t);
+
+    uint16_t readIntDivOutThree();
 
     void resetFodFour();
 
@@ -364,6 +368,8 @@ class SparkFun_5P49V60
     void auxControlFour(uint8_t control);
 
     void setIntDivOutFour(uint8_t);
+
+    uint16_t readIntDivOutFour();
 
     uint8_t _readRegister(uint8_t);
 
