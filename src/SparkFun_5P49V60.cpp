@@ -338,7 +338,9 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
     uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
     _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
-
+  
+  // Enables the changes by calibrating the VCO.
+  calibrateVco();
 }
 
 // Reg 0x17 and 0x18, bits[7:0] and bits[7:4] respectively.
@@ -350,7 +352,7 @@ uint16_t SparkFun_5P49V60::readPllFeedBackIntDiv(){
   uint16_t ret_val;
 
   lsb_div_val  = _readRegister(FDB_INT_DIV_REG_TWO) >> POS_FOUR;
-  msb_div_val  = _readRegister(FDB_FRAC_DIV_REG_ONE);
+  msb_div_val  = _readRegister(FDB_INT_DIV_REG_ONE);
   ret_val = uint16_t(msb_div_val) << 3;
   ret_val |= lsb_div_val;
 
@@ -734,6 +736,22 @@ void SparkFun_5P49V60::setIntDivOutOne(uint8_t divider_val ){
     _writeRegister(OUT_IDIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
   }
 
+}
+
+//REG 0x2D and 0x2E, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivOutOne(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_IDIV_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_IDIV_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
 }
 
 // REG 0x31, bits[7]

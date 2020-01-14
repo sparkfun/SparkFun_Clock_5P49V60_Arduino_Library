@@ -17,29 +17,21 @@ void setup(){
     while(1);
   }
 
-  // PLL Divider - we'll assume is 1600MHz BECAUSE 1600MHz/16MHz = 100
+  // PLL Divider - To get 1600MHz: 1600MHz/16MHz (Clock) = 100
   clockGen.setPllFeedbackIntDiv(100);
-  Serial.print("0x18 (LSB): ");
-  Serial.println(clockGen._readRegister(0x18), BIN);
-  Serial.print("0x17 (MSB): ");
-  Serial.println(clockGen._readRegister(0x17), BIN);
-  Serial.print("Combined: ");
-  feedBack = uint16_t(clockGen._readRegister(0x17)) << 3;
-  feedBack |= clockGen._readRegister(0x18) >> 4;
-  Serial.println(feedBack, BIN);
-  clockGen.setIntDivOutOne(25);
-  Serial.print("0x18 (LSB): ");
-  Serial.println(clockGen._readRegister(0x2E), BIN);
-  Serial.print("0x17 (MSB): ");
-  Serial.println(clockGen._readRegister(0x2D), BIN);
-  Serial.print("Combined: ");
-  feedBack = uint16_t(clockGen._readRegister(0x2D)) << 3;
-  feedBack |= clockGen._readRegister(0x2E) >> 4;
-  Serial.println(feedBack, BIN);
-  //clockGen.muxPlltoFodThree();
-  //clockGen.clockThrConfigMode(CMOS_MODE);
-  //clockGen.clockThrControl(ENABLE);
-  //clockGen.setIntDivOutOne(0);
+  Serial.print("Feedback Integer Divider for PLL: ");
+  Serial.println(clockGen.readPllFeedBackIntDiv());
+  clockGen.calibrateVco();
+  clockGen.setIntDivOutOne(100);
+  Serial.print("FOD One Divider: ");
+  Serial.println(clockGen.readIntDivOutOne());
+  clockGen.muxOutOneToOutTwo();
+  clockGen.clockTwoConfigMode(CMOS_MODE);
+  clockGen.muxOutTwoToOutThree();
+  clockGen.clockThrConfigMode(CMOS_MODE);
+  clockGen.muxOutThreeToFodFour();
+  clockGen.clockFourConfigMode(CMOS_MODE);
+
 
 }
 

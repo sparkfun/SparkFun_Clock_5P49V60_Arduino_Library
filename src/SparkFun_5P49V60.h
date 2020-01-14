@@ -315,6 +315,8 @@ class SparkFun_5P49V60
 
     void setIntDivOutOne(uint8_t);
 
+    uint16_t readIntDivOutOne();
+
     void resetFodTwo();
 
     void muxPllToFodTwo(uint8_t control = ENABLE);
