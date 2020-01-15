@@ -154,7 +154,9 @@ enum REGISTER_INDEX {
   CLK_FOUR_OUT_CNFIG_REG_TWO = 0x67,
 
   CLK_OE_FUNC_REG            = 0x68,
-  CLK_OS_FUNC_REG            = 0x69
+  CLK_OS_FUNC_REG            = 0x69,
+
+  GLOBAL_RESET_REG           = 0x76
 
 };
 
@@ -328,6 +330,10 @@ class SparkFun_5P49V60
     void integerModeTwo(uint8_t);
 
     void setFodTwoFractDiv(uint32_t);
+
+    void setIntDivSkewTwo(uint8_t);
+
+    uint16_t readIntDivSkewTwo();
     
     void auxControlTwo(uint8_t);
 
@@ -375,9 +381,15 @@ class SparkFun_5P49V60
 
     void clockOneConfigMode(uint8_t);
 
+    void clockOneSlew(uint8_t rate);
+
     void clockOneControl(uint8_t);
 
+    void resetClockOne();
+
     void clockTwoControl(uint8_t);
+
+    void resetClockTwo();
 
     void clockTwoConfigMode(uint8_t);
 
@@ -388,6 +400,8 @@ class SparkFun_5P49V60
     void clockFourControl(uint8_t);
 
     void clockFourConfigMode(uint8_t);
+
+    void globalReset();
 
   private:
 

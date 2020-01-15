@@ -848,6 +848,44 @@ void SparkFun_5P49V60::setFodTwoFractDiv(uint32_t divider_val){
   }
 }
 
+//REG 0x3B and 0x3C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+void SparkFun_5P49V60::setIntDivSkewTwo(uint8_t divider_val ){
+
+  if (divider_val < 0 || divider_val > 4095)
+    return;
+
+  if (divider_val <= 15){
+    // LSB in 0x3E
+    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
+    _writeRegister(OUT_ISKEW_TWO_REG_ONE, MASK_ALL, 0, POS_ZERO);
+  }
+  else {
+    // MSB in 0x3D, LSB in 0x3E
+    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
+    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
+    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
+    _writeRegister(OUT_ISKEW_TWO_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
+  }
+
+}
+
+//REG 0x3B and 0x3C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivSkewTwo(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_ISKEW_TWO_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_ISKEW_TWO_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
 //REG 0x3C, bit[0]
 void SparkFun_5P49V60::auxControlTwo(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -1174,11 +1212,25 @@ void SparkFun_5P49V60::clockOneConfigMode(uint8_t mode){
     _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THIRT_MSB, mode, POS_FIVE);
 }
 
+// Reg 0x60, bits[1:0], Changes the slew rate. 
+void SparkFun_5P49V60::clockOneSlew(uint8_t rate){
+  if (rate >= 0 && rate <= 3)
+    _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THREE, rate, POS_ZERO);
+}
+
 // Reg 0x61, bits[1]. This function enable clock output on clock one.
 // Default setting is clock one is on.
 void SparkFun_5P49V60::clockOneControl(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(CLK_ONE_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
+}
+
+// Reg 0x61, bits[1]. This function disables the clock before enabling it
+// again.
+void SparkFun_5P49V60::resetClockOne(){
+  clockOneControl(DISABLE);
+  delay(1);
+  clockOneControl(ENABLE);
 }
 
 // Reg 0x62, bits[7:5], Default setting is HCSL33 mode.
@@ -1191,6 +1243,14 @@ void SparkFun_5P49V60::clockTwoConfigMode(uint8_t mode){
 void SparkFun_5P49V60::clockTwoControl(uint8_t control){
   if (control == ENABLE || control == DISABLE)
     _writeRegister(CLK_TWO_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
+}
+
+// Reg 0x63, bits[1]. This function disables the clock before enabling it
+// again.
+void SparkFun_5P49V60::resetClockTwo(){
+  clockTwoControl(DISABLE);
+  delay(1);
+  clockTwoControl(ENABLE);
 }
 
 // Reg 0x64, bits[7:5], Default setting is Low Voltage Differential Signal
@@ -1219,14 +1279,14 @@ void SparkFun_5P49V60::clockFourControl(uint8_t control){
     _writeRegister(CLK_FOUR_OUT_CNFIG_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
-//uint16_t SparkFun_5P49V60::calculateFracDivider(uint16_t clock_hertz){
-  //if (clock_hertz > k
-//}
+// Reg 0x76, bits[5] This register is not listed in the datasheet officially
+// but is briefly mentioned on page 49 with regards to enabling skew. 
+void SparkFun_5P49V60::globalReset(){
+  _writeRegister(GLOBAL_RESET_REG, MASK_TWO_MSB, DISABLE, POS_FIVE);
+  delay(1);
+  _writeRegister(GLOBAL_RESET_REG, MASK_TWO_MSB, ENABLE, POS_FIVE);
+}
 
-// This generic function handles I2C write commands for modifying individual
-// bits in an eight bit register. Paramaters include the register's address, a mask
-// for bits that are ignored, the bits to write, and the bits' starting
-// position.
 void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition) {
 
   uint8_t _i2cWrite;
