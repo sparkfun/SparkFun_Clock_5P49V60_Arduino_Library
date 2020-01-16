@@ -3,7 +3,7 @@
   following equation:
   (Desired Frequency)/(Crystal Frequency) = Divider Value
   This value divides the Phase Lock Loop within the Clock Generator to get the
-  desired oscillator frequency. 
+  desired internal voltage controlled oscillator frequency. 
   From here we can then use the equation for the OUTPUT divider to determine the
   OUTPUT value of Clock One:
   ((Internal Oscillator Frequncy)/2)/(Desired OUTPUT) = Divider Value
@@ -43,7 +43,7 @@ void setup(){
   // PLL will not take new settings without this function call.
   clockGen.calibrateVco();
 
-  // Clock One
+  // Clock One -----------------------------------------------------
   // To get 16MHz Output = (1600MHz/2)/16MHz = 50
   clockGen.setIntDivOutOne(50);
   Serial.print("FOD One Divider: ");
@@ -54,6 +54,7 @@ void setup(){
   // the clock with a 100Ohm resistance to GND.
   clockGen.clockOneConfigMode(LVPECL_MODE);
   clockGen.clockOneControl(ENABLE);
+  // --------------------------------------------------------------
 }
 
 void loop(){

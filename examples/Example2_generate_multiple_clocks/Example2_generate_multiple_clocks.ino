@@ -62,7 +62,7 @@ void setup(){
   // --------------------------------------------------------------
 
   // Clock Two--------------------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
+  // To get 8MHz Output = (1600MHz/2)/8MHz = 100
   clockGen.setIntDivOutTwo(100);
   Serial.print("FOD One Divider: ");
   Serial.println(clockGen.readIntDivOutTwo());
@@ -72,7 +72,7 @@ void setup(){
   // -----------------------------------------------------------
 
   // Clock Three------------------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
+  // To get 32MHz Output = (1600MHz/2)/32MHz = 25
   clockGen.setIntDivOutThree(100);
   Serial.print("FOD One Divider: ");
   Serial.println(clockGen.readIntDivOutThree());
@@ -82,7 +82,7 @@ void setup(){
   // -----------------------------------------------------------
 
   // Clock Four-------------------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
+  // To get 16MHz Output = (1600MHz/2)/16MHz = 10
   clockGen.setIntDivOutFour(100);
   Serial.print("FOD One Divider: ");
   Serial.println(clockGen.readIntDivOutFour());
