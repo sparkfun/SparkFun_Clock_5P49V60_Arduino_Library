@@ -964,6 +964,29 @@ void SparkFun_5P49V60::setFractDivFodThr(uint32_t divider_val){
                 ((divider_val & 0x3FFFFFFF) >> (POS_SIX + 16)), POS_ZERO);
 }
 
+// REG 0x42, 0x43, 0x44, 0x45 bits[7:0] in the first three registers and
+// bits[7:2] in 0x45.
+uint32_t SparkFun_5P49V60::readFractDivFodThr(){
+
+  uint32_t llsb_div_val; 
+  uint32_t lsb_div_val; 
+  uint32_t msb_div_val;
+  uint32_t mmsb_div_val;
+  uint32_t ret_val;
+
+  llsb_div_val = _readRegister(OUT_FDIV_THR_REG_FOUR) >> POS_TWO;
+  lsb_div_val = _readRegister(OUT_FDIV_THR_REG_THR);
+  msb_div_val = _readRegister(OUT_FDIV_THR_REG_TWO);
+  mmsb_div_val = _readRegister(OUT_FDIV_THR_REG_ONE);
+
+  ret_val = llsb_div_val;  
+  ret_val |= (lsb_div_val << POS_SIX); 
+  ret_val |= (msb_div_val << POS_SIX + 8); 
+  ret_val |= (mmsb_div_val << POS_SIX + 16); 
+
+  return ret_val;
+}
+
 //REG 0x4C, bit[0]
 void SparkFun_5P49V60::auxControlThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -1049,57 +1072,44 @@ void SparkFun_5P49V60::integerModeFour(uint8_t control){
 // bits[7:2] in 0x55.
 void SparkFun_5P49V60::setFractDivFodFour(uint32_t divider_val){
 
-  uint32_t llsb_div_val; //  Least least significant BYTE: 0x55
-  uint32_t lsb_div_val; // Least significant BYTE: 0x54
-  uint32_t msb_div_val; // 0x53
-  uint32_t mmsb_div_val; // 0x52
-
-  if (divider_val < 0 || divider_val > 536870911)
+  if (divider_val < 0 || divider_val > 1073741823) //1,073,741,823
     return;
 
-  if (divider_val <= 31){
-    // 0x55
-    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, divider_val, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, 0, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, 0, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
-  }
-  else if (divider_val <= 8191){
+  _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, 
+                (divider_val & 0x3F), POS_ZERO);
 
-    llsb_div_val = divider_val & 0x1F;
-    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
+  _writeRegister(OUT_FDIV_FOUR_REG_THR, MASK_ALL,
+                ((divider_val & 0x3FFF) >> POS_SIX), POS_ZERO);
 
-    // 0x55, 0x54
-    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
-    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, 0, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
-  }
-  else if (divider_val <= 2097151){
+  _writeRegister(OUT_FDIV_FOUR_REG_TWO, MASK_ALL, 
+                ((divider_val & 0x3FFFFF) >> (POS_SIX + 8)), POS_ZERO);
 
-    llsb_div_val = divider_val & 0x1F;
-    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
-    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
+  _writeRegister(OUT_FDIV_FOUR_REG_ONE, MASK_ALL, 
+                ((divider_val & 0x3FFFFFFF) >> (POS_SIX + 16)), POS_ZERO);
+}
 
-    // 0x55, 0x54, 0x53
-    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
-    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, msb_div_val, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, 0, POS_ZERO);
-  }
-  else {
+// REG 0x52, 0x53, 0x54, 0x55 bits[7:0] in the first three registers and
+// bits[7:2] in 0x55.
+uint32_t SparkFun_5P49V60::readFractDivFodThr(){
 
-    llsb_div_val = divider_val & 0x1F;
-    lsb_div_val = (divider_val & 0x1FFF) >> POS_FIVE;
-    msb_div_val = (divider_val & 0x1FFFFF) >> (POS_FIVE + 8);
-    mmsb_div_val = (divider_val & 0x1FFFFFFF) >> (POS_FIVE + 16);
+  uint32_t llsb_div_val; 
+  uint32_t lsb_div_val; 
+  uint32_t msb_div_val;
+  uint32_t mmsb_div_val;
+  uint32_t ret_val;
 
-    // 0x55, 0x54, 0x53, 0x52
-    _writeRegister(OUT_FDIV_FOUR_REG_FOUR, MASK_ALL, llsb_div_val, POS_TWO);
-    _writeRegister(OUT_FDIV_FOUR_REG_THR , MASK_ALL, lsb_div_val, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_TWO , MASK_ALL, msb_div_val, POS_ZERO);
-    _writeRegister(OUT_FDIV_FOUR_REG_ONE , MASK_ALL, mmsb_div_val, POS_ZERO);
-  }
+  llsb_div_val = _readRegister(OUT_FDIV_FOUR_REG_FOUR) >> POS_TWO;
+  lsb_div_val = _readRegister(OUT_FDIV_FOUR_REG_THR);
+  msb_div_val = _readRegister(OUT_FDIV_FOUR_REG_TWO);
+  mmsb_div_val = _readRegister(OUT_FDIV_FOUR_REG_ONE);
+
+  ret_val = llsb_div_val;  
+  ret_val |= (lsb_div_val << POS_SIX); 
+  ret_val |= (msb_div_val << POS_SIX + 8); 
+  ret_val |= (mmsb_div_val << POS_SIX + 16); 
+
+  return ret_val;
+
 }
 
 //REG 0x5C, bit[0]
