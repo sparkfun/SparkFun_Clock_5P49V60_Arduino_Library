@@ -701,6 +701,36 @@ uint32_t SparkFun_5P49V60::readFractDivFodOne(){
   return ret_val;
 }
 
+//REG 0x2B and 0x2C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+void SparkFun_5P49V60::setIntDivSkewOne(uint8_t divider_val ){
+
+  if (divider_val < 0 || divider_val > 4095)
+    return;
+
+  // MSB in 0x2B, LSB in 0x2C
+  _writeRegister(OUT_ISKEW_REG_TWO, MASK_FIFT_MSB, 
+                (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_ISKEW_REG_ONE, MASK_ALL, 
+                ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
+}
+
+//REG 0x2B and 0x2C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivSkewOne(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_ISKEW_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_ISKEW_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
 //REG 0x2C, bit[0]
 void SparkFun_5P49V60::auxControlOne(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -789,19 +819,11 @@ void SparkFun_5P49V60::setIntDivSkewTwo(uint8_t divider_val ){
   if (divider_val < 0 || divider_val > 4095)
     return;
 
-  if (divider_val <= 15){
-    // LSB in 0x3E
-    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(OUT_ISKEW_TWO_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
-    // MSB in 0x3D, LSB in 0x3E
-    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
-    _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
-    _writeRegister(OUT_ISKEW_TWO_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
-  }
-
+  // MSB in 0x3B, LSB in 0x3C
+  _writeRegister(OUT_ISKEW_TWO_REG_TWO, MASK_FIFT_MSB, 
+                (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_ISKEW_TWO_REG_ONE, MASK_ALL, 
+                ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 }
 
 //REG 0x3B and 0x3C, bits[7:0] and bits[7:4] respectively. Maximum value that
@@ -987,6 +1009,36 @@ uint32_t SparkFun_5P49V60::readFractDivFodThr(){
   return ret_val;
 }
 
+//REG 0x4B and 0x4C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+void SparkFun_5P49V60::setIntDivSkewThr(uint8_t divider_val ){
+
+  if (divider_val < 0 || divider_val > 4095)
+    return;
+
+  // MSB in 0x4B, LSB in 0x4C
+  _writeRegister(OUT_ISKEW_THR_REG_TWO, MASK_FIFT_MSB, 
+                (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_ISKEW_THR_REG_ONE, MASK_ALL, 
+                ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
+}
+
+//REG 0x4B and 0x4C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivSkewThr(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_ISKEW_THR_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_ISKEW_THR_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
 //REG 0x4C, bit[0]
 void SparkFun_5P49V60::auxControlThree(uint8_t control){
   if (control == ENABLE || control == DISABLE)
@@ -1090,7 +1142,7 @@ void SparkFun_5P49V60::setFractDivFodFour(uint32_t divider_val){
 
 // REG 0x52, 0x53, 0x54, 0x55 bits[7:0] in the first three registers and
 // bits[7:2] in 0x55.
-uint32_t SparkFun_5P49V60::readFractDivFodThr(){
+uint32_t SparkFun_5P49V60::readFractDivFodFour(){
 
   uint32_t llsb_div_val; 
   uint32_t lsb_div_val; 
@@ -1110,6 +1162,36 @@ uint32_t SparkFun_5P49V60::readFractDivFodThr(){
 
   return ret_val;
 
+}
+
+//REG 0x5B and 0x5C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+void SparkFun_5P49V60::setIntDivSkewFour(uint8_t divider_val ){
+
+  if (divider_val < 0 || divider_val > 4095)
+    return;
+
+  // MSB in 0x5B, LSB in 0x5C
+  _writeRegister(OUT_ISKEW_FOUR_REG_TWO, MASK_FIFT_MSB, 
+                (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_ISKEW_FOUR_REG_ONE, MASK_ALL, 
+                ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
+}
+
+//REG 0x5B and 0x5C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+uint16_t SparkFun_5P49V60::readIntDivSkewFour(){
+
+  uint8_t lsb_div_val;
+  uint8_t msb_div_val;
+  uint16_t ret_val;
+
+  lsb_div_val  = _readRegister(OUT_ISKEW_FOUR_REG_TWO) >> POS_FOUR;
+  msb_div_val  = _readRegister(OUT_ISKEW_FOUR_REG_ONE);
+  ret_val = uint16_t(msb_div_val) << 3;
+  ret_val |= lsb_div_val;
+
+  return ret_val;
 }
 
 //REG 0x5C, bit[0]

@@ -311,6 +311,10 @@ class SparkFun_5P49V60
 
     void integerModeOne(uint8_t);
 
+    void setIntDivSkewOne(uint8_t);
+
+    uint16_t readIntDivSkewOne();
+
     void auxControlOne(uint8_t);
 
     void setFractDivFodOne(uint32_t);
@@ -332,6 +336,8 @@ class SparkFun_5P49V60
     void integerModeTwo(uint8_t);
 
     void setFractDivFodTwo(uint32_t);
+
+    uint32_t readFractDivFodTwo();
 
     void setIntDivSkewTwo(uint8_t);
 
@@ -357,6 +363,10 @@ class SparkFun_5P49V60
 
     uint32_t readFractDivFodThr();
 
+    void setIntDivSkewThr(uint8_t);
+
+    uint16_t readIntDivSkewThr();
+
     void auxControlThree(uint8_t control);
 
     void setIntDivOutThree(uint8_t);
@@ -375,15 +385,17 @@ class SparkFun_5P49V60
 
     void setFractDivFodFour(uint32_t);
 
-    uint32_t readFractDivFodThr();
+    uint32_t readFractDivFodFour();
+
+    void setIntDivSkewFour(uint8_t);
+
+    uint16_t readIntDivSkewFour();
 
     void auxControlFour(uint8_t control);
 
     void setIntDivOutFour(uint8_t);
 
     uint16_t readIntDivOutFour();
-
-    uint8_t _readRegister(uint8_t);
 
     void clockOneConfigMode(uint8_t);
 
@@ -408,6 +420,8 @@ class SparkFun_5P49V60
     void clockFourConfigMode(uint8_t);
 
     void globalReset();
+
+    uint8_t _readRegister(uint8_t);
 
   private:
 
