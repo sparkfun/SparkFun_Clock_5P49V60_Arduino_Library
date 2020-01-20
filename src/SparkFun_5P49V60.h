@@ -313,7 +313,11 @@ class SparkFun_5P49V60
 
     void setIntDivSkewOne(uint8_t);
 
+    void setFractDivSkewOne(float);
+
     uint16_t readIntDivSkewOne();
+
+    float readFractDivSkewOne();
 
     void auxControlOne(uint8_t);
 
@@ -341,7 +345,11 @@ class SparkFun_5P49V60
 
     void setIntDivSkewTwo(uint8_t);
 
+    void setFractDivSkewTwo(float);
+
     uint16_t readIntDivSkewTwo();
+
+    float readFractDivSkewTwo();
     
     void auxControlTwo(uint8_t);
 
@@ -365,7 +373,11 @@ class SparkFun_5P49V60
 
     void setIntDivSkewThr(uint8_t);
 
+    void setFractDivSkewThr(float);
+
     uint16_t readIntDivSkewThr();
+
+    float readFractDivSkewThr();
 
     void auxControlThree(uint8_t control);
 
@@ -389,7 +401,11 @@ class SparkFun_5P49V60
 
     void setIntDivSkewFour(uint8_t);
 
+    void setFractDivSkewFour(float);
+
     uint16_t readIntDivSkewFour();
+
+    float readFractDivSkewFour();
 
     void auxControlFour(uint8_t control);
 

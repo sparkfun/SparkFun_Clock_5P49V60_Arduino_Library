@@ -28,10 +28,9 @@ void setup(){
   // PLL will not take new settings without this function call.
   clockGen.calibrateVco();
 
-  // Clock One -----------------------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/22MHz = 36.3636
-  // Integer portion = 36
-  clockGen.setIntDivOutOne(36);
+  // Clock One General Settings------------------------------------
+  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
+  clockGen.setIntDivOutOne(50);
   Serial.print("FOD One Integer Divider: ");
   Serial.println(clockGen.readIntDivOutOne());
   clockGen.muxPllToFodOne();
@@ -41,6 +40,23 @@ void setup(){
   clockGen.clockOneConfigMode(LVPECL_MODE);
   clockGen.clockOneControl(ENABLE);
   // --------------------------------------------------------------
+  
+  // Clock One Skew------------------------------------------------
+  // Time of one oscillation at 16MHz (1/f = t) = 62.5ns
+  // Desired skew = 10ns 
+  // 360 degress * (10ns/62.5ns) = 57.6 degrees
+  // Output Divider for VCO = 100
+  // 360 degrees /100 = 36 degrees
+  // Total Skew = 57.6/36 = 1.6 degrees 
+  // Integer Portion = 1
+  // Fractional Portion = .6 
+  clockGen.setIntDivSkewOne(1);
+  clockGen.setFractDivSkewOne(.6);
+  Serial.print("Integer portion of Skew One: ");
+  Serial.println(clockGen.readIntDivSkewOne());
+  Serial.print("Fractional portion of Skew One: ");
+  Serial.println(clockGen.readFractDivSkewOne());
+  //---------------------------------------------------------------
 }
 
 void loop(){

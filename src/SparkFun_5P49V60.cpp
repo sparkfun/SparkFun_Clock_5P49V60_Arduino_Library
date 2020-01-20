@@ -715,6 +715,19 @@ void SparkFun_5P49V60::setIntDivSkewOne(uint8_t divider_val ){
                 ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 }
 
+// 0x2F, bits[5:0]. Maximum integer value that that can be set: 64.
+void SparkFun_5P49V60::setFractDivSkewOne(float frac_val){
+
+  if (frac_val < 0 || frac_val > .99)
+    return;
+
+  uint8_t calculated_val;
+  // This automatically rounds the value to an integer
+  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  _writeRegister(OUT_FSKEW_REG, MASK_ALL, calculated_val, POS_ZERO);
+
+}
+
 //REG 0x2B and 0x2C, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
 uint16_t SparkFun_5P49V60::readIntDivSkewOne(){
@@ -727,6 +740,15 @@ uint16_t SparkFun_5P49V60::readIntDivSkewOne(){
   msb_div_val  = _readRegister(OUT_ISKEW_REG_ONE);
   ret_val = uint16_t(msb_div_val) << 3;
   ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
+//REG 0x2F, bits[5:0].
+float SparkFun_5P49V60::readFractDivSkewOne(){
+
+  uint8_t reg_val  = _readRegister(OUT_FSKEW_REG);
+  float ret_val = static_cast<float>(reg_val)/(2^24);
 
   return ret_val;
 }
@@ -826,6 +848,19 @@ void SparkFun_5P49V60::setIntDivSkewTwo(uint8_t divider_val ){
                 ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 }
 
+// 0x3F, bits[5:0]. Maximum integer value that that can be set: 64.
+void SparkFun_5P49V60::setFractDivSkewTwo(float frac_val){
+
+  if (frac_val < 0 || frac_val > .99)
+    return;
+
+  uint8_t calculated_val;
+  // This automatically rounds the value to an integer
+  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  _writeRegister(OUT_FSKEW_TWO_REG, MASK_ALL, calculated_val, POS_ZERO);
+
+}
+
 //REG 0x3B and 0x3C, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
 uint16_t SparkFun_5P49V60::readIntDivSkewTwo(){
@@ -838,6 +873,15 @@ uint16_t SparkFun_5P49V60::readIntDivSkewTwo(){
   msb_div_val  = _readRegister(OUT_ISKEW_TWO_REG_ONE);
   ret_val = uint16_t(msb_div_val) << 3;
   ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
+//REG 0x3F, bits[5:0].
+float SparkFun_5P49V60::readFractDivSkewTwo(){
+
+  uint8_t reg_val  = _readRegister(OUT_FSKEW_TWO_REG);
+  float ret_val = static_cast<float>(reg_val)/(2^24);
 
   return ret_val;
 }
@@ -1023,6 +1067,19 @@ void SparkFun_5P49V60::setIntDivSkewThr(uint8_t divider_val ){
                 ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 }
 
+// 0x4F, bits[5:0]. Maximum integer value that that can be set: 64.
+void SparkFun_5P49V60::setFractDivSkewThr(float frac_val){
+
+  if (frac_val < 0 || frac_val > .99)
+    return;
+
+  uint8_t calculated_val;
+  // This automatically rounds the value to an integer
+  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  _writeRegister(OUT_FSKEW_THR_REG, MASK_ALL, calculated_val, POS_ZERO);
+
+}
+
 //REG 0x4B and 0x4C, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
 uint16_t SparkFun_5P49V60::readIntDivSkewThr(){
@@ -1035,6 +1092,15 @@ uint16_t SparkFun_5P49V60::readIntDivSkewThr(){
   msb_div_val  = _readRegister(OUT_ISKEW_THR_REG_ONE);
   ret_val = uint16_t(msb_div_val) << 3;
   ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
+//REG 0x4F, bits[5:0].
+float SparkFun_5P49V60::readFractDivSkewThr(){
+
+  uint8_t reg_val  = _readRegister(OUT_FSKEW_THR_REG);
+  float ret_val = static_cast<float>(reg_val)/(2^24);
 
   return ret_val;
 }
@@ -1178,6 +1244,18 @@ void SparkFun_5P49V60::setIntDivSkewFour(uint8_t divider_val ){
                 ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 }
 
+// 0x6F, bits[5:0]. Maximum integer value that that can be set: 64.
+void SparkFun_5P49V60::setFractDivSkewFour(float frac_val){
+
+  if (frac_val < 0 || frac_val > .99)
+    return;
+
+  uint8_t calculated_val;
+  // This automatically rounds the value to an integer
+  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  _writeRegister(OUT_FSKEW_FOUR_REG, MASK_ALL, calculated_val, POS_ZERO);
+
+}
 //REG 0x5B and 0x5C, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
 uint16_t SparkFun_5P49V60::readIntDivSkewFour(){
@@ -1190,6 +1268,15 @@ uint16_t SparkFun_5P49V60::readIntDivSkewFour(){
   msb_div_val  = _readRegister(OUT_ISKEW_FOUR_REG_ONE);
   ret_val = uint16_t(msb_div_val) << 3;
   ret_val |= lsb_div_val;
+
+  return ret_val;
+}
+
+//REG 0x5F, bits[5:0].
+float SparkFun_5P49V60::readFractDivSkewFour(){
+
+  uint8_t reg_val  = _readRegister(OUT_FSKEW_FOUR_REG);
+  float ret_val = static_cast<float>(reg_val)/(2^24);
 
   return ret_val;
 }
