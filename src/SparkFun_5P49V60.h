@@ -3,6 +3,7 @@
 
 #include <Wire.h>
 #include <Arduino.h>
+#include <math.h>
 
 // 7 bit unshifted addresses:
 #define DEF_ADDR 0x6A
@@ -36,6 +37,7 @@
 
 //                            1 , 2   , 4   , 8    , 16   , 32
 static float _cap_arr[6] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92};
+static uint32_t DEF_CLOCK = 16000000; //16MHz
 
 enum REGISTER_INDEX {
 
@@ -219,7 +221,7 @@ class SparkFun_5P49V60
     // Public Variables
 
     //Function declarations
-    SparkFun_5P49V60(uint8_t address = DEF_ADDR); // I2C Constructor
+    SparkFun_5P49V60(uint8_t address = DEF_ADDR, uint8_t clock_speed = DEF_CLOCK); // I2C Constructor
 
     bool begin(TwoWire &wirePort = Wire); 
 
@@ -314,6 +316,8 @@ class SparkFun_5P49V60
     void setIntDivSkewOne(uint8_t);
 
     void setFractDivSkewOne(float);
+
+    void skewClockOne(uint8_t);
 
     uint16_t readIntDivSkewOne();
 
@@ -443,6 +447,9 @@ class SparkFun_5P49V60
 
     // Private Variables
     uint8_t _address;
+    uint8_t _clock_speed;
+
+    float _calculate_skew_variables(uint8_t);
 
     // This generic function handles I2C write commands for modifying individual
     // bits in an eight bit register. Paramaters include the register's address, a mask

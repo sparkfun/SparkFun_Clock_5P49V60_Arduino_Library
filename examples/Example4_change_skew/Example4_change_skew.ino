@@ -40,9 +40,22 @@ void setup(){
   clockGen.clockOneConfigMode(LVPECL_MODE);
   clockGen.clockOneControl(ENABLE);
   // --------------------------------------------------------------
+
+  // Clock Two General Settings------------------------------------
+  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
+  clockGen.setIntDivOutOne(50);
+  Serial.print("FOD One Integer Divider: ");
+  Serial.println(clockGen.readIntDivOutTwo());
+  clockGen.muxPllToFodTwo();
+  // There are many OUTPUT modes available for each clock - this example uses
+  // LVPECL (Low voltage Positive Emitter Coupled Logic) mode and terminates 
+  // the clock with a 100Ohm resistance to GND.
+  clockGen.clockTwoConfigMode(LVPECL_MODE);
+  clockGen.clockTwoControl(ENABLE);
+  // --------------------------------------------------------------
   
   // Clock One Skew------------------------------------------------
-  // Time of one oscillation at 16MHz (1/f = t) = 62.5ns
+  // Time of one oscillation of clock one and two is  (1/f = t) = 62.5ns
   // Desired skew = 10ns 
   // 360 degress * (10ns/62.5ns) = 57.6 degrees
   // Output Divider for VCO = 100
@@ -52,6 +65,7 @@ void setup(){
   // Fractional Portion = .6 
   clockGen.setIntDivSkewOne(1);
   clockGen.setFractDivSkewOne(.6);
+  clockGen.globalReset();
   Serial.print("Integer portion of Skew One: ");
   Serial.println(clockGen.readIntDivSkewOne());
   Serial.print("Fractional portion of Skew One: ");

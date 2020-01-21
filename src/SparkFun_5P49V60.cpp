@@ -10,8 +10,8 @@
 
 #include "SparkFun_5P49V60.h"
 
-SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address) : _address(address)
-{ }
+SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address, uint8_t clock_speed) : 
+                                   _address(address), _clock_speed(clock_speed) { }
 
 bool SparkFun_5P49V60::begin(TwoWire &wirePort)
 {
@@ -713,6 +713,7 @@ void SparkFun_5P49V60::setIntDivSkewOne(uint8_t divider_val ){
                 (divider_val & MASK_FIFT_MSB), POS_FOUR);
   _writeRegister(OUT_ISKEW_REG_ONE, MASK_ALL, 
                 ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
+
 }
 
 // 0x2F, bits[5:0]. Maximum integer value that that can be set: 64.
@@ -723,8 +724,23 @@ void SparkFun_5P49V60::setFractDivSkewOne(float frac_val){
 
   uint8_t calculated_val;
   // This automatically rounds the value to an integer
-  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  calculated_val = static_cast<uint8_t>(frac_val * pow(2.0,24.0));
   _writeRegister(OUT_FSKEW_REG, MASK_ALL, calculated_val, POS_ZERO);
+
+}
+
+//REG 0x2B and 0x2C, bits[7:0] and bits[7:4] respectively. Maximum value that
+// that can be set: 4,095.
+void SparkFun_5P49V60::skewClockOne(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewOne(int_portion);
+  setFractDivSkewOne(frac_portion);
+  globalReset();
 
 }
 
@@ -1404,6 +1420,28 @@ void SparkFun_5P49V60::globalReset(){
   _writeRegister(GLOBAL_RESET_REG, MASK_TWO_MSB, DISABLE, POS_FIVE);
   delay(1);
   _writeRegister(GLOBAL_RESET_REG, MASK_TWO_MSB, ENABLE, POS_FIVE);
+}
+
+float SparkFun_5P49V60::_calculate_skew_variables(uint8_t _skew_val){
+
+  // VCO is at:
+  float feedback_divider =  readPllFeedBackIntDiv() + (readPllFeedBackFractDiv()/pow(2.0,24.0));
+  uint32_t vco_frequency = _clock_speed * feedback_divider;
+  // Clock Output is at: 
+  uint16_t clock_divider= readIntDivOutOne() + (readFractDivFodOne()/pow(2.0,24.0));
+  uint32_t clock_frequency = vco_frequency/clock_divider;
+
+  // Calculate Clock Skew
+  // Clock output period = T = 1/f
+  float clock_period = 1/clock_frequency; 
+  // 360 degrees * (desired skew/vco period)
+  float clock_skew = 360 * (_skew_val/clock_period);
+  // Calculate VCO skew: 
+  float vco_skew = 360/feedback_divider;
+  float total_skew = clock_skew/vco_skew;
+
+  return total_skew;
+
 }
 
 void SparkFun_5P49V60::_writeRegister(uint8_t _wReg, uint8_t _mask, uint8_t _bits, uint8_t _startPosition) {
