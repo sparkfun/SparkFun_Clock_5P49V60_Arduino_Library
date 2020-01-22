@@ -36,16 +36,10 @@ void setup(){
     Serial.println("Could not communicate with the SparkFun Clock Generator.");
     while(1);
   }
-  // Fist, Setting the internal oscillator to a value that makes for easier
-  // divisors (100 in this case).
-  // PLL Divider - To get 1600MHz (1.6GHz): 1600MHz/16MHz (Clock) = 100
-  clockGen.setPllFeedbackIntDiv(100);
-  Serial.print("Feedback Integer Divider for PLL: ");
-  Serial.println(clockGen.readPllFeedBackIntDiv());
 
-  // Enable the VCO with the new settings. 
-  // PLL will not take new settings without this function call.
-  clockGen.calibrateVco();
+  // Fist, Setting the internal oscillator to a known value that makes for easy
+  // division: 1600MHz
+  clockGen.setVcoFrequency(1600.0); // Give values in MHz - A given value of 16
 
   // Clock One----------------------------------------------------
   // To get 16MHz Output = (1600MHz/2)/8MHz = 100

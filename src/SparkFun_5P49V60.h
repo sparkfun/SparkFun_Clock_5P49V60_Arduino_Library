@@ -225,6 +225,8 @@ class SparkFun_5P49V60
 
     bool begin(TwoWire &wirePort = Wire); 
 
+    void setVcoFrequency(float);
+
     void changeI2CAddress(uint8_t);
 
     uint8_t readI2CAddress();

@@ -25,6 +25,24 @@ bool SparkFun_5P49V60::begin(TwoWire &wirePort)
     return false;
 }
 
+
+void SparkFun_5P49V60::setVcoFrequency(float freq){
+  
+  //Convert to MHz
+  uint32_t _freq = static_cast<uint32_t>(freq * 1000);
+  float pll_divider = (_freq/2)/_clock_speed;  
+  // Seperate the divider into whole numbers and decimals 
+  uint16_t int_portion  = static_cast<uint16_t>(int_portion);
+  float decimal  = fmod(pll_divider, int_portion);
+  uint32_t fract_portion = static_cast<uint32_t>(fract_portion * pow(2,24));
+  
+  setPllFeedbackIntDiv(int_portion);
+  setPllFeedBackFractDiv(fract_portion);
+  
+  //Enable VCO
+  calibrateVco();
+}
+  
 // Reg 0x00, bit[0]
 void SparkFun_5P49V60::changeI2CAddress(uint8_t addr_selec){
   if (addr_selec == 0 || addr_selec == 1)
@@ -378,33 +396,13 @@ void SparkFun_5P49V60::setPllFeedBackFractDiv(uint32_t divider_val){
   if (divider_val < 0 || divider_val > 16777215)
     return;
 
-  if (divider_val <= 255){
-    _writeRegister(FDB_FRAC_DIV_REG_THR, MASK_ALL, divider_val, POS_ZERO);
-    _writeRegister(FDB_FRAC_DIV_REG_TWO, MASK_ALL, 0, POS_ZERO);
-    _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else if (divider_val <= 65535){
-    lsb_div_val = divider_val & MASK_ALL_8_BIT;
-    _writeRegister(FDB_FRAC_DIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
-
-    msb_div_val = divider_val & MASK_ALL_16_BIT;
-    msb_div_val >>= POS_EIGHT;
-    _writeRegister(FDB_FRAC_DIV_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
-
-    _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
-    lsb_div_val = divider_val & MASK_ALL_8_BIT;
-    _writeRegister(FDB_FRAC_DIV_REG_THR, MASK_ALL, lsb_div_val, POS_ZERO);
-
-    msb_div_val = divider_val & MASK_ALL_16_BIT;
-    msb_div_val >>= POS_EIGHT;
-    _writeRegister(FDB_FRAC_DIV_REG_TWO, MASK_ALL, msb_div_val, POS_ZERO);
-
-    mmsb_div_val = divider_val & MASK_ALL_24_BIT;
-    mmsb_div_val >>= POS_SIXT;
-    _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_ALL, mmsb_div_val, POS_ZERO);
-  }
+  _writeRegister(FDB_FRAC_DIV_REG_THR, MASK_ALL, 
+                (divider_val & MASK_ALL_8_BIT), POS_ZERO);
+  _writeRegister(FDB_FRAC_DIV_REG_TWO, MASK_ALL, 
+                ((divider_val & MASK_ALL_16_BIT) >> POS_EIGHT), POS_ZERO);
+  _writeRegister(FDB_FRAC_DIV_REG_ONE, MASK_ALL, 
+                ((divider_val & MASK_ALL_24_BIT) >> POS_SIXT), POS_ZERO);
+  
 }
 
 // REG 0x19, 0x1A, and 0x1B, bits[8:0] for all three registers.
