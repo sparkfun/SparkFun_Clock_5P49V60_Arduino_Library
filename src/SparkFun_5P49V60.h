@@ -321,6 +321,12 @@ class SparkFun_5P49V60
 
     void skewClockOne(uint8_t);
 
+    void skewClockTwo(uint8_t);
+
+    void skewClockThr(uint8_t);
+
+    void skewClockFour(uint8_t);
+
     uint16_t readIntDivSkewOne();
 
     float readFractDivSkewOne();

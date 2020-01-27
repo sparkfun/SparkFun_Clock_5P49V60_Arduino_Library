@@ -31,7 +31,7 @@ void SparkFun_5P49V60::setVcoFrequency(float freq){
   //Convert to MHz
   uint32_t _freq = static_cast<uint32_t>(freq * 1000);
   float pll_divider = (_freq/2)/_clock_speed;  
-  // Seperate the divider into whole numbers and decimals 
+  // Seperate the divider into the whole number and decimal.
   uint16_t int_portion  = static_cast<uint16_t>(int_portion);
   float decimal  = fmod(pll_divider, int_portion);
   uint32_t fract_portion = static_cast<uint32_t>(fract_portion * pow(2,24));
@@ -727,8 +727,6 @@ void SparkFun_5P49V60::setFractDivSkewOne(float frac_val){
 
 }
 
-//REG 0x2B and 0x2C, bits[7:0] and bits[7:4] respectively. Maximum value that
-// that can be set: 4,095.
 void SparkFun_5P49V60::skewClockOne(uint8_t skew_val){
     
   float total_skew = _calculate_skew_variables(skew_val);
@@ -738,6 +736,45 @@ void SparkFun_5P49V60::skewClockOne(uint8_t skew_val){
   
   setIntDivSkewOne(int_portion);
   setFractDivSkewOne(frac_portion);
+  globalReset();
+
+}
+
+void SparkFun_5P49V60::skewClockTwo(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewTwo(int_portion);
+  setFractDivSkewTwo(frac_portion);
+  globalReset();
+
+}
+
+void SparkFun_5P49V60::skewClockThr(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewThr(int_portion);
+  setFractDivSkewThr(frac_portion);
+  globalReset();
+
+}
+
+void SparkFun_5P49V60::skewClockFour(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewFour(int_portion);
+  setFractDivSkewFour(frac_portion);
   globalReset();
 
 }
@@ -762,7 +799,7 @@ uint16_t SparkFun_5P49V60::readIntDivSkewOne(){
 float SparkFun_5P49V60::readFractDivSkewOne(){
 
   uint8_t reg_val  = _readRegister(OUT_FSKEW_REG);
-  float ret_val = static_cast<float>(reg_val)/(2^24);
+  float ret_val = static_cast<float>(reg_val/pow(2.0, 24.0));
 
   return ret_val;
 }
@@ -870,7 +907,7 @@ void SparkFun_5P49V60::setFractDivSkewTwo(float frac_val){
 
   uint8_t calculated_val;
   // This automatically rounds the value to an integer
-  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  calculated_val = static_cast<uint8_t>(frac_val * pow(2.0,24.0));
   _writeRegister(OUT_FSKEW_TWO_REG, MASK_ALL, calculated_val, POS_ZERO);
 
 }
@@ -895,7 +932,7 @@ uint16_t SparkFun_5P49V60::readIntDivSkewTwo(){
 float SparkFun_5P49V60::readFractDivSkewTwo(){
 
   uint8_t reg_val  = _readRegister(OUT_FSKEW_TWO_REG);
-  float ret_val = static_cast<float>(reg_val)/(2^24);
+  float ret_val = static_cast<float>(reg_val/pow(2.0,24.0));
 
   return ret_val;
 }
@@ -1089,7 +1126,7 @@ void SparkFun_5P49V60::setFractDivSkewThr(float frac_val){
 
   uint8_t calculated_val;
   // This automatically rounds the value to an integer
-  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  calculated_val = static_cast<uint8_t>(frac_val * pow(2.0,24.0));
   _writeRegister(OUT_FSKEW_THR_REG, MASK_ALL, calculated_val, POS_ZERO);
 
 }
@@ -1114,7 +1151,7 @@ uint16_t SparkFun_5P49V60::readIntDivSkewThr(){
 float SparkFun_5P49V60::readFractDivSkewThr(){
 
   uint8_t reg_val  = _readRegister(OUT_FSKEW_THR_REG);
-  float ret_val = static_cast<float>(reg_val)/(2^24);
+  float ret_val = static_cast<float>(reg_val/pow(2.0,24.0));
 
   return ret_val;
 }
@@ -1266,7 +1303,7 @@ void SparkFun_5P49V60::setFractDivSkewFour(float frac_val){
 
   uint8_t calculated_val;
   // This automatically rounds the value to an integer
-  calculated_val = static_cast<uint8_t>(frac_val * (2^24));
+  calculated_val = static_cast<uint8_t>(frac_val * pow(2.0,24.0));
   _writeRegister(OUT_FSKEW_FOUR_REG, MASK_ALL, calculated_val, POS_ZERO);
 
 }
@@ -1290,7 +1327,7 @@ uint16_t SparkFun_5P49V60::readIntDivSkewFour(){
 float SparkFun_5P49V60::readFractDivSkewFour(){
 
   uint8_t reg_val  = _readRegister(OUT_FSKEW_FOUR_REG);
-  float ret_val = static_cast<float>(reg_val)/(2^24);
+  float ret_val = static_cast<float>(reg_val/pow(2.0,24.0));
 
   return ret_val;
 }

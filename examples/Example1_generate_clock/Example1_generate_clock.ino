@@ -34,7 +34,7 @@ void setup(){
 
   // Fist, Setting the internal oscillator to a known value that makes for easy
   // division: 1600MHz
-  clockGen.setVcoFrequency(1600.0); // Give values in MHz - A given value of 16
+  clockGen.setVcoFrequency(1600.0); // Give values in MHz 
 
   // Clock One -----------------------------------------------------
   // To get 16MHz Output = (1600MHz/2)/16MHz = 50
