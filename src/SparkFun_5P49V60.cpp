@@ -810,6 +810,12 @@ void SparkFun_5P49V60::auxControlOne(uint8_t control){
     _writeRegister(OUT_ISKEW_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
+//
+void SparkFun_5P49V60::setClockOneFreq(float freq){
+  
+  float total_out_division = (_clock/2)/freq; 
+}
+
 //REG 0x2D and 0x2E, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
 void SparkFun_5P49V60::setIntDivOutOne(uint8_t divider_val ){
