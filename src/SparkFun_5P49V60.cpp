@@ -10,8 +10,8 @@
 
 #include "SparkFun_5P49V60.h"
 
-SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address, uint8_t clock_speed) : 
-                                   _address(address), _clock_speed(clock_speed) { }
+SparkFun_5P49V60::SparkFun_5P49V60(uint8_t address, uint8_t vco_freq) : 
+                                   _address(address), _vco_freq(vco_freq) { }
 
 bool SparkFun_5P49V60::begin(TwoWire &wirePort)
 {
@@ -30,7 +30,7 @@ void SparkFun_5P49V60::setVcoFrequency(float freq){
   
   //Convert to MHz
   uint32_t _freq = static_cast<uint32_t>(freq * 1000);
-  float pll_divider = (_freq/2)/_clock_speed;  
+  float pll_divider = (_freq/2)/_vco_freq;  
   // Seperate the divider into the whole number and decimal.
   uint16_t int_portion  = static_cast<uint16_t>(int_portion);
   float decimal  = fmod(pll_divider, int_portion);
@@ -41,6 +41,118 @@ void SparkFun_5P49V60::setVcoFrequency(float freq){
   
   //Enable VCO
   calibrateVco();
+}
+
+//
+void SparkFun_5P49V60::setClockOneFreq(float freq){
+  
+  float division = (_vco_freq/2)/(freq * 1000); 
+  uint32_t int_portion = static_cast<uint32_t>(division);
+  float decimal = fmod(division, int_portion);
+  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+
+  setIntDivOutOne(int_portion);
+  setFractDivFodOne(frac_portion);
+
+  clockOneControl(ENABLE);
+  
+}
+
+//
+void SparkFun_5P49V60::setClockTwoFreq(float freq){
+  
+  float division = (_vco_freq/2)/(freq * 1000); 
+  uint32_t int_portion = static_cast<uint32_t>(division);
+  float decimal = fmod(division, int_portion);
+  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+
+  setIntDivOutTwo(int_portion);
+  setFractDivFodTwo(frac_portion);
+
+  clockTwoControl(ENABLE);
+  
+}
+
+//
+void SparkFun_5P49V60::setClockThrFreq(float freq){
+  
+  float division = (_vco_freq/2)/(freq * 1000); 
+  uint32_t int_portion = static_cast<uint32_t>(division);
+  float decimal = fmod(division, int_portion);
+  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+
+  setIntDivOutThree(int_portion);
+  setFractDivFodThr(frac_portion);
+
+  clockThrControl(ENABLE);
+  
+}
+
+//
+void SparkFun_5P49V60::setClockFourFreq(float freq){
+  
+  float division = (_vco_freq/2)/(freq * 1000); 
+  uint32_t int_portion = static_cast<uint32_t>(division);
+  float decimal = fmod(division, int_portion);
+  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+
+  setIntDivOutFour(int_portion);
+  setFractDivFodFour(frac_portion);
+
+  clockFourControl(ENABLE);
+  
+}
+
+void SparkFun_5P49V60::skewClockOne(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewOne(int_portion);
+  setFractDivSkewOne(frac_portion);
+  globalReset();
+
+}
+
+void SparkFun_5P49V60::skewClockTwo(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewTwo(int_portion);
+  setFractDivSkewTwo(frac_portion);
+  globalReset();
+
+}
+
+void SparkFun_5P49V60::skewClockThr(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewThr(int_portion);
+  setFractDivSkewThr(frac_portion);
+  globalReset();
+
+}
+
+void SparkFun_5P49V60::skewClockFour(uint8_t skew_val){
+    
+  float total_skew = _calculate_skew_variables(skew_val);
+
+  uint8_t int_portion = static_cast<uint8_t>(total_skew);
+  float frac_portion = fmod(total_skew, int_portion);
+  
+  setIntDivSkewFour(int_portion);
+  setFractDivSkewFour(frac_portion);
+  globalReset();
+
 }
   
 // Reg 0x00, bit[0]
@@ -727,57 +839,6 @@ void SparkFun_5P49V60::setFractDivSkewOne(float frac_val){
 
 }
 
-void SparkFun_5P49V60::skewClockOne(uint8_t skew_val){
-    
-  float total_skew = _calculate_skew_variables(skew_val);
-
-  uint8_t int_portion = static_cast<uint8_t>(total_skew);
-  float frac_portion = fmod(total_skew, int_portion);
-  
-  setIntDivSkewOne(int_portion);
-  setFractDivSkewOne(frac_portion);
-  globalReset();
-
-}
-
-void SparkFun_5P49V60::skewClockTwo(uint8_t skew_val){
-    
-  float total_skew = _calculate_skew_variables(skew_val);
-
-  uint8_t int_portion = static_cast<uint8_t>(total_skew);
-  float frac_portion = fmod(total_skew, int_portion);
-  
-  setIntDivSkewTwo(int_portion);
-  setFractDivSkewTwo(frac_portion);
-  globalReset();
-
-}
-
-void SparkFun_5P49V60::skewClockThr(uint8_t skew_val){
-    
-  float total_skew = _calculate_skew_variables(skew_val);
-
-  uint8_t int_portion = static_cast<uint8_t>(total_skew);
-  float frac_portion = fmod(total_skew, int_portion);
-  
-  setIntDivSkewThr(int_portion);
-  setFractDivSkewThr(frac_portion);
-  globalReset();
-
-}
-
-void SparkFun_5P49V60::skewClockFour(uint8_t skew_val){
-    
-  float total_skew = _calculate_skew_variables(skew_val);
-
-  uint8_t int_portion = static_cast<uint8_t>(total_skew);
-  float frac_portion = fmod(total_skew, int_portion);
-  
-  setIntDivSkewFour(int_portion);
-  setFractDivSkewFour(frac_portion);
-  globalReset();
-
-}
 
 //REG 0x2B and 0x2C, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
@@ -810,31 +871,18 @@ void SparkFun_5P49V60::auxControlOne(uint8_t control){
     _writeRegister(OUT_ISKEW_REG_TWO, MASK_ONE, control, POS_ZERO);
 }
 
-//
-void SparkFun_5P49V60::setClockOneFreq(float freq){
-  
-  float total_out_division = (_clock/2)/freq; 
-}
 
-//REG 0x2D and 0x2E, bits[7:0] and bits[7:4] respectively. Maximum value that
+// REG 0x2D and 0x2E, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
 void SparkFun_5P49V60::setIntDivOutOne(uint8_t divider_val ){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
 
-  if (divider_val <= 15){
-    // LSB in 0x2E
-    _writeRegister(OUT_IDIV_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(OUT_IDIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
-    // MSB in 0x2D, LSB in 0x2E
-    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
-    _writeRegister(OUT_IDIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
-    _writeRegister(OUT_IDIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
-  }
+  // LSB in 0x2E
+  // MSB in 0x2D, LSB in 0x2E
+  _writeRegister(OUT_IDIV_REG_TWO, MASK_FIFT_MSB, (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_IDIV_REG_ONE, MASK_ALL, ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 
 }
 
@@ -956,18 +1004,10 @@ void SparkFun_5P49V60::setIntDivOutTwo(uint8_t divider_val ){
   if (divider_val < 0 || divider_val > 4095)
     return;
 
-  if (divider_val <= 15){
-    // LSB in 0x3E
-    _writeRegister(OUT_IDIV_TWO_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(OUT_IDIV_TWO_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
-    // MSB in 0x3D, LSB in 0x3E
-    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
-    _writeRegister(OUT_IDIV_TWO_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
-    _writeRegister(OUT_IDIV_TWO_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
-  }
+  // LSB in 0x3E
+  // MSB in 0x3D, LSB in 0x3E
+  _writeRegister(OUT_IDIV_TWO_REG_TWO, MASK_FIFT_MSB, (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_IDIV_TWO_REG_ONE, MASK_ALL, ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 
 }
 
@@ -1175,18 +1215,10 @@ void SparkFun_5P49V60::setIntDivOutThree(uint8_t divider_val ){
   if (divider_val < 0 || divider_val > 4095)
     return;
 
-  if (divider_val <= 15){
     // LSB in 0x4E
-    _writeRegister(OUT_IDIV_THR_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(OUT_IDIV_THR_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
     // MSB in 0x4D, LSB in 0x4E
-    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
-    _writeRegister(OUT_IDIV_THR_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
-    _writeRegister(OUT_IDIV_THR_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
-  }
+  _writeRegister(OUT_IDIV_THR_REG_TWO, MASK_FIFT_MSB, (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(OUT_IDIV_THR_REG_ONE, MASK_ALL, ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 
 }
 
@@ -1351,18 +1383,10 @@ void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
   if (divider_val < 0 || divider_val > 4095)
     return;
 
-  if (divider_val <= 15){
-    // LSB in 0x5E
-    _writeRegister(OUT_IDIV_FOUR_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(OUT_IDIV_FOUR_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
-    // MSB in 0x5D, LSB in 0x5E
-    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
-    _writeRegister(OUT_IDIV_FOUR_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
-    _writeRegister(OUT_IDIV_FOUR_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
-  }
+  // LSB in 0x5E
+  // MSB in 0x5D, LSB in 0x5E
+  _writeRegister(OUT_IDIV_FOUR_REG_TWO, MASK_FIFT_MSB, divider_val & MASK_FIFT_MSB, POS_FOUR);
+  _writeRegister(OUT_IDIV_FOUR_REG_ONE, MASK_ALL, ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
 
 }
 
@@ -1467,7 +1491,7 @@ float SparkFun_5P49V60::_calculate_skew_variables(uint8_t _skew_val){
 
   // VCO is at:
   float feedback_divider =  readPllFeedBackIntDiv() + (readPllFeedBackFractDiv()/pow(2.0,24.0));
-  uint32_t vco_frequency = _clock_speed * feedback_divider;
+  uint32_t vco_frequency = _vco_freq * feedback_divider;
   // Clock Output is at: 
   uint16_t clock_divider= readIntDivOutOne() + (readFractDivFodOne()/pow(2.0,24.0));
   uint32_t clock_frequency = vco_frequency/clock_divider;

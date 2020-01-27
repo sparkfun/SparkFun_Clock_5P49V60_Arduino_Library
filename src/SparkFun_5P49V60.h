@@ -221,11 +221,27 @@ class SparkFun_5P49V60
     // Public Variables
 
     //Function declarations
-    SparkFun_5P49V60(uint8_t address = DEF_ADDR, uint8_t clock_speed = DEF_CLOCK); // I2C Constructor
+    SparkFun_5P49V60(uint8_t address = DEF_ADDR, uint8_t vco_freq = DEF_CLOCK); // I2C Constructor
 
     bool begin(TwoWire &wirePort = Wire); 
 
     void setVcoFrequency(float);
+
+    void setClockOneFreq(float);
+
+    void setClockTwoFreq(float);
+
+    void setClockThrFreq(float);
+
+    void setClockFourFreq(float);
+
+    void skewClockOne(uint8_t);
+
+    void skewClockTwo(uint8_t);
+
+    void skewClockThr(uint8_t);
+
+    void skewClockFour(uint8_t);
 
     void changeI2CAddress(uint8_t);
 
@@ -318,14 +334,6 @@ class SparkFun_5P49V60
     void setIntDivSkewOne(uint8_t);
 
     void setFractDivSkewOne(float);
-
-    void skewClockOne(uint8_t);
-
-    void skewClockTwo(uint8_t);
-
-    void skewClockThr(uint8_t);
-
-    void skewClockFour(uint8_t);
 
     uint16_t readIntDivSkewOne();
 
@@ -455,7 +463,7 @@ class SparkFun_5P49V60
 
     // Private Variables
     uint8_t _address;
-    uint8_t _clock_speed;
+    uint8_t _vco_freq;
 
     float _calculate_skew_variables(uint8_t);
 
