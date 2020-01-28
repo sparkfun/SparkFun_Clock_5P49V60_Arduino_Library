@@ -1,14 +1,39 @@
 /*
-  This example code first sets the internal oscillator to 1600MHz using the
-  following equation:
+  This example code goes through the manual steps of setting the internal
+  oscillator. The first two examples demonstrate how to set these values
+  without doing math but it's certainly worthwile and even necessary in
+  some cases to know how this is done behind the scenes. 
+  The following equation is used to determine the divider value to set the
+  internal oscillator:  
+
   (Desired Frequency)/(Crystal Frequency) = Divider Value
+
   This value divides the Phase Lock Loop within the Clock Generator to get the
   desired internal voltage controlled oscillator frequency. 
-  From here we can then use the equation for the OUTPUT divider to determine the
-  OUTPUT value of Clock One:
-  ((Internal Oscillator Frequncy)/2)/(Desired OUTPUT) = Divider Value
+  From here we use the equation for the OUTPUT divider to determine the
+  OUTPUT value of Clock One (Note: the OUTPUT clock is dependent on the
+  internal oscillator):
+
+  ((Internal Oscillator Frequency)/2)/(Desired OUTPUT) = Divider Value
+
+  Finally, set the OUTPUT mode to the desired transmission setup. 
+
+  Available Output Modes: 
+  * LVPECL_MODE
+  * CMOS_MODE
+  * HCSL33_MODE
+  * LVDS_MODE
+  * CMOS2_MODE
+  * CMOSD_MODE
+  * HCSL25_MODE
+
   Pages from Datasheet of Interest: 
   Pg. 22 Transmission Output Termination Setup and Values
+
+  Pages from Programming Guide: 
+  Pg. 21 Integer Feedback Divider Calculation
+  Pg. 26 Fractional Feedback Divider Calculation
+
   SparkFun Electronics
   Date: February, 2020
   Author: Elias Santistevan
@@ -35,8 +60,12 @@ void setup(){
 
 
   // Fist, Setting the internal oscillator to a known value that makes for easy
-  // division: 1600MHz
-  clockGen.setVcoFrequency(1600.0); // Give values in MHz - A given value of 16
+  // division: 1600MHz. 1600MHz/16MHz = 100
+  Serial.println("Setting Integer Divider.");
+  clockGen.setPllFeedbackIntDiv(100);
+  Serial.print("Integer Divider set to: ");
+  uint16_t fbVal = clockGen.readPllFeedBackIntDiv();
+  Serial.println(fbVal);
 
   // Clock One -----------------------------------------------------
   // To get 16MHz Output = (1600MHz/2)/22MHz = 36.3636

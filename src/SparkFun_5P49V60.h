@@ -11,8 +11,10 @@
 
 #define  ALT            0x01
 #define  DEF            0x00
-#define  SLOW           0x00
-#define  FAST           0x01
+#define  SLOWEST        0x00
+#define  SLOW           0x01
+#define  FAST           0x02
+#define  FASTEST        0x03
 #define  DISABLE        0x00
 #define  ENABLE         0x01
 #define  XIN            0x01

@@ -252,9 +252,11 @@ void SparkFun_5P49V60::persEnableClock(uint8_t clock){
 // Reg 0x68, bit[2]
 void SparkFun_5P49V60::clockZeroSlewRate(uint8_t rate)
 {
-  if (rate == FAST || rate == SLOW){
-    _writeRegister(CLK_OE_FUNC_REG, MASK_FOUR, rate, POS_TWO);
-  }
+  if (rate < SLOWEST || rate > FASTEST)
+    return;
+
+  _writeRegister(CLK_OE_FUNC_REG, MASK_FOUR, rate, POS_TWO);
+
 }
 
 // Reg 0x68, bit[2]. Possible parameters 18 (1.8V), 25 (2.5V), or 33 (3.3V).
@@ -456,18 +458,12 @@ void SparkFun_5P49V60::setPllFeedbackIntDiv(uint16_t divider_val){
   if (divider_val < 0 || divider_val > 4095)
     return;
 
-  if (divider_val <= 15){
-    // LSB in 0x18
-    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, divider_val, POS_FOUR);
-    _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, 0, POS_ZERO);
-  }
-  else {
-    // MSB in 0x17, LSB in 0x18
-    uint16_t lsb_div_val = divider_val & MASK_FIFT_MSB;
-    _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, lsb_div_val, POS_FOUR);
-    uint16_t msb_div_val = (divider_val & MASK_ALL_12_BIT) >> POS_THREE;
-    _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, msb_div_val, POS_ZERO);
-  }
+  // LSB in 0x18
+  // MSB in 0x17, LSB in 0x18
+  _writeRegister(FDB_INT_DIV_REG_TWO, MASK_FIFT_MSB, 
+                (divider_val & MASK_FIFT_MSB), POS_FOUR);
+  _writeRegister(FDB_INT_DIV_REG_ONE, MASK_ALL, 
+                ((divider_val & MASK_ALL_12_BIT) >> POS_THREE), POS_ZERO);
   
   // Enables the changes by calibrating the VCO.
   calibrateVco();
@@ -1414,8 +1410,9 @@ void SparkFun_5P49V60::clockOneConfigMode(uint8_t mode){
 
 // Reg 0x60, bits[1:0], Changes the slew rate. 
 void SparkFun_5P49V60::clockOneSlew(uint8_t rate){
-  if (rate >= 0 && rate <= 3)
-    _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THREE, rate, POS_ZERO);
+  if (rate < SLOWEST || rate > FASTEST)
+    return;
+  _writeRegister(CLK_ONE_OUT_CNFIG_REG_ONE, MASK_THREE, rate, POS_ZERO);
 }
 
 // Reg 0x61, bits[1]. This function enable clock output on clock one.

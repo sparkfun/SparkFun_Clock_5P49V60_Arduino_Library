@@ -1,8 +1,9 @@
 /*
   This example code first sets the internal oscillator to 1600MHz.
-  It then sets the output for Clock One to 16 and then sets the output
+  It then sets the output for Clock One to 16MHz and then sets the output
   MODE to LVPECL (Low Voltage Positive Emitter Coupled Logic).
-  Output Modes also available:
+
+  Available Output Modes: 
   * LVPECL_MODE
   * CMOS_MODE
   * HCSL33_MODE
@@ -10,8 +11,10 @@
   * CMOS2_MODE
   * CMOSD_MODE
   * HCSL25_MODE
+
   Pages from Datasheet of Interest:
   Pg. 22 Transmission Output Termination Setup and Values
+
   SparkFun Electronics
   Date: February, 2020
   Author: Elias Santistevan
@@ -47,7 +50,7 @@ void setup(){
   // LVPECL (Low voltage Positive Emitter Coupled Logic) mode.
   clockGen.clockOneConfigMode(LVPECL_MODE);
   Serial.println("Setting Clock One Frequency to 16MHz.");
-  clockGen.setClockOneFreq(16.0); // Give value in MHz, 16.0 = 16000000Hz or 16MHz
+  clockGen.setClockOneFreq(16.0); // Give float value in MHz, 16.0 = 16000000Hz or 16MHz
   // --------------------------------------------------------------
 }
 

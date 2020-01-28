@@ -1,19 +1,29 @@
 /*
-  This example code first sets the internal oscillator to 1600MHz using the
-  following equation:
-  (Desired Frequency)/(Crystal Frequency) = Divider Value
-  This value divides the Phase Lock Loop within the Clock Generator to get the
-  desired internal voltage controlled oscillator frequency. 
-  From here we can then use the equation for the OUTPUT divider to determine the
-  OUTPUT value of Clock One:
-  ((Internal Oscillator Frequncy)/2)/(Desired OUTPUT) = Divider Value
+  This example code first sets the internal oscillator to 1600MHz.
+  It then sets the output for Clock One and Clock Two to 16MHz to then offset
+  these syncronized clocks by 10ns relative to each other. It then sets the output
+  MODE to LVPECL (Low Voltage Positive Emitter Coupled Logic).
+
+  Available Output Modes: 
+  * LVPECL_MODE
+  * CMOS_MODE  
+  * HCSL33_MODE
+  * LVDS_MODE  
+  * CMOS2_MODE 
+  * CMOSD_MODE 
+  * HCSL25_MODE
+
   Pages from Datasheet of Interest: 
   Pg. 22 Transmission Output Termination Setup and Values
+
+  Pages from Programming Guide:
+  Pg. 48 Clock Skew Calculation
+
   SparkFun Electronics
   Date: February, 2020
   Author: Elias Santistevan
-
 */
+
 #include <Wire.h>
 #include "SparkFun_5P49V60.h"
 
@@ -33,38 +43,34 @@ void setup(){
     while(1);
   }
 
-  // Fist, Setting the internal oscillator to a known value that makes for easy
-  // division: 1600MHz
-  clockGen.setVcoFrequency(1600.0); // Give values in MHz - A given value of 16
+  // Fist, Setting the internal oscillator to a known value.
+  Serial.println("Setting Internal Clock Frequency to 1600MHz.");
+  clockGen.setVcoFrequency(1600.0); // Give float value in MHz.
 
   // Clock One General Settings------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
-  clockGen.setIntDivOutOne(50);
-  Serial.print("FOD One Integer Divider: ");
-  Serial.println(clockGen.readIntDivOutOne());
+  // Use internal phase lock loop for clock output calculation.
   clockGen.muxPllToFodOne();
+  Serial.println("Setting Output Mode to LVPECL.");
   // There are many OUTPUT modes available for each clock - this example uses
-  // LVPECL (Low voltage Positive Emitter Coupled Logic) mode and terminates 
-  // the clock with a 100Ohm resistance to GND.
+  // LVPECL (Low voltage Positive Emitter Coupled Logic) mode.
   clockGen.clockOneConfigMode(LVPECL_MODE);
-  clockGen.clockOneControl(ENABLE);
+  Serial.println("Setting Clock One Frequency to 16MHz.");
+  clockGen.setClockOneFreq(16.0); // Give float value in MHz, 16.0 = 16000000Hz or 16MHz
   // --------------------------------------------------------------
 
   // Clock Two General Settings------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/16MHz = 50
-  clockGen.setIntDivOutOne(50);
-  Serial.print("FOD One Integer Divider: ");
-  Serial.println(clockGen.readIntDivOutTwo());
-  clockGen.muxPllToFodTwo();
-  // There are many OUTPUT modes available for each clock - this example uses
-  // LVPECL (Low voltage Positive Emitter Coupled Logic) mode and terminates 
-  // the clock with a 100Ohm resistance to GND.
+  // Use internal phase lock loop for clock output calculation.
+  clockGen.muxPllToFodOne();
+  Serial.println("Setting Output Mode for Clock Two to LVPECL.");
   clockGen.clockTwoConfigMode(LVPECL_MODE);
-  clockGen.clockTwoControl(ENABLE);
+  Serial.println("Setting Clock Two Frequency to 16MHz.");
+  clockGen.setClockOneFreq(16.0); // Give float value in MHz, 16.0 = 16000000Hz or 16MHz
   // --------------------------------------------------------------
   
   // Clock One Skew------------------------------------------------
-  clockGen.skewClockOne(10);
+  // Clocks are syncronized on every pulse - this skew will ofset clock one by
+  // 10ns relative to clock two. 
+  clockGen.skewClockOne(10); // Give values in nano seconds. 
   //---------------------------------------------------------------
 }
 
