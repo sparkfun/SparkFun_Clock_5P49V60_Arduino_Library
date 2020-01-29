@@ -178,13 +178,22 @@ uint8_t SparkFun_5P49V60::readBurnedBit(){
 
 // Reg 0x10, bit[7]
 void SparkFun_5P49V60::xtalControl(uint8_t control){
-  if (control == ENABLE || control == DISABLE)
+  if (control == ENABLE){
     _writeRegister(SHUTDOWN_REG, MASK_EIGHT_MSB, control, POS_SEVEN);
+    clockInControl(DISABLE);
+  }
+  else if (control == DISABLE)    
+    _writeRegister(SHUTDOWN_REG, MASK_EIGHT_MSB, control, POS_SEVEN);
+    
 }
 
 // Reg 0x10, bit[6]
 void SparkFun_5P49V60::clockInControl(uint8_t control){
-  if (control == ENABLE || control == DISABLE)
+  if (control == ENABLE){
+    _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX);
+    xtalControl(DISABLE);
+  }
+  else if (control == DISABLE) 
     _writeRegister(SHUTDOWN_REG, MASK_FOUR_MSB, control, POS_SIX);
 }
 

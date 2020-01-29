@@ -1,8 +1,34 @@
+/*
+  This example code first disables the xtal as the reference clock for the
+  internal voltage controlled osicllator. The clock generator can be fed a
+  single CMOS or LVPECL Driver through the mini PTH hole labled "ClKIN" or a 
+  with a differential clock through CLKIN and CLKINB (HCSL/LVPECL/LVDS). 
+  The relevant datasheet pages on how this is done are listed below. Keep 
+  in mind that the clock must not exceed 1.2V peak to peak. 
+
+  Available Output Modes: 
+  * LVPECL_MODE
+  * CMOS_MODE
+  * HCSL33_MODE
+  * LVDS_MODE
+  * CMOS2_MODE
+  * CMOSD_MODE
+  * HCSL25_MODE
+
+  Pages from Datasheet of Interest:
+  Pg. 20 - 22 Input - Driving with XIN/REF or CLKIN
+  Pg. 22 Transmission Output Termination Setup and Values
+
+  SparkFun Electronics
+  Date: February, 2020
+  Author: Elias Santistevan
+*/
+
 #include <Wire.h>
 #include "SparkFun_5P49V60.h"
 
+// Uses default address at 0x6A, alternate available at 0x68
 SparkFun_5P49V60 clockGen;
-uint16_t feedBack; 
 
 void setup(){
 
@@ -17,27 +43,26 @@ void setup(){
     while(1);
   }
   
-  Serial.print("0x10 Before: ");
-  Serial.println(clockGen._readRegister(0x10), BIN);
-  clockGen.xtalControl(DISABLE);
   clockGen.clockInControl(ENABLE);
-  Serial.print("0x10 After: ");
-  Serial.println(clockGen._readRegister(0x10), BIN);
+  // Assuming 12MHz input: 
+  Serial.println("Setting Internal Clock Frequency to 1600MHz.");
+  clockGen.setVcoFrequency(1200.0); // Give float value in MHz.
 
-  // PLL Divider - To get 1200MHz: 1200MHz/12MHz (Clock) = 100
-  clockGen.setPllFeedbackIntDiv(100);
-  Serial.print("Feedback Integer Divider for PLL: ");
-  Serial.println(clockGen.readPllFeedBackIntDiv());
-  // Enable the VCO with the new settings. 
-  clockGen.calibrateVco();
-  // Clock One
-  // 1200/2/OUTx = 100 -> 600/OUTx = 100 -> 6MHz
-  clockGen.setIntDivOutOne(100);
-  Serial.print("FOD One Divider: ");
-  Serial.println(clockGen.readIntDivOutOne());
+  // Clock One -----------------------------------------------------
+  // Use internal phase lock loop for clock output calculation.
+  clockGen.muxPllToFodOne();
+  Serial.println("Setting Output Mode to LVPECL.");
+  // There are many OUTPUT modes available for each clock - this example uses
+  // LVPECL (Low voltage Positive Emitter Coupled Logic) mode.
+  clockGen.clockOneConfigMode(LVPECL_MODE);
+  Serial.println("Setting Clock One Frequency to 16MHz.");
+  clockGen.setClockOneFreq(6.0); // Give float value in MHz, 6.0 = 6000000Hz or 6MHz
+  // --------------------------------------------------------------
 
 }
 
 void loop(){
+
   delay(1000); 
+
 }
