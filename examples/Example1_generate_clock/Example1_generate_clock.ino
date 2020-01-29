@@ -52,8 +52,11 @@ void setup(){
   Serial.println("Setting Clock One Frequency to 16MHz.");
   clockGen.setClockOneFreq(16.0); // Give float value in MHz, 16.0 = 16000000Hz or 16MHz
   // --------------------------------------------------------------
+
 }
 
 void loop(){
+
   delay(1000);
+
 }
