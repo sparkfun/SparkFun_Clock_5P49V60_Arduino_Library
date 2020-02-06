@@ -39,7 +39,7 @@
 
 //                            1 , 2   , 4   , 8    , 16   , 32
 static float _cap_arr[6] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92};
-static uint32_t DEF_CLOCK = 16000000; //16MHz
+static uint8_t DEF_CLOCK = 16; //16MHz
 
 enum REGISTER_INDEX {
 
@@ -223,7 +223,7 @@ class SparkFun_5P49V60
     // Public Variables
 
     //Function declarations
-    SparkFun_5P49V60(uint8_t address = DEF_ADDR, uint8_t vco_freq = DEF_CLOCK); // I2C Constructor
+    SparkFun_5P49V60(uint8_t address = DEF_ADDR, uint8_t clock_freq = DEF_CLOCK); // I2C Constructor
 
     bool begin(TwoWire &wirePort = Wire); 
 
@@ -465,7 +465,8 @@ class SparkFun_5P49V60
 
     // Private Variables
     uint8_t _address;
-    uint8_t _vco_freq;
+    uint8_t _clock_freq;
+    uint16_t _vco_freq;
 
     float _calculate_skew_variables(uint8_t);
 
