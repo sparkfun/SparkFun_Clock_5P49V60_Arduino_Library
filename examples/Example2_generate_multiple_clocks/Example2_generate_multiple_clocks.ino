@@ -26,7 +26,6 @@
 
 // Uses default address at 0x6A, alternate available at 0x68
 SparkFun_5P49V60 clockGen;
-uint16_t feedBack; 
 
 void setup(){
 
