@@ -48,7 +48,7 @@ void setup(){
   Serial.println("Setting Output Mode to LVPECL.");
   // There are many OUTPUT modes available for each clock - this example uses
   // LVPECL (Low voltage Positive Emitter Coupled Logic) mode.
-  clockGen.clockOneConfigMode(LVPECL_MODE);
+  clockGen.clockOneConfigMode(CMOS_MODE);
   Serial.println("Setting Clock One Frequency to 16MHz.");
   clockGen.setClockOneFreq(16.0); // Give float value in MHz, 16.0 = 16000000Hz or 16MHz
   // --------------------------------------------------------------
