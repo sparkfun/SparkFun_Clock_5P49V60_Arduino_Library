@@ -1,41 +1,33 @@
-SparkFun <PRODUCT NAME>
+SparkFun Clock Generator 5P49V60
 ========================================
 
-![SparkFun Part Name](URL for picture of part)
+![SparkFun Clock Generator 5P49V60](URL for picture of part)
 
-[*SparkFun Part Name (SKU)*](URL for product on Sparkfun.com)
+[*SparkFun Clock Generator 5P49V60 (BOB-15734)*](https://www.sparkfun.com/products/15734)
 
-<Basic description of the part.>
+This is the Arduino Library for the SparkFun Clock Generator 5P49V60. This
+product can produce single or differential output clock signals in ranges from
+1MHz-200MHz and 1MHz-350MHz respectively. It has a wide range of customization
+settings for the clock signals ranging from, rise times, output modes, skew and
+slew rates; all of which are made available with this Arduino Library. 
 
 Repository Contents
 -------------------
 
-* **/Documentation** - Data sheets, additional product information
-* **/Enclosure** - Enclosure files 
-* **/Firmware** - Example code 
-* **/Hardware** - Eagle design files (.brd, .sch)
-* **/Libraries** - Libraries for use with the <PRODUCT NAME>
-* **/Production** - Production panel files (.brd)
-* **/Software** - Related software for the <PRODUCT NAME>
+* **/examples** - Example code for the Arduino IDE 
+* **/src** - Source files for the library (.cpp and .h files). 
+* **/keywords.txt** - Keywords from the library that are highlighted in Arduino IDE.
+* **/library.properties** - General Library properties for the Arduino Package Manager.
 
 Documentation
 --------------
-* **[Library](GitHub library URL)** - <LANGUAGE> library for the <PRODUCT NAME>.
-* **[Hookup Guide](Learn.SparkFun URL)** - Basic hookup guide for the <PRODUCT NAME>.
-* **[SparkFun Fritzing repo](https://github.com/sparkfun/Fritzing_Parts)** - Fritzing diagrams for SparkFun products.
-* **[SparkFun 3D Model repo](https://github.com/sparkfun/3D_Models)** - 3D models of SparkFun products. 
-* **[SparkFun Graphical Datasheets](https://github.com/sparkfun/Graphical_Datasheets)** -Graphical Datasheets for various SparkFun products.
+* **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
+* **[Hookup Guide](https://learn.sparkfun.com/tutorials/sparkfun-clock-generator-5p49v60-hookup-guide#hardware-overview)** - Basic hookup guide for the SparkFun Clock Generator 5P49V60.
 
-Product Versions
-----------------
-* [Part SKU](part URL)- Basic part and short description here
-* [Retail part SKU](retail URL)- Retail packaging of standard description here
-* [Any other parts this repo covers](any other URLs) - Description of said parts
 
-Version History
----------------
-* [vExxFxxZxxHxxLxxSxx](URL for tag specific to this version) - Description 
-* [vEyyFyyZyyHyyLyySyy](URL for tag specific to this version) - Description
+Products that use this library
+--------------
+* [BOB-15734](https://www.sparkfun.com/products/15734)- SparkFun Version 1.0
 
 License Information
 -------------------
@@ -50,4 +42,3 @@ Distributed as-is; no warranty is given.
 
 - Your friends at SparkFun.
 
-_<COLLABORATION CREDIT>_
