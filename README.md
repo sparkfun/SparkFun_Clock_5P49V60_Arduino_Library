@@ -1,7 +1,7 @@
-SparkFun Clock Generator 5P49V60
+SparkFun Clock Generator 5P49V60 Arduino Library
 ========================================
 
-![SparkFun Clock Generator 5P49V60](URL for picture of part)
+[![SparkFun Clock Generator 5P49V60](https://cdn.sparkfun.com//assets/parts/1/4/3/2/6/15734-SparkFun_Clock_Generator_Breakout_-_5P49V60__Qwiic_-06.jpg)](https://www.sparkfun.com/products/15734)
 
 [*SparkFun Clock Generator 5P49V60 (BOB-15734)*](https://www.sparkfun.com/products/15734)
 
@@ -23,6 +23,7 @@ Documentation
 --------------
 * **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
 * **[Hookup Guide](https://learn.sparkfun.com/tutorials/sparkfun-clock-generator-5p49v60-hookup-guide#hardware-overview)** - Basic hookup guide for the SparkFun Clock Generator 5P49V60.
+* **[Hardware Repo](https://github.com/sparkfun/SparkFun_Clock_Generator_5P49V60)**
 
 
 Products that use this library
