@@ -22,7 +22,7 @@ Repository Contents
 Documentation
 --------------
 * **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
-* **[Hookup Guide](https://learn.sparkfun.com/tutorials/sparkfun-clock-generator-5p49v60-hookup-guide#hardware-overview)** - Basic hookup guide for the SparkFun Clock Generator 5P49V60.
+* **[Hookup Guide](https://learn.sparkfun.com/tutorials/sparkfun-clock-generator-5p49v60-qwiic-hookup-guide)** - Basic hookup guide for the SparkFun Clock Generator 5P49V60.
 * **[Hardware Repo](https://github.com/sparkfun/SparkFun_Clock_Generator_5P49V60)** - Board files
 
 
