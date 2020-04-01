@@ -45,7 +45,7 @@ void setup(){
   
   clockGen.clockInControl(ENABLE);
   // Assuming 12MHz input: 
-  Serial.println("Setting Internal Clock Frequency to 1600MHz.");
+  Serial.println("Setting Internal Clock Frequency to 1200MHz.");
   clockGen.setVcoFrequency(1200.0); // Give float value in MHz.
 
   // Clock One -----------------------------------------------------
@@ -55,7 +55,7 @@ void setup(){
   // There are many OUTPUT modes available for each clock - this example uses
   // LVPECL (Low voltage Positive Emitter Coupled Logic) mode.
   clockGen.clockOneConfigMode(LVPECL_MODE);
-  Serial.println("Setting Clock One Frequency to 16MHz.");
+  Serial.println("Setting Clock One Frequency to 6MHz.");
   clockGen.setClockOneFreq(6.0); // Give float value in MHz, 6.0 = 6000000Hz or 6MHz
   // --------------------------------------------------------------
 

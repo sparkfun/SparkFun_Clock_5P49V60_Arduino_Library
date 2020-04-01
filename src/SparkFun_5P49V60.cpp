@@ -29,12 +29,12 @@ bool SparkFun_5P49V60::begin(TwoWire &wirePort)
 void SparkFun_5P49V60::setVcoFrequency(float freq){
   
   //Convert to MHz
-  _vco_freq = static_cast<uint16_t>(freq);
+  _vco_freq = freq;
   float pll_divider = _vco_freq/_clock_freq;  
   // Seperate the divider into the whole number and decimal.
   uint16_t int_portion  = static_cast<uint8_t>(pll_divider);
   float decimal  = fmod(pll_divider, int_portion);
-  uint32_t fract_portion = static_cast<uint32_t>(fract_portion * pow(2,24));
+  uint32_t fract_portion = static_cast<uint32_t>(decimal * pow(2,24));
   
   setPllFeedbackIntDiv(int_portion);
   setPllFeedBackFractDiv(fract_portion);
@@ -47,9 +47,10 @@ void SparkFun_5P49V60::setVcoFrequency(float freq){
 void SparkFun_5P49V60::setClockOneFreq(float freq){
   
   float division = (_vco_freq/2)/freq; 
+  
   uint32_t int_portion = static_cast<uint32_t>(division);
   float decimal = fmod(division, int_portion);
-  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+  uint32_t frac_portion = static_cast<uint32_t>(pow(2.0,24.0) * decimal);
 
   setIntDivOutOne(int_portion);
   setFractDivFodOne(frac_portion);
@@ -63,7 +64,7 @@ void SparkFun_5P49V60::setClockTwoFreq(float freq){
   float division = (_vco_freq/2)/freq; 
   uint32_t int_portion = static_cast<uint32_t>(division);
   float decimal = fmod(division, int_portion);
-  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+  uint32_t frac_portion = static_cast<uint32_t>(decimal * pow(2.0,24.0));
 
   setIntDivOutTwo(int_portion);
   setFractDivFodTwo(frac_portion);
@@ -78,7 +79,7 @@ void SparkFun_5P49V60::setClockThrFreq(float freq){
   float division = (_vco_freq/2)/freq; 
   uint32_t int_portion = static_cast<uint32_t>(division);
   float decimal = fmod(division, int_portion);
-  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+  uint32_t frac_portion = static_cast<uint32_t>(decimal * pow(2.0,24.0));
 
   setIntDivOutThree(int_portion);
   setFractDivFodThr(frac_portion);
@@ -93,7 +94,7 @@ void SparkFun_5P49V60::setClockFourFreq(float freq){
   float division = (_vco_freq/2)/freq; 
   uint32_t int_portion = static_cast<uint32_t>(division);
   float decimal = fmod(division, int_portion);
-  uint32_t frac_portion = static_cast<uint32_t>(decimal/pow(2.0,24.0));
+  uint32_t frac_portion = static_cast<uint32_t>(decimal * pow(2.0,24.0));
 
   setIntDivOutFour(int_portion);
   setFractDivFodFour(frac_portion);

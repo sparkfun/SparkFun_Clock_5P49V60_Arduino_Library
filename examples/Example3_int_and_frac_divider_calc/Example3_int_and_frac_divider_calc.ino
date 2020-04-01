@@ -68,7 +68,7 @@ void setup(){
   Serial.println(fbVal);
 
   // Clock One -----------------------------------------------------
-  // To get 16MHz Output = (1600MHz/2)/22MHz = 36.3636
+  // To get 22MHz Output = (1600MHz/2)/22MHz = 36.3636
   // Integer portion = 36
   // Fractional portion = .36 -> Need to convert to a HEX value
   // 2^24 * .36 = 6039796.76

@@ -39,7 +39,7 @@
 
 //                            1 , 2   , 4   , 8    , 16   , 32
 static float _cap_arr[6] = {.43 , .43 , .86 , 1.73 , 3.46 , 6.92};
-static uint8_t DEF_CLOCK = 16; //16MHz
+static float DEF_CLOCK = 16.0; //16MHz
 
 enum REGISTER_INDEX {
 
@@ -465,8 +465,8 @@ class SparkFun_5P49V60
 
     // Private Variables
     uint8_t _address;
-    uint8_t _clock_freq;
-    uint16_t _vco_freq;
+    float _clock_freq;
+    float _vco_freq;
 
     float _calculate_skew_variables(uint8_t);
 
