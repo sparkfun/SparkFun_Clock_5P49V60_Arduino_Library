@@ -1541,4 +1541,3 @@ uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg) {
   return(_reg_value);
 
 }
-
