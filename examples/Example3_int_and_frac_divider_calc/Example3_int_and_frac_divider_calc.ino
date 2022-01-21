@@ -62,7 +62,7 @@ void setup(){
   // Fist, Setting the internal oscillator to a known value that makes for easy
   // division: 1600MHz. 1600MHz/16MHz = 100
   Serial.println("Setting Integer Divider.");
-  clockGen.setPllFeedbackIntDiv(100);
+  clockGen.setPllFeedbackIntDiv(200);
   Serial.print("Integer Divider set to: ");
   uint16_t fbVal = clockGen.readPllFeedBackIntDiv();
   Serial.println(fbVal);
@@ -73,8 +73,8 @@ void setup(){
   // Fractional portion = .36 -> Need to convert to a HEX value
   // 2^24 * .36 = 6039796.76
   // Round the value to closest integer = 6039797
-  clockGen.setIntDivOutOne(36);
-  clockGen.setFractDivFodOne(6039797);
+  clockGen.setIntDivOutOne(12);
+  clockGen.setFractDivFodOne(13421773);
   Serial.print("FOD One Integer Divider: ");
   Serial.println(clockGen.readIntDivOutOne());
   Serial.print("FOD One Fractional Divider: ");
@@ -83,7 +83,7 @@ void setup(){
   // There are many OUTPUT modes available for each clock - this example uses
   // LVPECL (Low voltage Positive Emitter Coupled Logic) mode and terminates 
   // the clock with a 100Ohm resistance to GND.
-  clockGen.clockOneConfigMode(LVPECL_MODE);
+  clockGen.clockOneConfigMode(LVDS_MODE);
   clockGen.clockOneControl(ENABLE);
   // --------------------------------------------------------------
 
