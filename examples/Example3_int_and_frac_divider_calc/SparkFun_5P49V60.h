@@ -237,13 +237,13 @@ class SparkFun_5P49V60
 
     void setClockFourFreq(float);
 
-    void skewClockOne(uint8_t);
+    void skewClockOne(uint16_t);
 
-    void skewClockTwo(uint8_t);
+    void skewClockTwo(uint16_t);
 
-    void skewClockThr(uint8_t);
+    void skewClockThr(uint16_t);
 
-    void skewClockFour(uint8_t);
+    void skewClockFour(uint16_t);
 
     void changeI2CAddress(uint8_t);
 
@@ -333,7 +333,7 @@ class SparkFun_5P49V60
 
     void integerModeOne(uint8_t);
 
-    void setIntDivSkewOne(uint8_t);
+    void setIntDivSkewOne(uint16_t);
 
     void setFractDivSkewOne(float);
 
@@ -347,7 +347,7 @@ class SparkFun_5P49V60
 
     uint32_t readFractDivFodOne();
 
-    void setIntDivOutOne(uint8_t);
+    void setIntDivOutOne(uint16_t);
 
     uint16_t readIntDivOutOne();
 
@@ -365,7 +365,7 @@ class SparkFun_5P49V60
 
     uint32_t readFractDivFodTwo();
 
-    void setIntDivSkewTwo(uint8_t);
+    void setIntDivSkewTwo(uint16_t);
 
     void setFractDivSkewTwo(float);
 
@@ -375,7 +375,7 @@ class SparkFun_5P49V60
     
     void auxControlTwo(uint8_t);
 
-    void setIntDivOutTwo(uint8_t);
+    void setIntDivOutTwo(uint16_t);
 
     uint16_t readIntDivOutTwo();
 
@@ -393,7 +393,7 @@ class SparkFun_5P49V60
 
     uint32_t readFractDivFodThr();
 
-    void setIntDivSkewThr(uint8_t);
+    void setIntDivSkewThr(uint16_t);
 
     void setFractDivSkewThr(float);
 
@@ -403,7 +403,7 @@ class SparkFun_5P49V60
 
     void auxControlThree(uint8_t control);
 
-    void setIntDivOutThree(uint8_t);
+    void setIntDivOutThree(uint16_t);
 
     uint16_t readIntDivOutThree();
 
@@ -421,7 +421,7 @@ class SparkFun_5P49V60
 
     uint32_t readFractDivFodFour();
 
-    void setIntDivSkewFour(uint8_t);
+    void setIntDivSkewFour(uint16_t);
 
     void setFractDivSkewFour(float);
 
@@ -431,7 +431,7 @@ class SparkFun_5P49V60
 
     void auxControlFour(uint8_t control);
 
-    void setIntDivOutFour(uint8_t);
+    void setIntDivOutFour(uint16_t);
 
     uint16_t readIntDivOutFour();
 
@@ -468,7 +468,7 @@ class SparkFun_5P49V60
     float _clock_freq;
     float _vco_freq;
 
-    float _calculate_skew_variables(uint8_t);
+    float _calculate_skew_variables(uint16_t);
 
     // This generic function handles I2C write commands for modifying individual
     // bits in an eight bit register. Paramaters include the register's address, a mask
