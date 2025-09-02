@@ -347,7 +347,7 @@ class SparkFun_5P49V60
 
     uint32_t readFractDivFodOne();
 
-    void setIntDivOutOne(uint8_t);
+    void setIntDivOutOne(uint16_t);
 
     uint16_t readIntDivOutOne();
 
@@ -375,7 +375,7 @@ class SparkFun_5P49V60
     
     void auxControlTwo(uint8_t);
 
-    void setIntDivOutTwo(uint8_t);
+    void setIntDivOutTwo(uint16_t);
 
     uint16_t readIntDivOutTwo();
 
@@ -403,7 +403,7 @@ class SparkFun_5P49V60
 
     void auxControlThree(uint8_t control);
 
-    void setIntDivOutThree(uint8_t);
+    void setIntDivOutThree(uint16_t);
 
     uint16_t readIntDivOutThree();
 
@@ -431,7 +431,7 @@ class SparkFun_5P49V60
 
     void auxControlFour(uint8_t control);
 
-    void setIntDivOutFour(uint8_t);
+    void setIntDivOutFour(uint16_t);
 
     uint16_t readIntDivOutFour();
 
