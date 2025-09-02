@@ -1,7 +1,6 @@
 /*
   This is a library for...
   By: Elias Santistevan
-  Edited by: Vu Nguyen Minh Hung (2025/09/01)
   Date:
   License: This code is public domain but you buy me a beer if you use this and
   we meet someday (Beerware license).
@@ -33,7 +32,7 @@ void SparkFun_5P49V60::setVcoFrequency(float freq){
   _vco_freq = freq;
   float pll_divider = _vco_freq/_clock_freq;  
   // Seperate the divider into the whole number and decimal.
-  uint16_t int_portion  = static_cast<uint16_t>(pll_divider);
+  uint16_t int_portion  = static_cast<uint8_t>(pll_divider);
   float decimal  = fmod(pll_divider, int_portion);
   uint32_t fract_portion = static_cast<uint32_t>(decimal * pow(2,24));
   
@@ -1542,4 +1541,3 @@ uint8_t SparkFun_5P49V60::_readRegister(uint8_t _reg) {
   return(_reg_value);
 
 }
-
