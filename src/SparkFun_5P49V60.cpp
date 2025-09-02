@@ -1,6 +1,7 @@
 /*
   This is a library for...
   By: Elias Santistevan
+  Edited by: Vu Nguyen Minh Hung (2025/09/01)
   Date:
   License: This code is public domain but you buy me a beer if you use this and
   we meet someday (Beerware license).
@@ -32,7 +33,7 @@ void SparkFun_5P49V60::setVcoFrequency(float freq){
   _vco_freq = freq;
   float pll_divider = _vco_freq/_clock_freq;  
   // Seperate the divider into the whole number and decimal.
-  uint16_t int_portion  = static_cast<uint8_t>(pll_divider);
+  uint16_t int_portion  = static_cast<uint16_t>(pll_divider);
   float decimal  = fmod(pll_divider, int_portion);
   uint32_t fract_portion = static_cast<uint32_t>(decimal * pow(2,24));
   
@@ -879,7 +880,7 @@ void SparkFun_5P49V60::auxControlOne(uint8_t control){
 
 // REG 0x2D and 0x2E, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
-void SparkFun_5P49V60::setIntDivOutOne(uint8_t divider_val ){
+void SparkFun_5P49V60::setIntDivOutOne(uint16_t divider_val ){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
@@ -1004,7 +1005,7 @@ void SparkFun_5P49V60::auxControlTwo(uint8_t control){
 
 //REG 0x3D and 0x3E, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
-void SparkFun_5P49V60::setIntDivOutTwo(uint8_t divider_val ){
+void SparkFun_5P49V60::setIntDivOutTwo(uint16_t divider_val ){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
@@ -1215,7 +1216,7 @@ void SparkFun_5P49V60::auxControlThree(uint8_t control){
 
 //REG 0x4D and 0x4E, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
-void SparkFun_5P49V60::setIntDivOutThree(uint8_t divider_val ){
+void SparkFun_5P49V60::setIntDivOutThree(uint16_t divider_val ){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
@@ -1383,7 +1384,7 @@ void SparkFun_5P49V60::auxControlFour(uint8_t control){
 
 //REG 0x5D and 0x5E, bits[7:0] and bits[7:4] respectively. Maximum value that
 // that can be set: 4,095.
-void SparkFun_5P49V60::setIntDivOutFour(uint8_t divider_val ){
+void SparkFun_5P49V60::setIntDivOutFour(uint16_t divider_val ){
 
   if (divider_val < 0 || divider_val > 4095)
     return;
